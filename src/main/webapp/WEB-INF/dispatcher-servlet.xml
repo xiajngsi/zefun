@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd"
+  default-lazy-init="true">
+
+
+  <bean
+    class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"
+    p:useCacheControlNoStore="true" p:cacheSeconds="0">
+    <property name="messageConverters">
+      <list>
+        <bean
+          class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="multipartResolver"
+    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <property name="maxUploadSize" value="50000000000000" />
+    <property name="maxInMemorySize" value="4096" />
+    <property name="defaultEncoding" value="GBK" />
+  </bean>
+
+  <bean
+    class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+    <property name="messageConverters">
+      <list>
+        <bean
+          class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+        <bean class="com.zefun.common.utils.UTF8StringHttpMessageConverter" />
+        <bean class="org.springframework.http.converter.FormHttpMessageConverter" />
+        <bean
+          class="org.springframework.http.converter.xml.SourceHttpMessageConverter" />
+        <bean
+          class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+      </list>
+    </property>
+  </bean>
+
+  <!-- 添加注解驱动 -->
+  <context:annotation-config />
+  <mvc:annotation-driven />
+  <!-- 此处为自容器，扫描所有的controller 但是不扫描service，否则事物管理会失效 -->
+  <context:component-scan base-package="com.zefun.web,com.zefun.wechat,com.zefun.app">
+    <context:include-filter type="annotation"
+      expression="org.springframework.stereotype.Controller" />
+    <context:exclude-filter type="annotation"
+      expression="org.springframework.stereotype.Service" />
+  </context:component-scan>
+
+  <mvc:default-servlet-handler />
+
+  <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+    <property name="viewClass"
+      value="org.springframework.web.servlet.view.JstlView"></property>
+    <!-- 配置jsp路径前缀 -->
+    <property name="prefix" value="/WEB-INF/view/"></property>
+    <!-- 配置URl后缀 -->
+    <property name="suffix" value=".jsp"></property>
+  </bean>
+
+  <!-- 配置session超时拦截器 -->
+  <mvc:interceptors>
+    <mvc:interceptor>
+      <mvc:mapping path="/**" />
+      <bean class="com.zefun.web.interceptor.SessionInterceptor">
+        <property name="allowUrlPatterns">
+          <list>
+            <value>/user/*.*</value>
+          </list>
+        </property>
+      </bean>
+    </mvc:interceptor>
+    <mvc:interceptor>
+      <mvc:mapping path="/**" />
+      <bean class="com.zefun.web.interceptor.AuthorityInterceptor">
+        <property name="allowUrlPatterns">
+          <list>
+            <!-- 微信认证 -->
+            <value>/</value>
+            <!-- 微信认证 -->
+            <value>/coreServlet</value>
+            <!-- 登陆 -->
+            <value>/user/login/*.*</value>
+            <value>/user/logout/*.*</value>
+            <!-- 微信相关api -->
+            <value>/wechat/*.*</value>
+            <!-- 微信会员端 -->
+            <value>/memberCenter/*.*</value>
+            <!-- 移动端员工 -->
+            <value>/staff/*.*</value>
+            <!-- 后台新增平台门店 -->
+            <value>/storeinfo/action/addstore</value>
+            <value>/mobile/test</value>
+            <value>/sms/auth/callback</value>
+            <value>/storeapply/*.*</value>
+            <value>/storedetail/*.*</value>
+            <value>/agentapply/*.*</value>
+            <value>/agentdetail/*.*</value>
+            <value>/wechat/common/*.*</value>
+          </list>
+        </property>
+      </bean>
+    </mvc:interceptor>
+  </mvc:interceptors>
+</beans>

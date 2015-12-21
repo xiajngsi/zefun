@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.EmployeeObjectiveMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.EmployeeObjective" >
+    <id column="objective_id" property="objectiveId" jdbcType="INTEGER" />
+    <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+    <result column="total_project_sales" property="totalProjectSales" jdbcType="DECIMAL" />
+    <result column="actual_total_project_sales" property="actualTotalProjectSales" jdbcType="DECIMAL" />
+    <result column="assign_project_sales" property="assignProjectSales" jdbcType="DECIMAL" />
+    <result column="actual_assign_project_sales" property="actualAssignProjectSales" jdbcType="DECIMAL" />
+    <result column="combo_sales" property="comboSales" jdbcType="DECIMAL" />
+    <result column="actual_combo_sales" property="actualComboSales" jdbcType="DECIMAL" />
+    <result column="goods_sales" property="goodsSales" jdbcType="DECIMAL" />
+    <result column="actual_goods_sales" property="actualGoodsSales" jdbcType="DECIMAL" />
+    <result column="charge_sales" property="chargeSales" jdbcType="DECIMAL" />
+    <result column="actual_charge_sales" property="actualChargeSales" jdbcType="DECIMAL" />
+    <result column="objective_month" property="objectiveMonth" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    objective_id, employee_id, total_project_sales, actual_total_project_sales, assign_project_sales, actual_assign_project_sales, combo_sales, 
+    actual_combo_sales, goods_sales, actual_goods_sales, charge_sales, actual_charge_sales, objective_month, create_time, update_time, last_operator_id
+  </sql>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from employee_objective
+    where objective_id = #{objectiveId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into employee_objective (employee_id, objective_month, create_time) values
+    <foreach collection="list" item="item" index="index" separator="," >  
+        (#{item.employeeId},#{item.objectiveMonth}, #{item.createTime})  
+    </foreach>
+  </insert>
+  
+  <insert id="insert" parameterType="com.zefun.web.dto.ObjectiveDto" >
+    insert into employee_objective (objective_id, employee_id, total_project_sales, 
+      assign_project_sales, combo_sales, goods_sales, 
+      charge_sales, objective_month, create_time, 
+      update_time, last_operator_id)
+    values (#{objectiveId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER}, #{totalProjectSales,jdbcType=DECIMAL}, 
+      #{assignProjectSales,jdbcType=DECIMAL}, #{comboSales,jdbcType=DECIMAL}, #{goodsSales,jdbcType=DECIMAL}, 
+      #{chargeSales,jdbcType=DECIMAL}, #{objectiveMonth,jdbcType=INTEGER}, #{createTime,jdbcType=CHAR}, 
+      #{updateTime,jdbcType=CHAR}, #{lastOperatorId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.EmployeeObjective" >
+    insert into employee_objective
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="objectiveId != null" >
+        objective_id,
+      </if>
+      <if test="employeeId != null" >
+        employee_id,
+      </if>
+      <if test="totalProjectSales != null" >
+        total_project_sales,
+      </if>
+      <if test="assignProjectSales != null" >
+        assign_project_sales,
+      </if>
+      <if test="comboSales != null" >
+        combo_sales,
+      </if>
+      <if test="goodsSales != null" >
+        goods_sales,
+      </if>
+      <if test="chargeSales != null" >
+        charge_sales,
+      </if>
+      <if test="objectiveMonth != null" >
+        objective_month,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="objectiveId != null" >
+        #{objectiveId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="totalProjectSales != null" >
+        #{totalProjectSales,jdbcType=DECIMAL},
+      </if>
+      <if test="assignProjectSales != null" >
+        #{assignProjectSales,jdbcType=DECIMAL},
+      </if>
+      <if test="comboSales != null" >
+        #{comboSales,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsSales != null" >
+        #{goodsSales,jdbcType=DECIMAL},
+      </if>
+      <if test="chargeSales != null" >
+        #{chargeSales,jdbcType=DECIMAL},
+      </if>
+      <if test="objectiveMonth != null" >
+        #{objectiveMonth,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.EmployeeObjective" >
+    update employee_objective
+    <set >
+      <if test="employeeId != null" >
+        employee_id = #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="totalProjectSales != null" >
+        total_project_sales = #{totalProjectSales,jdbcType=DECIMAL},
+      </if>
+      <if test="actualTotalProjectSales != null" >
+        actual_total_project_sales = #{actualTotalProjectSales,jdbcType=DECIMAL},
+      </if>
+      <if test="assignProjectSales != null" >
+        assign_project_sales = #{assignProjectSales,jdbcType=DECIMAL},
+      </if>
+      <if test="actualAssignProjectSales != null" >
+       actual_assign_project_sales = #{actualAssignProjectSales,jdbcType=DECIMAL},
+      </if>
+      <if test="comboSales != null" >
+        combo_sales = #{comboSales,jdbcType=DECIMAL},
+      </if>
+      <if test="actualComboSales != null" >
+        actual_combo_sales = #{actualComboSales,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsSales != null" >
+        goods_sales = #{goodsSales,jdbcType=DECIMAL},
+      </if>
+      <if test="actualGoodsSales != null" >
+        actual_goods_sales = #{actualGoodsSales,jdbcType=DECIMAL},
+      </if>
+      <if test="chargeSales != null" >
+        charge_sales = #{chargeSales,jdbcType=DECIMAL},
+      </if>
+      <if test="actualChargeSales != null" >
+        actual_charge_sales = #{actualChargeSales,jdbcType=DECIMAL},
+      </if>
+      <if test="objectiveMonth != null" >
+        objective_month = #{objectiveMonth,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where objective_id = #{objectiveId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.dto.ObjectiveDto" >
+    update employee_objective
+    set employee_id = #{employeeId,jdbcType=INTEGER},
+      total_project_sales = #{totalProjectSales,jdbcType=DECIMAL},
+      assign_project_sales = #{assignProjectSales,jdbcType=DECIMAL},
+      combo_sales = #{comboSales,jdbcType=DECIMAL},
+      goods_sales = #{goodsSales,jdbcType=DECIMAL},
+      charge_sales = #{chargeSales,jdbcType=DECIMAL},
+      objective_month = #{objectiveMonth,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=CHAR},
+      update_time = #{updateTime,jdbcType=CHAR},
+      last_operator_id = #{lastOperatorId,jdbcType=INTEGER}
+    where employee_id = #{employeeId,jdbcType=INTEGER} and objective_month = #{objectiveMonth}
+  </update>
+  
+  <update id="updateActual" parameterType="com.zefun.web.entity.EmployeeObjective" >
+    update employee_objective
+    <set >
+      <if test="actualTotalProjectSales != null" >
+        actual_total_project_sales = actual_total_project_sales + #{actualTotalProjectSales,jdbcType=DECIMAL},
+      </if>
+      <if test="actualAssignProjectSales != null" >
+       actual_assign_project_sales = actual_assign_project_sales + #{actualAssignProjectSales,jdbcType=DECIMAL},
+      </if>
+      <if test="actualComboSales != null" >
+        actual_combo_sales = actual_combo_sales + #{actualComboSales,jdbcType=DECIMAL},
+      </if>
+      <if test="actualGoodsSales != null" >
+        actual_goods_sales = actual_goods_sales + #{actualGoodsSales,jdbcType=DECIMAL},
+      </if>
+      <if test="actualChargeSales != null" >
+        actual_charge_sales = actual_charge_sales + #{actualChargeSales,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where employee_id = #{employeeId,jdbcType=INTEGER} and objective_month = #{objectiveMonth}
+  </update>
+  
+  <update id="updateDecreaseActual" parameterType="com.zefun.web.entity.EmployeeObjective" >
+    update employee_objective
+    <set >
+      <if test="actualTotalProjectSales != null" >
+        actual_total_project_sales = actual_total_project_sales - #{actualTotalProjectSales,jdbcType=DECIMAL},
+      </if>
+      <if test="actualAssignProjectSales != null" >
+       actual_assign_project_sales = actual_assign_project_sales - #{actualAssignProjectSales,jdbcType=DECIMAL},
+      </if>
+      <if test="actualComboSales != null" >
+        actual_combo_sales = actual_combo_sales - #{actualComboSales,jdbcType=DECIMAL},
+      </if>
+      <if test="actualGoodsSales != null" >
+        actual_goods_sales = actual_goods_sales - #{actualGoodsSales,jdbcType=DECIMAL},
+      </if>
+      <if test="actualChargeSales != null" >
+        actual_charge_sales = actual_charge_sales - #{actualChargeSales,jdbcType=DECIMAL},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where employee_id = #{employeeId,jdbcType=INTEGER} and objective_month = #{objectiveMonth}
+  </update>
+  
+  <select id="getObjective" parameterType="com.zefun.web.entity.Page" resultType="com.zefun.web.dto.ObjectiveDto">
+	select t.objective_id objectiveId,e.employee_code employeeCode,e.name,p.position_name
+	positionName,l.level_name levelName ,t.total_project_sales
+	totalProjectSales,t.assign_project_sales assignProjectSales,
+	t.combo_sales comboSales,t.goods_sales goodsSales,t.charge_sales
+	chargeSales,t.objective_month objectiveMonth from employee_objective t
+	left join employee_info e on e.employee_id=t.employee_id
+	left join position_info p on p.position_id=e.position_id
+	left join employee_level l on l.level_id=e.level_id
+	where e.store_id=#{params.storeId}
+	<if test="params.objectiveMonth != null and params.objectiveMonth !=''" >
+       and t.objective_month=#{params.objectiveMonth} 
+    </if>
+    <if test="params.search != null and params.search !=''" >
+       and (e.name like concat('%',#{params.search},'%') or e.employee_code like concat('%',#{params.search},'%') or p.position_name like concat('%',#{params.search},'%') or l.level_name like concat('%',#{params.search},'%'))
+    </if>
+  </select>
+  <select id="isexistObjective" parameterType="java.util.Map" resultType="java.lang.Integer">
+  select count(0) from employee_objective where employee_id=#{employeeId} and objective_month=#{objectiveMonth}
+  <if test="objectiveId != null and objectiveId !=''" >
+       and  objective_id!=#{objectiveId} 
+   </if>
+  </select>
+  <select id="queryDetail" parameterType="java.lang.Integer" resultType="com.zefun.web.dto.ObjectiveDto">
+	select t.employee_id employeeId,t.objective_id objectiveId,t.total_project_sales
+	totalProjectSales,t.assign_project_sales assignProjectSales,
+	t.combo_sales comboSales,t.goods_sales goodsSales,t.charge_sales
+	chargeSales,t.objective_month objectiveMonth
+	from employee_objective t where objective_id=#{objectiveId}
+  </select>
+  <!-- 统计每月员工目标的数据 -->
+  <select id="getsum" parameterType="java.util.Map" resultType="java.util.Map">
+	select sum(total_project_sales) totalsum,sum(assign_project_sales) assignsun,sum(combo_sales) combosum,
+	sum(goods_sales) goodssum,sum(charge_sales) chargesum,sum(card_sales) cardsum from employee_objective o
+	left join employee_info e on e.employee_id=o.employee_id
+	where e.store_id=#{storeId} and objective_month=#{objectiveMonth}
+  </select>
+  <!-- 根据员工标识和月份来获取员工相关目标 -->
+  <select id="getObjectiveInfo" parameterType="com.zefun.web.entity.EmployeeObjective" resultType="com.zefun.web.entity.EmployeeObjective">
+  select total_project_sales totalProjectSales, assign_project_sales assignProjectSales, 
+         combo_sales comboSales, goods_sales goodsSales, charge_sales chargeSales, 
+         actual_total_project_sales actualTotalProjectSales, actual_assign_project_sales actualAssignProjectSales, 
+         actual_combo_sales actualComboSales, actual_goods_sales actualGoodsSales,
+         actual_charge_sales actualChargeSales 
+   from employee_objective where employee_id=#{employeeId} 
+        and objective_month=#{objectiveMonth}
+  </select>
+  
+  
+  <resultMap type="com.zefun.web.dto.EmployeeDto" id="employeeInfoMap">
+  		<result column="employeeId" property="employeeId" jdbcType="INTEGER" />
+        <association property="employeeObjective" column="{employeeId=employeeId,month=month}" select="employeeObjective" />
+  </resultMap>
+  <select id="getEmployee" resultMap="employeeInfoMap" parameterType="com.zefun.web.entity.Page">
+  select e.month,e.employee_id employeeId,e.employee_code employeeCode,e.name,d.dept_name deptName,position_name positionName,l.level_name
+    from (select #{params.objectiveMonth} month,e.* from employee_info e where e.store_id=#{params.storeId})  e
+	left join dept_info d on d.dept_id=e.dept_id
+	left join position_info p on p.position_id=e.position_id
+	left join employee_level l on l.level_id=e.level_id
+	where e.is_deleted=0 and e.employee_status=1 and e.dept_id>0
+	and e.store_id=#{params.storeId}
+	<if test="params.search != null and params.search !=''" >
+       and (e.name like concat('%',#{params.search},'%') or e.employee_code like concat('%',#{params.search},'%') or p.position_name like concat('%',#{params.search},'%') or l.level_name like concat('%',#{params.search},'%'))
+    </if>
+  </select>
+  <select id="employeeObjective" resultType="com.zefun.web.dto.ObjectiveDto" parameterType="java.util.Map">
+  select objective_id objectiveId,total_project_sales totalProjectSales,assign_project_sales assignProjectSales,combo_sales comboSales,goods_sales goodsSales,charge_sales chargeSales,card_sales cardSales 
+  from employee_objective where employee_id=#{employeeId} 
+  and objective_month=#{month}
+  </select>
+  
+  <resultMap type="com.zefun.web.dto.EmployeeDto" id="downloadMap">
+  		<result column="employeeId" property="employeeId" jdbcType="INTEGER" />
+        <association property="employeeObjective" column="{employeeId=employeeId,month=month}" select="employeeObjective" />
+  </resultMap>
+  <select id="downloadExcle" resultMap="downloadMap" parameterType="java.util.Map">
+  select e.month month,e.employee_id employeeId,e.employee_code employeeCode,e.name,d.dept_name deptName,position_name positionName,l.level_name
+    from (select #{objectiveMonth} month,e.* from employee_info e)  e
+	left join dept_info d on d.dept_id=e.dept_id
+	left join position_info p on p.position_id=e.position_id
+	left join employee_level l on l.level_id=e.level_id
+	where e.is_deleted=0 and e.employee_status=1
+	and e.store_id=#{storeId} and e.dept_id>0
+  </select>
+  
+  <insert id="importExcle" parameterType="com.zefun.web.dto.ObjectiveDto" >
+    insert into employee_objective (objective_id, employee_id, total_project_sales, 
+      assign_project_sales, combo_sales, goods_sales, 
+      charge_sales, objective_month, create_time, 
+      update_time, last_operator_id)
+    values (#{objectiveId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER}, #{totalProjectSales,jdbcType=DECIMAL}, 
+      #{assignProjectSales,jdbcType=DECIMAL}, #{comboSales,jdbcType=DECIMAL}, #{goodsSales,jdbcType=DECIMAL}, 
+      #{chargeSales,jdbcType=DECIMAL}, #{objectiveMonth,jdbcType=INTEGER}, #{createTime,jdbcType=CHAR}, 
+      #{updateTime,jdbcType=CHAR}, #{lastOperatorId,jdbcType=INTEGER})
+  </insert>
+  
+  <select id="selectObjectiveByEmployeeId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+      select * from employee_objective where employee_id = #{employeeId,jdbcType=INTEGER} order by cast(replace(objective_month, '-', '') as unsigned int) desc limit 0,12;
+  </select>
+  
+  
+  <select id="selectObjectiveByMonth" resultMap ="BaseResultMap" parameterType="java.util.Map">
+	 select 
+     <include refid="Base_Column_List" />
+	 from employee_objective where employee_id=#{employeeId} 
+	 and objective_month=#{month}
+  </select>
+</mapper>

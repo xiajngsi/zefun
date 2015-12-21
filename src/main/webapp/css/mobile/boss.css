@@ -1,0 +1,108 @@
+/* 全局变量 */
+/*背景颜色*/
+/*兰色*/
+/*26cbc5*/
+/*黄色*/
+/*fbd04d*/
+/*@yellow-th-color: #FFC001;*/
+/*fbd04d*/
+/*分界线*/
+/*字体颜色*/
+/*背景颜色*/
+/*字体大小*/
+/*边界线颜色*/
+.shop-select-detail-two {
+  border-bottom: 1px solid #999999;
+}
+.shop-select-detail-two li {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 49%;
+  border-right: 1px solid #999999;
+}
+.shop-select-detail-two li:last-child {
+  border-right: 0px;
+}
+.boss-select-performance-modal .content li {
+  border-bottom: 1px solid #eeeeee;
+}
+.boss-select-performance-modal .content li:first-child {
+  border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
+}
+.boss-sum {
+  height: 6.25rem;
+  line-height: 6.25rem;
+  background-color: rgba(51, 51, 51, 0.7);
+  text-align: center;
+  color: #fff;
+}
+.yeji-filter {
+  margin: 0px;
+}
+.yeji-filter li {
+  padding: 0rem 1rem;
+  width: 33.3333%;
+  display: inline-block;
+  float: left;
+  box-sizing: border-box;
+  border-right: 1px solid #999999;
+}
+.yeji-filter li:last-child {
+  border-right: 0px;
+}
+.yeji-filter-modal {
+  background-color: #eeeeee;
+  margin: 0px;
+}
+.yeji-filter-modal li {
+  border: 0px;
+}
+.yeji-filter-modal .active {
+  background-color: #fff;
+  border-left: 1px solid #eeeeee;
+  border-right: 1px solid #eeeeee;
+}
+.yeji-filter-two li {
+  width: 48%;
+}
+/*报表模块*/
+.report-chart-wrap {
+  position: relative;
+  padding-top: 2rem;
+}
+.report-sum-warp {
+  padding: 0rem 1rem;
+  position: relative;
+  top: 0px;
+  z-index: 2;
+}
+.report-sum ul {
+  overflow: hidden;
+  background-color: #26cbc5;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  padding: 1.5rem 1.5rem;
+}
+.report-sum li {
+  width: 32%;
+  float: left;
+  padding: 0px;
+  text-align: center;
+}
+.report-chart {
+  background-color: #fff;
+  padding-top: 3rem;
+  margin-top: -2rem;
+}
+.report-chart img {
+  width: 100%;
+  height: 100%;
+}
+.ul-title {
+  overflow: hidden;
+}
+.tab-target li {
+  border-bottom: 1px solid #999999;
+}
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImJvc3MubGVzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7O0FBOENBO0VBQ0UsZ0NBQUE7O0FBREYsdUJBRUU7RUFDRSxzQkFBQTtFQUNBLHFCQUFBO0VBQ0EsVUFBQTtFQUNBLCtCQUFBOztBQUVBLHVCQU5GLEdBTUc7RUFDQyxpQkFBQTs7QUFNTiw4QkFDRSxTQUNFO0VBQ0UsZ0NBQUE7O0FBQ0EsOEJBSEosU0FDRSxHQUVHO0VBQ0MsNkJBQUE7RUFDQSxnQ0FBQTs7QUFNUjtFQUNJLGVBQUE7RUFDQSxvQkFBQTtFQUNBLHVDQUFBO0VBQ0Esa0JBQUE7RUFDQSxXQUFBOztBQUlKO0VBQ0UsV0FBQTs7QUFERixZQUVFO0VBQ0Usa0JBQUE7RUFDQSxlQUFBO0VBQ0EscUJBQUE7RUFDQSxXQUFBO0VBQ0Esc0JBQUE7RUFDQSwrQkFBQTs7QUFDQSxZQVBGLEdBT0c7RUFDQyxpQkFBQTs7QUFLTjtFQUNFLHlCQUFBO0VBQ0EsV0FBQTs7QUFGRixrQkFHRTtFQUNFLFdBQUE7O0FBSkosa0JBTUU7RUFDRSxzQkFBQTtFQUNBLDhCQUFBO0VBQ0EsK0JBQUE7O0FBSUosZ0JBQ0U7RUFDRSxVQUFBOzs7QUFNSjtFQUNFLGtCQUFBO0VBQ0EsaUJBQUE7O0FBR0Y7RUFDSSxrQkFBQTtFQUNBLGtCQUFBO0VBQ0EsUUFBQTtFQUNBLFVBQUE7O0FBR0osV0FBWTtFQUNWLGdCQUFBO0VBQ0EseUJBQUE7RUFDQSw0QkFBQTtFQUNBLDZCQUFBO0VBQ0Esc0JBQUE7O0FBR0YsV0FBWTtFQUNWLFVBQUE7RUFDQSxXQUFBO0VBQ0EsWUFBQTtFQUNBLGtCQUFBOztBQUdGO0VBQ0Usc0JBQUE7RUFDQSxpQkFBQTtFQUNBLGlCQUFBOztBQUhGLGFBSUU7RUFDRSxXQUFBO0VBQ0EsWUFBQTs7QUFJSjtFQUNFLGdCQUFBOztBQUdGLFdBQ0U7RUFDRSxnQ0FBQSIsImZpbGUiOiJ1bmRlZmluZWQifQ== */

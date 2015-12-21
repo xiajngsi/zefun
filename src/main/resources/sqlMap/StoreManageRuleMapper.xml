@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.StoreManageRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.StoreManageRule" >
+    <id column="rule_id" property="ruleId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="rule_type" property="ruleType" jdbcType="INTEGER" />
+    <result column="rule_name" property="ruleName" jdbcType="VARCHAR" />
+    <result column="rule_desc" property="ruleDesc" jdbcType="VARCHAR" />
+    <result column="target_type" property="targetType" jdbcType="INTEGER" />
+    <result column="target_value" property="targetValue" jdbcType="INTEGER" />
+    <result column="process_type" property="processType" jdbcType="INTEGER" />
+    <result column="process_money" property="processMoney" jdbcType="DECIMAL" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+    <result column="last_operator_time" property="lastOperatorTime" jdbcType="CHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    rule_id, store_id, rule_type, rule_name, rule_desc, target_type, target_value, process_type, 
+    process_money, last_operator_id, last_operator_time
+  </sql>
+  
+  <select id="selectRuleListByStoreId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from store_manage_rule
+    where store_id = #{storeId}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from store_manage_rule
+    where rule_id = #{ruleId,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 根据店铺id查询迟到规则 -->
+  <select id="selectStoreRuleByStoreId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select * from store_manage_rule where store_id=#{storeId} and rule_name="迟到" 
+  </select>
+  
+  <!-- 根据ruleName和storeId查询该店铺规则 -->
+  <select id="selectRuleByRuleNameAndStoreId" resultMap="BaseResultMap">
+  	select * from store_manage_rule where store_id=${storeId} and rule_name=#{ruleName}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from store_manage_rule
+    where rule_id = #{ruleId,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id="initStoreRuleByStoreId" parameterType="java.lang.Integer">
+    insert into store_manage_rule
+        (store_id, rule_type, rule_name, rule_desc, target_type, target_value, process_type, 
+            process_money, last_operator_id, last_operator_time) 
+        select #{storeId} store_id, rule_type, rule_name, rule_desc, target_type, target_value, process_type, 
+            process_money, last_operator_id, last_operator_time 
+        from store_manage_rule
+            where store_id = 0
+  </insert>
+  
+  <insert id="insert" parameterType="com.zefun.web.entity.StoreManageRule" >
+    insert into store_manage_rule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ruleId != null" >
+        rule_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="ruleType != null" >
+        rule_type,
+      </if>
+      <if test="ruleName != null" >
+        rule_name,
+      </if>
+      <if test="ruleDesc != null" >
+        rule_desc,
+      </if>
+      <if test="targetType != null" >
+        target_type,
+      </if>
+      <if test="targetValue != null" >
+        target_value,
+      </if>
+      <if test="processType != null" >
+        process_type,
+      </if>
+      <if test="processMoney != null" >
+        process_money,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+      <if test="lastOperatorTime != null" >
+        last_operator_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ruleId != null" >
+        #{ruleId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="ruleType != null" >
+        #{ruleType,jdbcType=INTEGER},
+      </if>
+      <if test="ruleName != null" >
+        #{ruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleDesc != null" >
+        #{ruleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="targetType != null" >
+        #{targetType,jdbcType=INTEGER},
+      </if>
+      <if test="targetValue != null" >
+        #{targetValue,jdbcType=INTEGER},
+      </if>
+      <if test="processType != null" >
+        #{processType,jdbcType=INTEGER},
+      </if>
+      <if test="processMoney != null" >
+        #{processMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="lastOperatorTime != null" >
+        #{lastOperatorTime,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.StoreManageRule" >
+    update store_manage_rule
+    <set >
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="ruleType != null" >
+        rule_type = #{ruleType,jdbcType=INTEGER},
+      </if>
+      <if test="ruleName != null" >
+        rule_name = #{ruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleDesc != null" >
+        rule_desc = #{ruleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="targetType != null" >
+        target_type = #{targetType,jdbcType=INTEGER},
+      </if>
+      <if test="targetValue != null" >
+        target_value = #{targetValue,jdbcType=INTEGER},
+      </if>
+      <if test="processType != null" >
+        process_type = #{processType,jdbcType=INTEGER},
+      </if>
+      <if test="processMoney != null" >
+        process_money = #{processMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="lastOperatorTime != null" >
+        last_operator_time = #{lastOperatorTime,jdbcType=CHAR},
+      </if>
+    </set>
+    where rule_id = #{ruleId,jdbcType=INTEGER}
+  </update>
+</mapper>

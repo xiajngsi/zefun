@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.CodeLibraryMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.CodeLibrary" >
+    <result column="code_no" property="codeNo" jdbcType="INTEGER" />
+    <result column="type_no" property="typeNo" jdbcType="INTEGER" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="code_name" property="codeName" jdbcType="VARCHAR" />
+    <result column="sort_no" property="sortNo" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    code_no, type_no, type_name, code_name, sort_no
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.zefun.web.entity.CodeLibrary" >
+    select 
+    <include refid="Base_Column_List" />
+    from code_library
+    where code_no = #{codeNo,jdbcType=INTEGER}
+      and type_no = #{typeNo,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.zefun.web.entity.CodeLibrary" >
+    delete from code_library
+    where code_no = #{codeNo,jdbcType=INTEGER}
+      and type_no = #{typeNo,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zefun.web.entity.CodeLibrary" >
+    insert into code_library (code_no, type_no, type_name, 
+      code_name, sort_no)
+    values (#{codeNo,jdbcType=INTEGER}, #{typeNo,jdbcType=INTEGER}, #{typeName,jdbcType=VARCHAR}, 
+      #{codeName,jdbcType=VARCHAR}, #{sortNo,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.CodeLibrary" >
+    insert into code_library
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="codeNo != null" >
+        code_no,
+      </if>
+      <if test="typeNo != null" >
+        type_no,
+      </if>
+      <if test="typeName != null" >
+        type_name,
+      </if>
+      <if test="codeName != null" >
+        code_name,
+      </if>
+      <if test="sortNo != null" >
+        sort_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="codeNo != null" >
+        #{codeNo,jdbcType=INTEGER},
+      </if>
+      <if test="typeNo != null" >
+        #{typeNo,jdbcType=INTEGER},
+      </if>
+      <if test="typeName != null" >
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="codeName != null" >
+        #{codeName,jdbcType=VARCHAR},
+      </if>
+      <if test="sortNo != null" >
+        #{sortNo,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.CodeLibrary" >
+    update code_library
+    <set >
+      <if test="typeName != null" >
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="codeName != null" >
+        code_name = #{codeName,jdbcType=VARCHAR},
+      </if>
+      <if test="sortNo != null" >
+        sort_no = #{sortNo,jdbcType=INTEGER},
+      </if>
+    </set>
+    where code_no = #{codeNo,jdbcType=INTEGER}
+      and type_no = #{typeNo,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.CodeLibrary" >
+    update code_library
+    set type_name = #{typeName,jdbcType=VARCHAR},
+      code_name = #{codeName,jdbcType=VARCHAR},
+      sort_no = #{sortNo,jdbcType=INTEGER}
+    where code_no = #{codeNo,jdbcType=INTEGER}
+      and type_no = #{typeNo,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByTypeNo" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from code_library
+    where type_no = #{typeNo,jdbcType=INTEGER} order by sort_no
+  </select>
+  
+  <select id="selectBySunCodeName" resultMap="BaseResultMap" parameterType="com.zefun.web.dto.CodeLibraryDto" >
+    select 
+    <include refid="Base_Column_List" />
+    from code_library
+    where type_no = #{typeNo,jdbcType=INTEGER} and CAST(substring(concat(code_no),1,4) as UNSIGNED) = #{fatherCodeNo,jdbcType=INTEGER} order by sort_no
+  </select>
+  
+  <select id="selectByCodeName" resultMap="BaseResultMap" parameterType="com.zefun.web.dto.CodeLibraryDto" >
+    select 
+    <include refid="Base_Column_List" />
+    from code_library
+    where type_no = #{typeNo,jdbcType=INTEGER} and code_name = #{codeName,jdbcType=VARCHAR} order by sort_no
+  </select>
+  
+  <select id="selectByTypeNos" resultMap="BaseResultMap">  
+	 select
+	 <include refid="Base_Column_List" />  
+	 from code_library where type_no in  
+	 <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+	  #{item}
+	 </foreach>  
+  </select> 
+  
+  <resultMap id="imageMap" type="com.zefun.web.dto.CodeLibraryDto" >
+    <result column="type_no" property="typeNo" jdbcType="INTEGER" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <association property="codeLibraryDtos" column="type_no"  select="selectProjectImageSecont"></association>
+  </resultMap>
+  <resultMap id="imagesMap" type="com.zefun.web.dto.CodeLibraryDto" >
+    <result column="type_no" property="typeNo" jdbcType="INTEGER" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="code_name" property="codeName" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectProjectImage" resultMap="imageMap">  
+	 select type_no, type_name
+	 from code_library 
+	 where type_no LIKE CONCAT('%','1100','%') group by  type_no, type_name
+  </select> 
+  <select id="selectProjectImageSecont" resultMap="imagesMap" parameterType="java.lang.Integer" >  
+	 select type_no, type_name, code_name
+	 from code_library where type_no = #{type_no}
+  </select> 
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.HairstyleCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.HairstyleCategory" >
+    <id column="hairstyle_category_id" property="hairstyleCategoryId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="hairstyle_category_name" property="hairstyleCategoryName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    hairstyle_category_id, store_id, hairstyle_category_name, create_time, update_time, last_operator_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hairstyle_category
+    where hairstyle_category_id = #{hairstyleCategoryId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hairstyle_category
+    where hairstyle_category_id = #{hairstyleCategoryId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.HairstyleCategory" >
+    insert into hairstyle_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="hairstyleCategoryId != null" >
+        hairstyle_category_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="hairstyleCategoryName != null" >
+        hairstyle_category_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="hairstyleCategoryId != null" >
+        #{hairstyleCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="hairstyleCategoryName != null" >
+        #{hairstyleCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.HairstyleCategory" >
+    update hairstyle_category
+    <set >
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="hairstyleCategoryName != null" >
+        hairstyle_category_name = #{hairstyleCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where hairstyle_category_id = #{hairstyleCategoryId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByStoreId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hairstyle_category
+    where store_id = #{storeId,jdbcType=INTEGER} 
+  </select>
+  
+  <resultMap type="com.zefun.web.dto.HairstyleCategoryDto" id="HairstyleCategoryDtoMap">
+        <result column="hairstyleCategoryId" property="hairstyleCategoryId" />
+        <result column="hairstyleCategoryName" property="hairstyleCategoryName" />
+        <association property="hairstyleDesign" column="{hairstyleCategoryId=hairstyleCategoryId,storeId=storeId}" select="getHairstyleDesignAss" />
+  </resultMap>
+  <select id="getHairstyleCategoryInfo" resultMap="HairstyleCategoryDtoMap" parameterType="java.lang.Integer" >
+    	select hairstyle_category_id hairstyleCategoryId,hairstyle_category_name hairstyleCategoryName, store_id storeId from hairstyle_category where store_id=#{storeId}
+  </select>
+   <select id="getHairstyleDesignAss" resultType="com.zefun.web.entity.HairstyleDesign" parameterType="java.util.Map">
+    	select hairstyle_id hairstyleId,hairstyle_title hairstyleTitle from hairstyle_design where hairstyle_category_id = #{hairstyleCategoryId} and store_id=#{storeId}
+  </select>
+  
+</mapper>

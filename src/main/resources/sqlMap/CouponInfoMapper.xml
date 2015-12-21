@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.CouponInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.CouponInfo" >
+    <id column="coupon_id" property="couponId" jdbcType="INTEGER" />
+    <result column="coupon_name" property="couponName" jdbcType="VARCHAR" />
+    <result column="coupon_price" property="couponPrice" jdbcType="INTEGER" />
+    <result column="coupon_vantages" property="couponVantages" jdbcType="INTEGER" />
+    <result column="coupon_type" property="couponType" jdbcType="INTEGER" />
+    <result column="coupon_use_id" property="couponUseId" jdbcType="INTEGER" />
+    <result column="coupon_start_time" property="couponStartTime" jdbcType="CHAR" />
+    <result column="coupon_stop_time" property="couponStopTime" jdbcType="CHAR" />
+    <result column="release_time" property="releaseTime" jdbcType="CHAR" />
+    <result column="has_exchange_count" property="hasExchangeCount" jdbcType="INTEGER" />
+    <result column="has_use_count" property="hasUseCount" jdbcType="INTEGER" />
+    <result column="coupon_is_use" property="couponIsUse" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    coupon_id, coupon_name, coupon_price, coupon_vantages, coupon_type, coupon_use_id, 
+    coupon_start_time, coupon_stop_time, release_time, has_exchange_count, has_use_count, 
+    coupon_is_use, store_id, is_delete
+  </sql>
+  
+  <select id="selectCouponListByStoreId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+        <include refid="Base_Column_List" />
+    from coupon_info
+    where store_id = #{storeId} and is_delete = 0 and coupon_stop_time >= curdate()
+  </select>
+  
+  <select id="selectNormalByCouponId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+        <include refid="Base_Column_List" />
+    from coupon_info 
+    where coupon_id = #{couponId,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 根据门店标识查询优惠券信息，by 张进军 -->
+  <select id="selectBaseByStoreId" resultType="com.zefun.web.dto.CouponBaseDto" parameterType="com.zefun.web.entity.Page" >
+    SELECT 
+		CASE c.coupon_type 
+		   WHEN 1 THEN (SELECT project_name FROM project_info WHERE project_id = c.coupon_use_id)
+		   WHEN 2 THEN (SELECT goods_name FROM goods_info WHERE goods_id = c.coupon_use_id) 
+		   WHEN 3 THEN (SELECT combo_name FROM combo_info WHERE combo_id = c.coupon_use_id)
+		   ELSE '' 
+		END as projectName,
+		CASE c.coupon_type 
+		   WHEN 1 THEN (SELECT project_image FROM project_info WHERE project_id = c.coupon_use_id)
+		   WHEN 2 THEN (SELECT goods_image FROM goods_info WHERE goods_id = c.coupon_use_id) 
+		   WHEN 3 THEN (SELECT combo_image FROM combo_info WHERE combo_id = c.coupon_use_id)
+		   ELSE '' 
+		END as projectImage,  
+		c.coupon_id as couponId,
+		c.coupon_type as couponType,
+		c.coupon_name as couponName,
+		c.coupon_price as couponPrice,
+		c.coupon_vantages as couponVantages,
+		c.coupon_stop_time as overdueTime
+	from coupon_info c where c.coupon_is_use = 1 and c.is_delete = 0 and c.store_id = #{params.storeId} and c.coupon_stop_time >= curdate()
+  </select>
+  <!-- 根据会员标识查询优惠券信息，by 张进军 -->
+  <select id="selectBaseByMemberId" resultType="com.zefun.web.dto.CouponBaseDto" parameterType="java.lang.Integer" >
+    SELECT 
+    	mc.relevance_id as relevanceId,
+        CASE c.coupon_type 
+           WHEN 1 THEN (SELECT project_name FROM project_info WHERE project_id = c.coupon_use_id)
+           WHEN 2 THEN (SELECT goods_name FROM goods_info WHERE goods_id = c.coupon_use_id) 
+           WHEN 3 THEN (SELECT combo_name FROM combo_info WHERE combo_id = c.coupon_use_id)
+           ELSE '通用' 
+        END as projectName,
+        case 
+            when c.coupon_stop_time >= curdate() then 0
+            else 1
+        end as isOverdue,
+        c.coupon_use_id as projectId,
+        c.coupon_id as couponId,
+        c.coupon_type as couponType,
+        c.coupon_name as couponName,
+        c.coupon_price as couponPrice,
+        c.coupon_vantages as couponVantages,
+        c.coupon_stop_time as overdueTime
+    from member_coupon mc 
+    left join coupon_info c 
+    on c.coupon_id = mc.coupon_id
+    where mc.member_info_id = #{memberId} and mc.is_used = 0 order by isOverdue asc, overdueTime asc
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="ResultDto" parameterType="java.lang.Integer" >
+  SELECT 
+CASE c.coupon_type 
+   WHEN 1 THEN (SELECT project_name FROM project_info WHERE project_id = c.coupon_use_id)
+   WHEN 2 THEN (SELECT goods_name FROM goods_info WHERE goods_id = c.coupon_use_id) 
+   WHEN 3 THEN (SELECT combo_name FROM combo_info WHERE combo_id = c.coupon_use_id)
+   ELSE '通用' END
+   AS coupon_use,
+CASE c.coupon_type 
+   WHEN 1 THEN '项目'
+   WHEN 2 THEN '商品'
+   WHEN 3 THEN '套餐'
+   ELSE '通用' END
+   AS coupon_type, 
+CASE c.coupon_is_use
+   WHEN 0 THEN '未发布'
+   WHEN 1 THEN '已发布'
+   ELSE '' END
+   AS coupon_is_use,   
+   c.coupon_id,c.coupon_name,c.coupon_price,c.coupon_vantages,c.coupon_start_time,c.coupon_stop_time,
+   c.release_time,c.has_exchange_count,c.has_use_count  FROM coupon_info c
+   WHERE c.coupon_id = #{couponId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from coupon_info
+    where coupon_id = #{couponId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zefun.web.entity.CouponInfo" useGeneratedKeys="true" keyProperty="couponId">
+    insert into coupon_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="couponId != null" >
+        coupon_id,
+      </if>
+      <if test="couponName != null" >
+        coupon_name,
+      </if>
+      <if test="couponPrice != null" >
+        coupon_price,
+      </if>
+      <if test="couponVantages != null" >
+        coupon_vantages,
+      </if>
+      <if test="couponType != null" >
+        coupon_type,
+      </if>
+      <if test="couponUseId != null" >
+        coupon_use_id,
+      </if>
+      <if test="couponStartTime != null" >
+        coupon_start_time,
+      </if>
+      <if test="couponStopTime != null" >
+        coupon_stop_time,
+      </if>
+      <if test="releaseTime != null" >
+        release_time,
+      </if>
+      <if test="hasExchangeCount != null" >
+        has_exchange_count,
+      </if>
+      <if test="hasUseCount != null" >
+        has_use_count,
+      </if>
+      <if test="couponIsUse != null" >
+        coupon_is_use,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="couponId != null" >
+        #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="couponName != null" >
+        #{couponName,jdbcType=VARCHAR},
+      </if>
+      <if test="couponPrice != null" >
+        #{couponPrice,jdbcType=INTEGER},
+      </if>
+      <if test="couponVantages != null" >
+        #{couponVantages,jdbcType=INTEGER},
+      </if>
+      <if test="couponType != null" >
+        #{couponType,jdbcType=INTEGER},
+      </if>
+      <if test="couponUseId != null" >
+        #{couponUseId,jdbcType=INTEGER},
+      </if>
+      <if test="couponStartTime != null" >
+        #{couponStartTime,jdbcType=CHAR},
+      </if>
+      <if test="couponStopTime != null" >
+        #{couponStopTime,jdbcType=CHAR},
+      </if>
+      <if test="releaseTime != null" >
+        #{releaseTime,jdbcType=CHAR},
+      </if>
+      <if test="hasExchangeCount != null" >
+        #{hasExchangeCount,jdbcType=INTEGER},
+      </if>
+      <if test="hasUseCount != null" >
+        #{hasUseCount,jdbcType=INTEGER},
+      </if>
+      <if test="couponIsUse != null" >
+        #{couponIsUse,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.CouponInfo" >
+    update coupon_info
+    <set >
+      <if test="couponName != null" >
+        coupon_name = #{couponName,jdbcType=VARCHAR},
+      </if>
+      <if test="couponPrice != null" >
+        coupon_price = #{couponPrice,jdbcType=INTEGER},
+      </if>
+      <if test="couponVantages != null" >
+        coupon_vantages = #{couponVantages,jdbcType=INTEGER},
+      </if>
+      <if test="couponType != null" >
+        coupon_type = #{couponType,jdbcType=INTEGER},
+      </if>
+      <if test="couponUseId != null" >
+        coupon_use_id = #{couponUseId,jdbcType=INTEGER},
+      </if>
+      <if test="couponStartTime != null" >
+        coupon_start_time = #{couponStartTime,jdbcType=CHAR},
+      </if>
+      <if test="couponStopTime != null" >
+        coupon_stop_time = #{couponStopTime,jdbcType=CHAR},
+      </if>
+      <if test="releaseTime != null" >
+        release_time = #{releaseTime,jdbcType=CHAR},
+      </if>
+      <if test="hasExchangeCount != null" >
+        has_exchange_count = #{hasExchangeCount,jdbcType=INTEGER},
+      </if>
+      <if test="hasUseCount != null" >
+        has_use_count = #{hasUseCount,jdbcType=INTEGER},
+      </if>
+      <if test="couponIsUse != null" >
+        coupon_is_use = #{couponIsUse,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where coupon_id = #{couponId,jdbcType=INTEGER}
+  </update>
+  
+  <resultMap id="ResultDto" type="com.zefun.web.dto.CouponInfoDto" >
+    <id column="coupon_id" property="couponId" jdbcType="INTEGER" />
+    <result column="coupon_name" property="couponName" jdbcType="VARCHAR" />
+    <result column="coupon_price" property="couponPrice" jdbcType="INTEGER" />
+    <result column="coupon_vantages" property="couponVantages" jdbcType="INTEGER" />
+    <result column="coupon_type" property="couponType" jdbcType="VARCHAR" />
+    <result column="coupon_use" property="couponUse" jdbcType="VARCHAR" />
+    <result column="coupon_start_time" property="couponStartTime" jdbcType="CHAR" />
+    <result column="coupon_stop_time" property="couponStopTime" jdbcType="CHAR" />
+    <result column="coupon_is_use" property="couponIsUse" jdbcType="VARCHAR" />
+    <result column="release_time" property="releaseTime" jdbcType="VARCHAR" />
+    <result column="has_exchange_count" property="hasExchangeCount" jdbcType="INTEGER" />
+    <result column="has_use_count" property="hasUseCount" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectByStoreId" resultMap="ResultDto" parameterType="java.lang.Integer">
+  SELECT 
+CASE c.coupon_type 
+   WHEN 1 THEN (SELECT project_name FROM project_info WHERE project_id = c.coupon_use_id)
+   WHEN 2 THEN (SELECT goods_name FROM goods_info WHERE goods_id = c.coupon_use_id) 
+   WHEN 3 THEN (SELECT combo_name FROM combo_info WHERE combo_id = c.coupon_use_id)
+   ELSE '通用' END
+   AS coupon_use,
+CASE c.coupon_type 
+   WHEN 1 THEN '项目'
+   WHEN 2 THEN '商品'
+   WHEN 3 THEN '套餐'
+   ELSE '通用' END
+   AS coupon_type, 
+CASE c.coupon_is_use
+   WHEN 0 THEN '未发布'
+   WHEN 1 THEN '已发布'
+   ELSE '' END
+   AS coupon_is_use,   
+   c.coupon_id,c.coupon_name,c.coupon_price,c.coupon_vantages,c.coupon_start_time,c.coupon_stop_time,
+   c.release_time,c.has_exchange_count,c.has_use_count  FROM coupon_info c
+   WHERE c.store_id = #{storeId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByPage" parameterType="com.zefun.web.entity.Page" resultMap="ResultDto">
+    SELECT 
+CASE c.coupon_type 
+   WHEN 1 THEN (SELECT project_name FROM project_info WHERE project_id = c.coupon_use_id)
+   WHEN 2 THEN (SELECT goods_name FROM goods_info WHERE goods_id = c.coupon_use_id) 
+   WHEN 3 THEN (SELECT combo_name FROM combo_info WHERE combo_id = c.coupon_use_id)
+   ELSE '通用' END
+   AS coupon_use,
+CASE c.coupon_type 
+   WHEN 1 THEN '项目'
+   WHEN 2 THEN '商品'
+   WHEN 3 THEN '套餐'
+   ELSE '通用' END
+   AS coupon_type, 
+CASE c.coupon_is_use
+   WHEN 0 THEN '未发布'
+   WHEN 1 THEN '已发布'
+   ELSE '' END
+   AS coupon_is_use,   
+   c.coupon_id,c.coupon_name,c.coupon_price,c.coupon_vantages,c.coupon_start_time,c.coupon_stop_time,
+   c.release_time,c.has_exchange_count,c.has_use_count  from coupon_info c
+   WHERE c.store_id = #{params.storeId,jdbcType=INTEGER} and c.is_delete = 0
+   <if test="params.couponIsUse != null" >
+     and c.coupon_is_use = #{params.couponIsUse,jdbcType=INTEGER}
+   </if>
+  </select>
+  
+  <!-- 更新优惠券使用次数 -->
+  <update id="updateCouponHasUsedCount" parameterType="java.util.Map">
+  	update coupon_info set has_use_count = (has_use_count + 1) where coupon_id = #{couponId,jdbcType=INTEGER} and has_use_count = #{hasUseCount,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

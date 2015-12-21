@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.CopyMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.CopyMenu" >
+    <id column="copy_id" property="copyId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="copy_status" property="copyStatus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    copy_id, store_id, copy_status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from copy_menu
+    where copy_id = #{copyId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from copy_menu
+    where copy_id = #{copyId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zefun.web.entity.CopyMenu" >
+    insert into copy_menu (copy_id, store_id, copy_status
+      )
+    values (#{copyId,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER}, #{copyStatus,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.CopyMenu" >
+    insert into copy_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="copyId != null" >
+        copy_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="copyStatus != null" >
+        copy_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="copyId != null" >
+        #{copyId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="copyStatus != null" >
+        #{copyStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.CopyMenu" >
+    update copy_menu
+    <set >
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="copyStatus != null" >
+        copy_status = #{copyStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where copy_id = #{copyId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.CopyMenu" >
+    update copy_menu
+    set store_id = #{storeId,jdbcType=INTEGER},
+      copy_status = #{copyStatus,jdbcType=INTEGER}
+    where copy_id = #{copyId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByStoreId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  select copy_status from copy_menu where store_id = #{storeId}
+  </select>
+  <delete id="deleteByStoreId" parameterType="java.lang.Integer" >
+   delete from copy_menu
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </delete>
+</mapper>

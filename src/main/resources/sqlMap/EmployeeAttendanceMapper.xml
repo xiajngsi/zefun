@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.EmployeeAttendanceMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.EmployeeAttendance" >
+    <id column="record_id" property="recordId" jdbcType="INTEGER" />
+    <result column="attendance_date" property="attendanceDate" jdbcType="CHAR" />
+    <result column="sign_in_time" property="signInTime" jdbcType="CHAR" />
+    <result column="sign_in_offset" property="signInOffset" jdbcType="INTEGER" />
+    <result column="sign_out_time" property="signOutTime" jdbcType="CHAR" />
+    <result column="sign_out_offset" property="signOutOffset" jdbcType="INTEGER" />
+    <result column="modifyer" property="modifyer" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="LONGVARCHAR" />
+    <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+    <association property="employeeInfo" column="employee_id" javaType="com.zefun.web.entity.EmployeeInfo">
+    	<id column="ei_employee_id" property="employeeId" jdbcType="INTEGER" />
+    	<result column="store_id" property="storeId" jdbcType="INTEGER" />
+	    <result column="dept_id" property="deptId" jdbcType="INTEGER" />
+	    <result column="position_id" property="positionId" jdbcType="INTEGER" />
+	    <result column="level_id" property="levelId" jdbcType="INTEGER" />
+	    <result column="recommend_id" property="recommendId" jdbcType="INTEGER" />
+	    <result column="employee_code" property="employeeCode" jdbcType="INTEGER" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="head_image" property="headImage" jdbcType="VARCHAR" />
+	    <result column="sex" property="sex" jdbcType="CHAR" />
+	    <result column="birthday" property="birthday" jdbcType="CHAR" />
+	    <result column="phone" property="phone" jdbcType="VARCHAR" />
+	    <result column="identity_card" property="identityCard" jdbcType="VARCHAR" />
+	    <result column="health_card" property="healthCard" jdbcType="VARCHAR" />
+	    <result column="address" property="address" jdbcType="VARCHAR" />
+	    <result column="emergency_phone" property="emergencyPhone" jdbcType="VARCHAR" />
+	    <result column="base_salaries" property="baseSalaries" jdbcType="INTEGER" />
+	    <result column="position_salaries" property="positionSalaries" jdbcType="INTEGER" />
+	    <result column="employee_status" property="employeeStatus" jdbcType="VARCHAR" />
+	    <result column="entry_date" property="entryDate" jdbcType="CHAR" />
+	    <result column="leave_date" property="leaveDate" jdbcType="CHAR" />
+	    <result column="service_peoples" property="servicePeoples" jdbcType="INTEGER" />
+	    <result column="service_count" property="serviceCount" jdbcType="INTEGER" />
+	    <result column="service_score" property="serviceScore" jdbcType="REAL" />
+	    <result column="create_time" property="createTime" jdbcType="CHAR" />
+	    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+	    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+	    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+	    <result column="accredit_code" property="accreditCode" jdbcType="INTEGER" />
+	</association>
+  </resultMap>
+  
+  <resultMap type="com.zefun.web.dto.AttendanceRecordDto" id="attendanceRecordDto">
+  	<id column="record_id" property="recordId" jdbcType="INTEGER" />
+    <result column="attendance_date" property="attendanceDate" jdbcType="CHAR" />
+    <result column="sign_in_time" property="signInTime" jdbcType="CHAR" />
+    <result column="sign_in_offset" property="signInOffset" jdbcType="INTEGER" />
+    <result column="sign_out_time" property="signOutTime" jdbcType="CHAR" />
+    <result column="sign_out_offset" property="signOutOffset" jdbcType="INTEGER" />
+    <result column="modifyer" property="modifyer" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="LONGVARCHAR" />
+    <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+  	<association property="employeeInfo" column="employee_id" javaType="com.zefun.web.entity.EmployeeInfo">
+  		<result column="employee_code" property="employeeCode" jdbcType="INTEGER" />
+  		<result column="name" property="name" jdbcType="VARCHAR" />
+  		<result column="dept_id" property="deptId" jdbcType="INTEGER" />
+  	</association>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    record_id, employee_id, attendance_date, sign_in_time, sign_in_offset, sign_out_time, 
+    sign_out_offset, modifyer
+  </sql>
+  
+  <select id="selectByEmployeeId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from employee_attendance
+    where employee_id = #{employeeId} and attendance_date = curdate()
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from employee_attendance
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAttendanceRecordSelective" parameterType="com.zefun.web.entity.Page" resultMap="attendanceRecordDto">
+  	select
+  	ea.*, ei.*
+  	from employee_attendance ea, employee_info ei
+  	where ea.employee_id = ei.employee_id 
+  	<if test="params.storeId != null">
+  		and ea.employee_id in (select employee_id from employee_info where store_id=#{params.storeId}) 
+  	</if>
+  	<if test="params.employeeCode != null">
+  		and ea.employee_id in (select employee_id from employee_info where employee_code=#{params.employeeCode})
+  	</if>
+  	<if test="params.employeeName != null">
+  		and ea.employee_id in (select employee_id from employee_info where name like "%${params.employeeName}%")
+  	</if>
+  	<if test="params.attendanceDateBegin != null and params.attendanceDateend == null">
+  		and ea.attendance_date between #{params.attendanceDateBegin} and #{params.attendanceDateend}
+  	</if>
+  	<if test="params.attendanceDateBegin == null and params.attendanceDateEnd != null">
+  		and #{params.attendanceDateEnd} >= #{params.attendanceDateBegin}
+  	</if>
+  	<if test="params.attendanceDateBegin != null and params.attendanceDateEnd != null">
+  		and ea.attendance_date >= #{params.attendanceDateBegin}
+  	</if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from employee_attendance
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zefun.web.entity.EmployeeAttendance" >
+    insert into employee_attendance
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        record_id,
+      </if>
+      <if test="employeeId != null" >
+        employee_id,
+      </if>
+      <if test="attendanceDate != null" >
+        attendance_date,
+      </if>
+      <if test="signInTime != null" >
+        sign_in_time,
+      </if>
+      <if test="signInOffset != null" >
+        sign_in_offset,
+      </if>
+      <if test="signOutTime != null" >
+        sign_out_time,
+      </if>
+      <if test="signOutOffset != null" >
+        sign_out_offset,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        #{recordId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="attendanceDate != null" >
+        #{attendanceDate,jdbcType=CHAR},
+      </if>
+      <if test="signInTime != null" >
+        #{signInTime,jdbcType=CHAR},
+      </if>
+      <if test="signInOffset != null" >
+        #{signInOffset,jdbcType=INTEGER},
+      </if>
+      <if test="signOutTime != null" >
+        #{signOutTime,jdbcType=CHAR},
+      </if>
+      <if test="signOutOffset != null" >
+        #{signOutOffset,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.EmployeeAttendance" >
+    update employee_attendance
+    <set >
+      <if test="employeeId != null" >
+        employee_id = #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="attendanceDate != null" >
+        attendance_date = #{attendanceDate,jdbcType=CHAR},
+      </if>
+      <if test="signInTime != null" >
+        sign_in_time = #{signInTime,jdbcType=CHAR},
+      </if>
+      <if test="signInOffset != null" >
+        sign_in_offset = #{signInOffset,jdbcType=INTEGER},
+      </if>
+      <if test="signOutTime != null" >
+        sign_out_time = #{signOutTime,jdbcType=CHAR},
+      </if>
+      <if test="signOutOffset != null" >
+        sign_out_offset = #{signOutOffset,jdbcType=INTEGER},
+      </if>
+    </set>
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateSignoutByEmployeeId" parameterType="com.zefun.web.entity.EmployeeAttendance" >
+    update employee_attendance set 
+        sign_out_time = #{signOutTime,jdbcType=CHAR}, 
+        sign_out_offset = #{signOutOffset,jdbcType=INTEGER}
+    where employee_id = #{employeeId,jdbcType=INTEGER} and attendance_date = curdate()
+  </update>
+</mapper>

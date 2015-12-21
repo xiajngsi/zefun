@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.MemberAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.MemberAccount" >
+    <id column="account_id" property="accountId" jdbcType="INTEGER" />
+    <result column="pay_password" property="payPassword" jdbcType="CHAR" />
+    <result column="password_salt" property="passwordSalt" jdbcType="VARCHAR" />
+    <result column="problem" property="problem" jdbcType="VARCHAR" />
+    <result column="answer" property="answer" jdbcType="VARCHAR" />
+    <result column="consume_count" property="consumeCount" jdbcType="INTEGER" />
+    <result column="total_amount" property="totalAmount" jdbcType="DECIMAL" />
+    <result column="balance_amount" property="balanceAmount" jdbcType="DECIMAL" />
+    <result column="total_giftmoney_amount" property="totalGiftmoneyAmount" jdbcType="DECIMAL" />
+    <result column="balance_giftmoney_amount" property="balanceGiftmoneyAmount" jdbcType="DECIMAL" />
+    <result column="pastdata_money" property="pastdataMoney" jdbcType="DECIMAL" />
+    <result column="use_money" property="useMoney" jdbcType="DECIMAL" />
+    <result column="total_integral" property="totalIntegral" jdbcType="INTEGER" />
+    <result column="balance_integral" property="balanceIntegral" jdbcType="INTEGER" />
+    <result column="total_consume_amount" property="totalConsumeAmount" jdbcType="DECIMAL" />
+    <result column="avg_consume_amount" property="avgConsumeAmount" jdbcType="DECIMAL" />
+    <result column="last_consume_time" property="lastConsumeTime" jdbcType="CHAR" />
+    <result column="avg_consume_days" property="avgConsumeDays" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    account_id, pay_password, password_salt, problem, answer, consume_count, total_amount, balance_amount, 
+    total_giftmoney_amount, balance_giftmoney_amount, pastdata_money, use_money,
+    total_integral, balance_integral, total_consume_amount, avg_consume_amount, last_consume_time, 
+    avg_consume_days, create_time, update_time, last_operator_id
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from member_account
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from member_account
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zefun.web.entity.MemberAccount" useGeneratedKeys="true" keyProperty="accountId">
+    insert into member_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="payPassword != null" >
+        pay_password,
+      </if>
+      <if test="passwordSalt != null" >
+        password_salt,
+      </if>
+      <if test="problem != null" >
+        problem,
+      </if>
+      <if test="answer != null" >
+        answer,
+      </if>
+      <if test="totalAmount != null" >
+        total_amount,
+      </if>
+      <if test="balanceAmount != null" >
+        balance_amount,
+      </if>
+      <if test="totalGiftmoneyAmount != null" >
+        total_giftmoney_amount,
+      </if>
+      <if test="balanceGiftmoneyAmount != null" >
+        balance_giftmoney_amount,
+      </if>
+      <if test="pastdataMoney != null" >
+        pastdata_money,
+      </if>
+      <if test="useMoney != null" >
+        use_money,
+      </if>
+      <if test="totalIntegral != null" >
+        total_integral,
+      </if>
+      <if test="balanceIntegral != null" >
+        balance_integral,
+      </if>
+      <if test="totalConsumeAmount != null" >
+        total_consume_amount,
+      </if>
+      <if test="avgConsumeAmount != null" >
+        avg_consume_amount,
+      </if>
+      <if test="lastConsumeTime != null" >
+        last_consume_time,
+      </if>
+      <if test="avgConsumeDays != null" >
+        avg_consume_days,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="payPassword != null" >
+        #{payPassword,jdbcType=CHAR},
+      </if>
+      <if test="passwordSalt != null" >
+        #{passwordSalt,jdbcType=VARCHAR},
+      </if>
+      <if test="problem != null" >
+        #{problem,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null" >
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAmount != null" >
+        #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceAmount != null" >
+        #{balanceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalGiftmoneyAmount != null" >
+        #{totalGiftmoneyAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceGiftmoneyAmount != null" >
+        #{balanceGiftmoneyAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="pastdataMoney != null" >
+        #{pastdataMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="useMoney != null" >
+        #{useMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="totalIntegral != null" >
+        #{totalIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="balanceIntegral != null" >
+        #{balanceIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="totalConsumeAmount != null" >
+        #{totalConsumeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="avgConsumeAmount != null" >
+        #{avgConsumeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="lastConsumeTime != null" >
+        #{lastConsumeTime,jdbcType=CHAR},
+      </if>
+      <if test="avgConsumeDays != null" >
+        #{avgConsumeDays,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.MemberAccount" >
+    update member_account
+    <set >
+      <if test="payPassword != null" >
+        pay_password = #{payPassword,jdbcType=CHAR},
+      </if>
+      <if test="passwordSalt != null" >
+        password_salt = #{passwordSalt,jdbcType=VARCHAR},
+      </if>
+      <if test="problem != null" >
+        problem = #{problem,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null" >
+        answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAmount != null" >
+        total_amount = #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceAmount != null" >
+        balance_amount = #{balanceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalGiftmoneyAmount != null" >
+        total_giftmoney_amount = #{totalGiftmoneyAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceGiftmoneyAmount != null" >
+        balance_giftmoney_amount = #{balanceGiftmoneyAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="pastdataMoney != null" >
+        pastdata_money = #{pastdataMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="useMoney != null" >
+        use_money = #{useMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="totalIntegral != null" >
+        total_integral = #{totalIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="balanceIntegral != null" >
+        balance_integral = #{balanceIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="totalConsumeAmount != null" >
+        total_consume_amount = #{totalConsumeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="avgConsumeAmount != null" >
+        avg_consume_amount = #{avgConsumeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="lastConsumeTime != null" >
+        last_consume_time = #{lastConsumeTime,jdbcType=CHAR},
+      </if>
+      <if test="avgConsumeDays != null" >
+        avg_consume_days = #{avgConsumeDays,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateCharge" parameterType="java.util.Map" >
+    update member_account 
+    set total_amount = total_amount + #{chargeAmount,jdbcType=INTEGER},balance_amount = balance_amount + #{chargeAmount,jdbcType=INTEGER} 
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateGiftmoney" parameterType="java.util.Map" >
+    update member_account 
+    set total_giftmoney_amount = total_giftmoney_amount + #{totalGiftmoneyAmount,jdbcType=DECIMAL}, 
+    balance_giftmoney_amount = balance_giftmoney_amount + #{balanceGiftmoneyAmount,jdbcType=DECIMAL} 
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateAdd" parameterType="java.util.Map" >
+    update member_account 
+    set balance_amount = balance_amount + #{chargeAmount,jdbcType=INTEGER},
+    total_amount = total_amount + #{chargeAmount,jdbcType=INTEGER}
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateDecrease" parameterType="java.util.Map" >
+    update member_account 
+    set balance_amount = balance_amount - #{chargeAmount,jdbcType=INTEGER}
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateMemberCashier" parameterType="java.util.Map" >
+  	update member_account
+  	<set>
+  		<if test="usedBalanceAmount != null and usedBalanceAmount > 0">
+	  		balance_amount = balance_amount - #{usedBalanceAmount,jdbcType=DECIMAL},
+	  		use_money = use_money + #{usedBalanceAmount,jdbcType=DECIMAL},
+  		</if>
+  		<if test="memberIntegral != null">
+	  		total_integral = total_integral + #{memberIntegral,jdbcType=INTEGER},
+	  		balance_integral = balance_integral + #{memberIntegral,jdbcType=INTEGER},
+  		</if>
+  		<if test="consumeCount != null">
+	  		consume_count = consume_count + #{consumeCount,jdbcType=INTEGER},
+		</if>
+		<if test="avgConsumeAmount != null">
+  			avg_consume_amount = #{avgConsumeAmount,jdbcType=DECIMAL},
+  		</if>
+  		<if test="totalConsumeAmount != null">
+  			total_consume_amount = #{totalConsumeAmount,jdbcType=DECIMAL},
+  		</if>
+  		<if test="avgConsumerAmount != null">
+  			avg_consume_amount = #{avgConsumerAmount,jdbcType=DECIMAL},
+  		</if>
+  		<if test="currDate != null">
+  			last_consume_time = #{currDate,jdbcType=CHAR},
+  		</if>
+  		<if test="avgConsumeDays != null">
+	  		avg_consume_days = #{avgConsumeDays,jdbcType=INTEGER}
+  		</if>
+  	</set>
+  	WHERE account_id = #{accountId,jdbcType=INTEGER} and balance_amount >= #{usedBalanceAmount,jdbcType=DECIMAL}
+  </update>
+  
+  <update id="updateMemberGiftMoney" parameterType="java.util.Map" >
+    update member_account set 
+        balance_giftmoney_amount = balance_giftmoney_amount - #{usedGiftmoney}
+    WHERE account_id = #{accountId,jdbcType=INTEGER} and balance_giftmoney_amount >= #{usedGiftmoney}
+  </update>
+
+</mapper>

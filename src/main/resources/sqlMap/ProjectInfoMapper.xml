@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.ProjectInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.ProjectInfo" >
+    <id column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="dept_id" property="deptId" jdbcType="INTEGER" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="hairstyle_id" property="hairstyleId" jdbcType="INTEGER" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_type" property="projectType" jdbcType="INTEGER" />
+    <result column="project_image" property="projectImage" jdbcType="VARCHAR" />
+    <result column="project_desc" property="projectDesc" jdbcType="VARCHAR" />
+    <result column="project_price" property="projectPrice" jdbcType="DECIMAL" />
+    <result column="cost_price" property="costPrice" jdbcType="DECIMAL" />
+    <result column="performance_calculate" property="performanceCalculate" jdbcType="DECIMAL" />
+    <result column="appointment_price" property="appointmentPrice" jdbcType="DECIMAL" />
+    <result column="sales_count" property="salesCount" jdbcType="INTEGER" />
+    <result column="sales_people" property="salesPeople" jdbcType="INTEGER" />
+    <result column="is_appointment" property="isAppointment" jdbcType="INTEGER" />
+    <result column="is_wechat_sell" property="isWechatSell" jdbcType="INTEGER" />
+    <result column="is_disable" property="isDisable" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="is_update" property="isUpdate" jdbcType="INTEGER" />
+    <result column="is_gift_cash" property="isGiftCash" jdbcType="INTEGER" />
+    <result column="is_groupbuy" property="isGroupbuy" jdbcType="INTEGER" />
+    <result column="groupbuy_price" property="groupbuyPrice" jdbcType="DECIMAL" />
+    <result column="groupbuy_results" property="groupbuyResults" jdbcType="DECIMAL" />
+    <result column="groupbuy_platform" property="groupbuyPlatform" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+    <result column="affiliated_image" property="affiliatedImage" jdbcType="VARCHAR" />
+    <result column="highest_discount" property="highestDiscount" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="ProjectInfoMap" type="com.zefun.web.dto.ProjectInfoDto" >
+    <id column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="dept_id" property="deptId" jdbcType="INTEGER" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="hairstyle_id" property="hairstyleId" jdbcType="INTEGER" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_type" property="projectType" jdbcType="INTEGER" />
+    <result column="project_image" property="projectImage" jdbcType="VARCHAR" />
+    <result column="project_desc" property="projectDesc" jdbcType="VARCHAR" />
+    <result column="project_price" property="projectPrice" jdbcType="DECIMAL" />
+    <result column="cost_price" property="costPrice" jdbcType="DECIMAL" />
+    <result column="performance_calculate" property="performanceCalculate" jdbcType="DECIMAL" />
+    <result column="appointment_price" property="appointmentPrice" jdbcType="DECIMAL" />
+    <result column="sales_count" property="salesCount" jdbcType="INTEGER" />
+    <result column="sales_people" property="salesPeople" jdbcType="INTEGER" />
+    <result column="is_appointment" property="isAppointment" jdbcType="INTEGER" />
+    <result column="is_wechat_sell" property="isWechatSell" jdbcType="INTEGER" />
+    <result column="is_disable" property="isDisable" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="is_update" property="isUpdate" jdbcType="INTEGER" />
+    <result column="is_gift_cash" property="isGiftCash" jdbcType="INTEGER" />
+    <result column="is_groupbuy" property="isGroupbuy" jdbcType="INTEGER" />
+    <result column="groupbuy_price" property="groupbuyPrice" jdbcType="DECIMAL" />
+    <result column="groupbuy_results" property="groupbuyResults" jdbcType="DECIMAL" />
+    <result column="groupbuy_platform" property="groupbuyPlatform" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="affiliated_image" property="affiliatedImage" jdbcType="VARCHAR" />
+    <result column="highest_discount" property="highestDiscount" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <!-- 部门项目基础数据对象 -->
+  <resultMap id="DeptProjectResultMap" type="com.zefun.web.dto.DeptProjectBaseDto">
+    <id column="dept_id" property="deptId" jdbcType="INTEGER" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <association property="projectCategoryList" column="dept_id" select="selectProjectCategoryByDeptId" />
+  </resultMap>
+  <resultMap id="DeptCategoryResultMap" type="com.zefun.web.dto.ProjectCategoryBaseDto">
+    <id column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <association property="projectList" column="category_id" select="selectProjectBaseByCategoryId" />
+  </resultMap>
+  
+  <!-- 部门轮牌基础数据对象 -->
+  <resultMap id="DeptMahjongResultMap" type="com.zefun.web.dto.DeptMahjongDto">
+    <id column="dept_id" property="deptId" jdbcType="INTEGER" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <association property="mahjongLevelList" column="dept_id" select="selectMahjongLevelByDeptId" />
+  </resultMap>
+  <resultMap id="MahjongLevelResultMap" type="com.zefun.web.dto.MahjongLevelDto">
+    <id column="shift_mahjong_id" property="shiftMahjongId" jdbcType="INTEGER" />
+    <result column="shift_mahjong_name" property="shiftMahjongName" jdbcType="VARCHAR" />
+    <association property="employeeLevelList" column="shift_mahjong_id" select="selectEmployeeLevelBaseByMahjongId" />
+  </resultMap>
+  
+  <!-- 项目详情(带预约员工)数据对象 -->
+  <resultMap id="ProjectAppointResultMap" type="com.zefun.web.dto.ProjectAppointDto">
+    <id column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_image" property="projectImage" jdbcType="VARCHAR" />
+    <result column="project_desc" property="projectDesc" jdbcType="VARCHAR" />
+    <result column="project_price" property="projectPrice" jdbcType="DECIMAL" />
+    <result column="appointment_price" property="appointmentPrice" jdbcType="DECIMAL" />
+    <result column="sales_count" property="salesCount" jdbcType="INTEGER" />
+    <result column="sales_people" property="salesPeople" jdbcType="INTEGER" />
+    <result column="affiliated_image" property="affiliatedImage" jdbcType="VARCHAR" />
+    <result column="project_step_id" property="projectStepId" jdbcType="INTEGER" />
+    <result column="shift_mahjong_id" property="shiftMahjongId" jdbcType="INTEGER" />
+    <result column="project_step_order" property="projectStepOrder" jdbcType="INTEGER" />
+    <association property="employeeList" column="{projectId=project_id,shiftMahjongId=shift_mahjong_id}" select="selectEmployeeListByStepId" />
+  </resultMap>
+  
+  <!-- 项目步骤 -->
+  <resultMap id="ProjectMahjongProjectStepResultMap" type="com.zefun.web.dto.ProjectMahjongProjectStepDto">
+    <id column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_image" property="projectImage" jdbcType="VARCHAR" />
+    <result column="project_price" property="projectPrice" jdbcType="DECIMAL" />
+    <association property="shiftStepDtoList" column="{projectId=project_Id}" select="selectShiftStepListByProjectId" />
+  </resultMap>
+  
+  <resultMap id="ShiftStepResultMap" type="com.zefun.web.dto.ShiftStepDto">
+    <id column="shift_mahjong_id" property="shiftMahjongId" jdbcType="INTEGER" />
+    <result column="shift_mahjong_name" property="shiftMahjongName" jdbcType="VARCHAR" />
+    <result column="project_step_id" property="projectStepId" jdbcType="INTEGER" />
+    <result column="project_step_name" property="projectStepName" jdbcType="VARCHAR" />
+    <result column="is_disable" property="isDisable" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <association property="shiftMahjongEmployeeList" column="{projectId=project_id, shiftMahjongId=shift_mahjong_id}" select="com.zefun.web.mapper.ShiftMahjongEmployeeMapper.selectByShiftMahjongProjectId" />
+  </resultMap>
+  
+  <select id="selectByProjectId" resultMap="ProjectMahjongProjectStepResultMap" parameterType="java.lang.Integer" >
+    select 
+    project_id, project_name, project_image, project_price
+    from project_info
+    where project_id = #{projectId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectShiftStepListByProjectId" resultMap="ShiftStepResultMap" parameterType="java.util.Map">
+    select 
+        ps.project_step_id, 
+        ps.project_step_name, 
+        ps.is_disable, 
+        ps.project_id,
+        sm.shift_mahjong_id, 
+        sm.shift_mahjong_name
+    from project_step ps
+    left join shift_mahjong sm
+    on ps.shift_mahjong_id = sm.shift_mahjong_id
+    where ps.project_id = #{projectId} and ps.is_deleted = 0 order by ps.project_step_order
+  </select>
+  
+  <sql id="Base_Column_List" >
+    project_id, parent_id, store_id, dept_id, category_id, hairstyle_id, project_name, project_type, project_image, project_desc, 
+    project_price, cost_price, performance_calculate, appointment_price, sales_count, sales_people, is_appointment, is_wechat_sell, is_disable, 
+    is_deleted, is_update, is_gift_cash, is_groupbuy, groupbuy_price, groupbuy_results, groupbuy_platform, create_time, update_time, last_operator_id,affiliated_image, highest_discount
+  </sql>
+  
+  <!-- 根据项目标识查询项目信息，包括可预约的员工 -->
+  <select id="selectProjectAppointByProjectId" resultMap="ProjectAppointResultMap" parameterType="java.lang.Integer">
+    select 
+        pi.project_id, 
+        pi.project_name, 
+        pi.project_image, 
+        pi.project_desc, 
+        pi.project_price, 
+        pi.appointment_price, 
+        pi.sales_count, 
+        pi.sales_people, 
+        pi.affiliated_image,
+        ps.project_step_id,
+        ps.shift_mahjong_id,
+        ps.project_step_order
+    from project_info pi
+    left join project_step ps
+    on ps.project_id = pi.project_id 
+    where pi.project_id = #{projectId,jdbcType=INTEGER} and pi.is_deleted = 0 and ps.is_deleted= 0 and ps.is_disable = 1 limit 0,1
+  </select>
+  <select id="selectEmployeeListByStepId" parameterType="java.util.Map" resultType="com.zefun.web.dto.EmployeeBaseDto">
+    select 
+        e.employee_id as employeeId,
+        (select level_name from employee_level where level_id = e.level_id) as levelName,
+        e.employee_code as employeeCode,
+        name,
+        head_image as headImage,
+        sex,
+        service_peoples as servicePeoples,
+        service_count as serviceCount,
+        service_score as serviceScore 
+    from employee_info e
+    where e.level_id in (
+        select level_id from project_commission where project_id = #{projectId} and is_deleted = 0 and level_id in (
+            select level_id from shift_mahjong_employee where shift_mahjong_id = #{shiftMahjongId})) and e.is_deleted = 0
+  </select>
+  
+  
+  <!-- 查询部门下的牌位信息，包括牌位下的职位信息。 开始， by 张进军 -->
+  <select id="selectDeptMahjongByDeptId" resultMap="DeptMahjongResultMap" parameterType="java.lang.Integer">
+    select dept_id, dept_name from dept_info where dept_id = #{deptId} and is_deleted = 0
+  </select>
+  <select id="selectMahjongLevelByDeptId" resultMap="MahjongLevelResultMap" parameterType="java.lang.Integer">
+    select shift_mahjong_id, shift_mahjong_name from shift_mahjong where dept_id = #{deptId}
+  </select>
+  <select id="selectEmployeeLevelBaseByMahjongId" resultType="com.zefun.web.dto.EmployeeLevelBaseDto" parameterType="java.lang.Integer">
+    select level_id as levelId, level_name as levelName from employee_level where level_id in (select level_id from shift_mahjong_employee where shift_mahjong_id = #{shift_mahjongId})
+  </select>
+  <!-- 查询部门下的牌位信息，包括牌位下的职位信息。 结束， by 张进军 -->
+  
+  <!-- 查询部门下的项目信息，包括部门信息、项目类别、项目列表。 开始， by 张进军 -->
+  <select id="selectDeptProjectByDeptId" resultMap="DeptProjectResultMap" parameterType="java.lang.Integer">
+    select dept_id, dept_name from dept_info where dept_id = #{deptId} and is_deleted = 0
+  </select>
+  <select id="selectProjectCategoryByDeptId" resultMap="DeptCategoryResultMap" parameterType="java.lang.Integer">
+    select category_id, category_name from project_category where dept_id = #{deptId} and is_deleted = 0
+  </select>
+  <select id="selectProjectBaseByCategoryId" resultType="com.zefun.web.dto.ProjectBaseDto" parameterType="java.lang.Integer">
+    select
+        project_id as projectId,
+        project_name as projectName,
+        project_image as projectImage,
+        project_desc as projectDesc,
+        project_price as projectPrice,
+        is_appointment as isAppointment,
+        appointment_price as appointmentPrice,
+        sales_count as salesCount,
+        sales_people as salesPeople
+    from project_info where category_id = #{categoryId} and is_deleted = 0 order by create_time asc
+  </select>
+  <select id="selectProjectBaseByProjectId" resultType="com.zefun.web.dto.ProjectBaseDto" parameterType="java.lang.Integer">
+    select
+        project_id as projectId,
+        project_name as projectName,
+        project_image as projectImage,
+        project_desc as projectDesc,
+        project_price as projectPrice,
+        appointment_price as appointmentPrice,
+        sales_count as salesCount,
+        sales_people as salesPeople
+    from project_info where project_id = #{projectId,jdbcType=INTEGER}
+  </select>
+  <!-- 查询部门下的项目信息，包括部门信息、项目类别、项目列表。 结束， by 张进军 -->
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from project_info
+    where project_id = #{projectId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from project_info
+    where project_id = #{projectId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.ProjectInfo" useGeneratedKeys="true" keyProperty="projectId" >
+    insert into project_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="deptId != null" >
+        dept_id,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="hairstyleId != null" >
+        hairstyle_id,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="projectType != null" >
+        project_type,
+      </if>
+      <if test="projectImage != null" >
+        project_image,
+      </if>
+      <if test="projectDesc != null" >
+        project_desc,
+      </if>
+      <if test="projectPrice != null" >
+        project_price,
+      </if>
+      <if test="costPrice != null" >
+        cost_price,
+      </if>
+      <if test="performanceCalculate != null" >
+        performance_calculate,
+      </if>
+      <if test="appointmentPrice != null" >
+        appointment_price,
+      </if>
+      <if test="salesCount != null" >
+        sales_count,
+      </if>
+      <if test="salesPeople != null" >
+        sales_people,
+      </if>
+      <if test="isAppointment != null" >
+        is_appointment,
+      </if>
+      <if test="isWechatSell != null" >
+        is_wechat_sell,
+      </if>
+      <if test="isDisable != null" >
+        is_disable,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+      <if test="isUpdate != null" >
+        is_update,
+      </if>
+      <if test="isGiftCash != null" >
+        is_gift_cash,
+      </if>
+      <if test="highestDiscount != null" >
+        highest_discount,
+      </if>
+      <if test="isGroupbuy != null" >
+        is_groupbuy,
+      </if>
+      <if test="groupbuyPrice != null" >
+        groupbuy_price,
+      </if>
+      <if test="groupbuyResults != null" >
+        groupbuy_results,
+      </if>
+      <if test="groupbuyPlatform != null" >
+        groupbuy_platform,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+      <if test="affiliatedImage != null" >
+        affiliated_image,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="deptId != null" >
+        #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="hairstyleId != null" >
+        #{hairstyleId,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null" >
+        #{projectType,jdbcType=INTEGER},
+      </if>
+      <if test="projectImage != null" >
+        #{projectImage,jdbcType=VARCHAR},
+      </if>
+      <if test="projectDesc != null" >
+        #{projectDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="projectPrice != null" >
+        #{projectPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="costPrice != null" >
+        #{costPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="performanceCalculate != null" >
+        #{performanceCalculate,jdbcType=DECIMAL},
+      </if>
+      <if test="appointmentPrice != null" >
+        #{appointmentPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="salesCount != null" >
+        #{salesCount,jdbcType=INTEGER},
+      </if>
+      <if test="salesPeople != null" >
+        #{salesPeople,jdbcType=INTEGER},
+      </if>
+      <if test="isAppointment != null" >
+        #{isAppointment,jdbcType=INTEGER},
+      </if>
+      <if test="isWechatSell != null" >
+        #{isWechatSell,jdbcType=INTEGER},
+      </if>
+      <if test="isDisable != null" >
+        #{isDisable,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="isUpdate != null" >
+        #{isUpdate,jdbcType=INTEGER},
+      </if>
+      <if test="isGiftCash != null" >
+        #{isGiftCash,jdbcType=INTEGER},
+      </if>
+      <if test="highestDiscount != null" >
+      #{highestDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="isGroupbuy != null" >
+        #{isGroupbuy,jdbcType=INTEGER},
+      </if>
+      <if test="groupbuyPrice != null" >
+         #{groupbuyPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="groupbuyResults != null" >
+         #{groupbuyResults,jdbcType=DECIMAL},
+      </if>
+      <if test="groupbuyPlatform != null" >
+         #{groupbuyPlatform,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="affiliatedImage != null" >
+       #{affiliatedImage,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.ProjectInfo" >
+    update project_info
+    <set >
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="deptId != null" >
+        dept_id = #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="hairstyleId != null" >
+        hairstyle_id = #{hairstyleId,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null" >
+        project_type = #{projectType,jdbcType=INTEGER},
+      </if>
+      <if test="projectImage != null" >
+        project_image = #{projectImage,jdbcType=VARCHAR},
+      </if>
+      <if test="projectDesc != null" >
+        project_desc = #{projectDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="projectPrice != null" >
+        project_price = #{projectPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="costPrice != null" >
+        cost_price = #{costPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="performanceCalculate != null" >
+        performance_calculate = #{performanceCalculate,jdbcType=DECIMAL},
+      </if>
+      <if test="appointmentPrice != null" >
+        appointment_price = #{appointmentPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="salesCount != null" >
+        sales_count = #{salesCount,jdbcType=INTEGER},
+      </if>
+      <if test="salesPeople != null" >
+        sales_people = #{salesPeople,jdbcType=INTEGER},
+      </if>
+      <if test="isAppointment != null" >
+        is_appointment = #{isAppointment,jdbcType=INTEGER},
+      </if>
+      <if test="isWechatSell != null" >
+        is_wechat_sell = #{isWechatSell,jdbcType=INTEGER},
+      </if>
+      <if test="isDisable != null" >
+        is_disable = #{isDisable,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="isUpdate != null" >
+        is_update = #{isUpdate,jdbcType=INTEGER},
+      </if>
+      <if test="isGiftCash != null" >
+        is_gift_cash = #{isGiftCash,jdbcType=INTEGER},
+      </if>
+      <if test="highestDiscount != null" >
+        highest_discount = #{highestDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="isGroupbuy != null" >
+        is_groupbuy = #{isGroupbuy,jdbcType=INTEGER},
+      </if>
+      <if test="groupbuyPrice != null" >
+         groupbuy_price = #{groupbuyPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="groupbuyResults != null" >
+         groupbuy_results = #{groupbuyResults,jdbcType=DECIMAL},
+      </if>
+      <if test="groupbuyPlatform != null" >
+         groupbuy_platform = #{groupbuyPlatform,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="affiliatedImage != null" >
+       affiliated_image = #{affiliatedImage,jdbcType=INTEGER},
+      </if>
+    </set>
+    where project_id = #{projectId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByProperty" parameterType="com.zefun.web.entity.ProjectInfo" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from project_info where 1 = 1 and is_deleted = 0
+      <if test="parentId != null" >
+        and parent_id = #{parentId,jdbcType=INTEGER}
+      </if>
+      <if test="storeId != null" >
+        and store_id = #{storeId,jdbcType=INTEGER}
+      </if>
+      <if test="deptId != null" >
+        and dept_id = #{deptId,jdbcType=INTEGER}
+      </if>
+      <if test="categoryId != null" >
+        and category_id = #{categoryId,jdbcType=INTEGER}
+      </if>
+      <if test="hairstyleId != null" >
+        and hairstyle_id = #{hairstyleId,jdbcType=INTEGER}
+      </if>
+      <if test="projectName != null" >
+        and project_name = #{projectName,jdbcType=VARCHAR}
+      </if>
+      <if test="projectType != null" >
+        and project_type = #{projectType,jdbcType=INTEGER}
+      </if>
+      <if test="projectImage != null" >
+        and project_image = #{projectImage,jdbcType=VARCHAR}
+      </if>
+      <if test="projectDesc != null" >
+        and project_desc = #{projectDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="projectPrice != null" >
+        and project_price = #{projectPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="costPrice != null" >
+        and cost_price = #{costPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="performanceCalculate != null" >
+        and performance_calculate = #{performanceCalculate,jdbcType=DECIMAL}
+      </if>
+      <if test="appointmentPrice != null" >
+        and appointment_price = #{appointmentPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="salesCount != null" >
+        and sales_count = #{salesCount,jdbcType=INTEGER}
+      </if>
+      <if test="salesPeople != null" >
+        and sales_people = #{salesPeople,jdbcType=INTEGER}
+      </if>
+      <if test="isAppointment != null" >
+        and is_appointment = #{isAppointment,jdbcType=INTEGER}
+      </if>
+      <if test="isWechatSell != null" >
+        and is_wechat_sell = #{isWechatSell,jdbcType=INTEGER}
+      </if>
+      <if test="isDisable != null" >
+        and is_disable = #{isDisable,jdbcType=INTEGER}
+      </if>
+      <if test="isUpdate != null" >
+        and is_update = #{isUpdate,jdbcType=INTEGER}
+      </if>
+      <if test="isGiftCash != null" >
+        and is_gift_cash = #{isGiftCash,jdbcType=INTEGER}
+      </if>
+      <if test="isGroupbuy != null" >
+        and is_groupbuy = #{isGroupbuy,jdbcType=INTEGER}
+      </if>
+      <if test="groupbuyPrice != null" >
+        and groupbuy_price = #{groupbuyPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="groupbuyResults != null" >
+        and groupbuy_results = #{groupbuyResults,jdbcType=DECIMAL}
+      </if>
+      <if test="groupbuyPlatform != null" >
+        and groupbuy_platform = #{groupbuyPlatform,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null" >
+        and create_time = #{createTime,jdbcType=CHAR}
+      </if>
+      <if test="updateTime != null" >
+        and update_time = #{updateTime,jdbcType=CHAR}
+      </if>
+      <if test="lastOperatorId != null" >
+        and last_operator_id = #{lastOperatorId,jdbcType=INTEGER}
+      </if>
+      order by sales_count desc
+  </select>
+  
+  <select id="selectProjectInfoDtoPage" parameterType="com.zefun.web.entity.Page" resultMap="ProjectInfoMap">
+  	select pi.*,pc.category_name from project_info pi 
+	left join project_category pc on pi.category_id = pc.category_id where 1 = 1 and pi.is_deleted = 0
+	  <if test="params.projectInfoDto.projectName != null" >
+        and pi.project_name like concat('%',#{params.projectInfoDto.projectName,jdbcType=VARCHAR},'%')  
+      </if>
+      <if test="params.projectInfoDto.projectType != null" >
+        and pi.project_type = #{params.projectInfoDto.projectType,jdbcType=INTEGER}
+      </if>
+      <if test="params.projectInfoDto.parentId != null" >
+        and pi.parent_id = #{params.projectInfoDto.parentId,jdbcType=INTEGER}
+      </if>
+	  <if test="params.projectInfoDto.storeId != null" >
+        and pi.store_id = #{params.projectInfoDto.storeId,jdbcType=INTEGER}
+      </if>
+      <if test="params.projectInfoDto.deptId != null" >
+        and pi.dept_id = #{params.projectInfoDto.deptId,jdbcType=INTEGER}
+      </if>
+      <if test="params.projectInfoDto.categoryId != null" >
+        and pi.category_id = #{params.projectInfoDto.categoryId,jdbcType=INTEGER}
+      </if>
+      <if test="params.projectInfoDto.hairstyleId != null" >
+        and pi.hairstyle_id = #{params.projectInfoDto.hairstyleId,jdbcType=INTEGER}
+      </if>
+      <if test="params.projectInfoDto.isWechatSell != null" >
+        and pi.is_wechat_sell = #{params.projectInfoDto.isWechatSell,jdbcType=INTEGER}
+      </if>
+      <if test="params.projectInfoDto.isDisable != null" >
+        and pi.is_disable = #{params.projectInfoDto.isDisable,jdbcType=INTEGER}
+      </if>
+      <if test="params.projectInfoDto.isGiftCash != null" >
+        and pi.is_gift_cash = #{params.projectInfoDto.isGiftCash,jdbcType=INTEGER},
+      </if>
+      <if test="params.projectInfoDto.isAppointment != null" >
+        and is_appointment = #{params.projectInfoDto.isAppointment,jdbcType=INTEGER}
+      </if>
+  </select>
+  
+  <select id="selectProjectInfoDto" parameterType="com.zefun.web.dto.ProjectInfoDto" resultMap="ProjectInfoMap">
+  	select pi.*,pc.category_name from project_info pi 
+	left join project_category pc on pi.category_id = pc.category_id where 1 = 1 and pi.is_deleted = 0
+	  <if test="projectName != null" >
+        and pi.project_name like concat('%',#{projectName,jdbcType=VARCHAR},'%')  
+      </if>
+	  <if test="storeId != null" >
+        and pi.store_id = #{storeId,jdbcType=INTEGER}
+      </if>
+      <if test="deptId != null" >
+        and pi.dept_id = #{deptId,jdbcType=INTEGER}
+      </if>
+      <if test="categoryId != null" >
+        and pi.category_id = #{categoryId,jdbcType=INTEGER}
+      </if>
+      <if test="isWechatSell != null" >
+        and pi.is_wechat_sell = #{isWechatSell,jdbcType=INTEGER}
+      </if>
+      <if test="isDisable != null" >
+        and pi.is_disable = #{isDisable,jdbcType=INTEGER}
+      </if>
+      <if test="isAppointment != null" >
+        and pi.is_appointment = #{isAppointment,jdbcType=INTEGER}
+      </if>
+  </select>
+  
+  <!-- 根据部门标识查询项目且按销售次数排序 -->
+  <select id="selectDeptIdOrder" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select * from project_info where  dept_id = #{deptId,jdbcType=INTEGER} and is_deleted = 0 order by sales_count desc limit 5
+  </select>
+  
+  <select id="selectByStoreId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from project_info
+    where store_id = #{storeId,jdbcType=INTEGER} and is_deleted = 0 
+  </select>
+  
+  <delete id="deleteByCategory" parameterType="java.lang.Integer">
+      delete from project_info
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </delete>
+</mapper>

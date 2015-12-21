@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.ShipmentRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.ShipmentRecord" >
+    <id column="record_id" property="recordId" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+    <result column="employee_name" property="employeeName" jdbcType="VARCHAR" />
+    <result column="shipment_count" property="shipmentCount" jdbcType="INTEGER" />
+    <result column="shipment_time" property="shipmentTime" jdbcType="CHAR" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="BaseResultDtoMap" type="com.zefun.web.dto.ShipmentRecordDto" >
+    <id column="record_id" property="recordId" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+    <result column="employee_name" property="employeeName" jdbcType="VARCHAR" />
+    <result column="shipment_count" property="shipmentCount" jdbcType="INTEGER" />
+    <result column="shipment_time" property="shipmentTime" jdbcType="CHAR" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
+    <result column="name" property="operatorName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    record_id, goods_id, employee_id, shipment_count, shipment_time, store_id, operator_id
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from shipment_record
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from shipment_record
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zefun.web.entity.ShipmentRecord" >
+    insert into shipment_record (record_id, goods_id, employee_id, 
+      shipment_count, shipment_time, store_id, 
+      operator_id)
+    values (#{recordId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER}, 
+      #{shipmentCount,jdbcType=INTEGER}, #{shipmentTime,jdbcType=CHAR}, #{storeId,jdbcType=INTEGER}, 
+      #{operatorId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.ShipmentRecord"  useGeneratedKeys="true" keyProperty="recordId">
+    insert into shipment_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        record_id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="employeeId != null" >
+        employee_id,
+      </if>
+      <if test="employeeName != null" >
+        employee_name,
+      </if>
+      <if test="shipmentCount != null" >
+        shipment_count,
+      </if>
+      <if test="shipmentTime != null" >
+        shipment_time,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        #{recordId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeName != null" >
+        #{employeeName,jdbcType=INTEGER},
+      </if>
+      <if test="shipmentCount != null" >
+        #{shipmentCount,jdbcType=INTEGER},
+      </if>
+      <if test="shipmentTime != null" >
+        #{shipmentTime,jdbcType=CHAR},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.ShipmentRecord" >
+    update shipment_record
+    <set >
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        employee_id = #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="shipmentCount != null" >
+        shipment_count = #{shipmentCount,jdbcType=INTEGER},
+      </if>
+      <if test="shipmentTime != null" >
+        shipment_time = #{shipmentTime,jdbcType=CHAR},
+      </if>
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.ShipmentRecord" >
+    update shipment_record
+    set goods_id = #{goodsId,jdbcType=INTEGER},
+      employee_id = #{employeeId,jdbcType=INTEGER},
+      shipment_count = #{shipmentCount,jdbcType=INTEGER},
+      shipment_time = #{shipmentTime,jdbcType=CHAR},
+      store_id = #{storeId,jdbcType=INTEGER},
+      operator_id = #{operatorId,jdbcType=INTEGER}
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </update>
+   <select id="selectByEntity" resultMap="BaseResultMap" parameterType="com.zefun.web.entity.ShipmentRecord" >
+    select 
+    <include refid="Base_Column_List" />
+    from shipment_record
+    where 1=1
+      <if test="recordId != null" >
+        and record_id = #{recordId,jdbcType=INTEGER}
+      </if>
+      <if test="goodsId != null" >
+         and goods_id = #{goodsId,jdbcType=INTEGER}
+      </if>
+      <if test="employeeId != null" >
+         and employee_id = #{employeeId,jdbcType=INTEGER}
+      </if>
+      <if test="shipmentCount != null" >
+         and shipment_count = #{shipmentCount,jdbcType=INTEGER}
+      </if>
+      <if test="storeId != null" >
+         and store_id = #{storeId,jdbcType=INTEGER}
+      </if>
+      <if test="operatorId != null" >
+         and operator_id = #{operatorId,jdbcType=INTEGER}
+      </if>
+  </select>
+  <select id="selectByPage" resultMap="BaseResultDtoMap" parameterType="com.zefun.web.entity.Page" >
+    select s.record_id, s.goods_id, s.goods_name, s.employee_id, s.employee_name, s.shipment_count, s.shipment_time, s.store_id, s.operator_id, e.name
+    from shipment_record s
+    LEFT JOIN  employee_info e ON e.employee_id = s.operator_id  
+    where 1=1
+      <if test="params.storeId != null" >
+        and s.store_id = #{params.storeId,jdbcType=INTEGER}
+      </if>
+      <if test="params.goodsName != null" >
+        and s.goods_name  LIKE CONCAT('%',#{params.goodsName},'%')
+      </if>
+  </select>
+</mapper>

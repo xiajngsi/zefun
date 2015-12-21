@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.UserAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.UserAccount" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+    <result column="pwd_salt" property="pwdSalt" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    user_id, role_id, user_name, user_pwd, pwd_salt, create_time, update_time, last_operator_id, store_id
+  </sql>
+
+  <select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from user_account
+    where user_name = #{userName} and status = 0
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from user_account
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_account
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.zefun.web.entity.UserAccount" >
+    insert into user_account(user_id,role_id,user_name,user_pwd,pwd_salt,store_id) values (#{userId},#{roleId},#{userName},#{userPwd},#{pwdSalt},#{storeId})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.UserAccount" >
+    update user_account
+    <set >
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null" >
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="pwdSalt != null" >
+        pwd_salt = #{pwdSalt,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <select id="countUserName" parameterType="com.zefun.web.entity.UserAccount" resultType="java.lang.Integer">
+  select count(0) from user_account where status=0 and user_name=#{userName}
+  <if test="userId != '' and userId != null">
+  and user_id=#{userId}
+  </if>
+  </select>
+
+  <update id="updateUserRole" parameterType="com.zefun.web.entity.UserAccount">
+  update user_account set role_id=#{roleId} where user_id=#{userId}
+  </update>
+
+  <select id="queryRoleId" parameterType="java.lang.Integer" resultType="com.zefun.web.entity.UserAccount">
+    select role_id roleId from user_account where user_id=#{userId}
+  </select>
+
+  <insert id="insertlist" parameterType="com.zefun.web.dto.EmployeeDto">
+  insert into user_account(user_id,store_id,role_id,user_name,user_pwd,pwd_salt)
+  values (#{employeeId},#{storeId},#{roleId},#{phone},#{userPwd},#{pwdSalt})
+  </insert>
+
+
+  <select id="selectSingleStoreAccount" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from user_account
+    where store_id = #{storeId,jdbcType=INTEGER} and role_id = 103
+  </select>
+    <select id="selectChainStoreAccount" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from user_account
+    where store_id = #{storeId,jdbcType=INTEGER} and role_id = 102
+  </select>
+    <select id="selectChainHQStoreAccount" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from user_account
+    where store_id = #{storeId,jdbcType=INTEGER} and role_id = 101
+  </select>
+
+    <select id="countByStoreId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    count(1)
+    from user_account
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </select>
+</mapper>

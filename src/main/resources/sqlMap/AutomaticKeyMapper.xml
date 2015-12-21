@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.AutomaticKeyMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.AutomaticKey" >
+    <id column="automatic_id" property="automaticId" jdbcType="INTEGER" />
+    <result column="automatic_key" property="automaticKey" jdbcType="VARCHAR" />
+    <result column="automatic_type" property="automaticType" jdbcType="INTEGER" />
+    <result column="automatic_text" property="automaticText" jdbcType="VARCHAR" />
+    <result column="media_id" property="mediaId" jdbcType="VARCHAR" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    automatic_id, automatic_key, automatic_type, automatic_text, media_id, store_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from automatic_key
+    where automatic_id = #{automaticId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from automatic_key
+    where automatic_id = #{automaticId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zefun.web.entity.AutomaticKey" >
+    insert into automatic_key (automatic_id, automatic_key, automatic_type, 
+      automatic_text, media_id, store_id
+      )
+    values (#{automaticId,jdbcType=INTEGER}, #{automaticKey,jdbcType=VARCHAR}, #{automaticType,jdbcType=INTEGER}, 
+      #{automaticText,jdbcType=VARCHAR}, #{mediaId,jdbcType=VARCHAR}, #{storeId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.AutomaticKey" >
+    insert into automatic_key
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="automaticId != null" >
+        automatic_id,
+      </if>
+      <if test="automaticKey != null" >
+        automatic_key,
+      </if>
+      <if test="automaticType != null" >
+        automatic_type,
+      </if>
+      <if test="automaticText != null" >
+        automatic_text,
+      </if>
+      <if test="mediaId != null" >
+        media_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="automaticId != null" >
+        #{automaticId,jdbcType=INTEGER},
+      </if>
+      <if test="automaticKey != null" >
+        #{automaticKey,jdbcType=VARCHAR},
+      </if>
+      <if test="automaticType != null" >
+        #{automaticType,jdbcType=INTEGER},
+      </if>
+      <if test="automaticText != null" >
+        #{automaticText,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaId != null" >
+        #{mediaId,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.AutomaticKey" >
+    update automatic_key
+    <set >
+      <if test="automaticKey != null" >
+        automatic_key = #{automaticKey,jdbcType=VARCHAR},
+      </if>
+      <if test="automaticType != null" >
+        automatic_type = #{automaticType,jdbcType=INTEGER},
+      </if>
+      <if test="automaticText != null" >
+        automatic_text = #{automaticText,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaId != null" >
+        media_id = #{mediaId,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where automatic_id = #{automaticId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.AutomaticKey" >
+    update automatic_key
+    set automatic_key = #{automaticKey,jdbcType=VARCHAR},
+      automatic_type = #{automaticType,jdbcType=INTEGER},
+      automatic_text = #{automaticText,jdbcType=VARCHAR},
+      media_id = #{mediaId,jdbcType=VARCHAR},
+      store_id = #{storeId,jdbcType=INTEGER}
+    where automatic_id = #{automaticId,jdbcType=INTEGER}
+  </update>
+  <select id="selectRespByKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+   select 
+    <include refid="Base_Column_List" />
+    from automatic_key t
+    where t.automatic_key = #{automaticKey,jdbcType=VARCHAR}
+  </select>
+</mapper>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.StoreAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.StoreAccount" >
+    <id column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="total_days" property="totalDays" jdbcType="INTEGER" />
+    <result column="balance_days" property="balanceDays" jdbcType="INTEGER" />
+    <result column="total_sms" property="totalSms" jdbcType="INTEGER" />
+    <result column="balance_sms" property="balanceSms" jdbcType="INTEGER" />
+    <result column="store_status" property="storeStatus" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    store_id, total_days, balance_days, total_sms, balance_sms, store_status
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from store_account
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </select>
+
+  <insert id="insert" parameterType="com.zefun.web.entity.StoreAccount" >
+    insert into store_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="totalDays != null" >
+        total_days,
+      </if>
+      <if test="balanceDays != null" >
+        balance_days,
+      </if>
+      <if test="totalSms != null" >
+        total_sms,
+      </if>
+      <if test="balanceSms != null" >
+        balance_sms,
+      </if>
+      <if test="storeStatus != null" >
+        store_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="totalDays != null" >
+        #{totalDays,jdbcType=INTEGER},
+      </if>
+      <if test="balanceDays != null" >
+        #{balanceDays,jdbcType=INTEGER},
+      </if>
+      <if test="totalSms != null" >
+        #{totalSms,jdbcType=INTEGER},
+      </if>
+      <if test="balanceSms != null" >
+        #{balanceSms,jdbcType=INTEGER},
+      </if>
+      <if test="storeStatus != null" >
+        #{storeStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.StoreAccount" >
+    update store_account
+    <set >
+      <if test="totalDays != null" >
+        total_days = #{totalDays,jdbcType=INTEGER},
+      </if>
+      <if test="balanceDays != null" >
+        balance_days = #{balanceDays,jdbcType=INTEGER},
+      </if>
+      <if test="totalSms != null" >
+        total_sms = #{totalSms,jdbcType=INTEGER},
+      </if>
+      <if test="balanceSms != null" >
+        balance_sms = #{balanceSms,jdbcType=INTEGER},
+      </if>
+      <if test="storeStatus != null" >
+        store_status = #{storeStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByStoreIds" resultMap="BaseResultMap" parameterType="java.util.List" >
+    select
+    <include refid="Base_Column_List" />
+    from store_account
+    where store_id in
+    <foreach collection="list" item="item" index="index"
+        open="(" separator="," close=")">#{item}
+    </foreach>;
+  </select>
+
+    <select id="selectByStoreIdsAndStatus" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from store_account
+    where store_id in
+    <foreach collection="storeIds" item="item" index="index"
+        open="(" separator="," close=")">#{item}
+    </foreach>
+    <!-- (#{storeIds}) -->
+    and store_status = #{status,jdbcType=INTEGER};
+  </select>
+
+    <select id="selectNormalAccountByStoreIds" resultMap="BaseResultMap" parameterType="java.util.List" >
+    select
+    <include refid="Base_Column_List" />
+    from store_account
+    where store_id in
+    <foreach collection="list" item="item" index="index"
+        open="(" separator="," close=")">#{item}
+    </foreach>
+     and (store_status = 2 or store_status = 3)
+  </select>
+
+   <select id="selectRenewAccountByStoreIds" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from store_account
+    where store_id in
+    <foreach collection="storeIds" item="item" index="index"
+        open="(" separator="," close=")">#{item}
+    </foreach>
+     and (store_status = 2 or store_status = 3) and balance_days <![CDATA[ <=]]> #{balanceDays,jdbcType=INTEGER}
+  </select>
+
+   <select id="selectOverAccountByStoreIds" resultMap="BaseResultMap" parameterType="java.util.List" >
+    select
+    <include refid="Base_Column_List" />
+    from store_account
+    where store_id in
+    <foreach collection="list" item="item" index="index"
+        open="(" separator="," close=")">#{item}
+    </foreach>
+     and store_status = 4
+  </select>
+</mapper>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.SupplierInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.SupplierInfo" >
+    <id column="supplier_id" property="supplierId" jdbcType="INTEGER" />
+    <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="supply_brand" property="supplyBrand" jdbcType="VARCHAR" />
+    <result column="supply_brand_str" property="supplyBrandStr" jdbcType="VARCHAR" />
+    <result column="supply_category" property="supplyCategory" jdbcType="VARCHAR" />
+    <result column="supply_category_str" property="supplyCategoryStr" jdbcType="VARCHAR" />
+    <result column="link_name" property="linkName" jdbcType="VARCHAR" />
+    <result column="link_phone" property="linkPhone" jdbcType="VARCHAR" />
+    <result column="thirty_sales" property="thirtySales" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    supplier_id, supplier_name, store_id, supply_brand, supply_brand_str, supply_category, supply_category_str, link_name, link_phone, thirty_sales, 
+    create_time, update_time, is_deleted, last_operator_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from supplier_info
+    where supplier_id = #{supplierId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from supplier_info
+    where supplier_id = #{supplierId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.SupplierInfo" useGeneratedKeys="true" keyProperty="supplier_id">
+    insert into supplier_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="supplierId != null" >
+        supplier_id,
+      </if>
+      <if test="supplierName != null" >
+        supplier_name,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="supplyBrand != null" >
+        supply_brand,
+      </if>
+      <if test="supplyBrandStr != null" >
+        supply_brand_str,
+      </if>
+      <if test="supplyCategory != null" >
+        supply_category,
+      </if>
+      <if test="supplyCategoryStr != null" >
+        supply_category_str,
+      </if>
+      <if test="linkName != null" >
+        link_name,
+      </if>
+      <if test="linkPhone != null" >
+        link_phone,
+      </if>
+      <if test="thirtySales != null" >
+        thirty_sales,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierName != null" >
+        #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="supplyBrand != null" >
+        #{supplyBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyBrandStr != null" >
+        #{supplyBrandStr,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyCategory != null" >
+        #{supplyCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyCategoryStr != null" >
+        #{supplyCategoryStr,jdbcType=VARCHAR},
+      </if>
+      <if test="linkName != null" >
+        #{linkName,jdbcType=VARCHAR},
+      </if>
+      <if test="linkPhone != null" >
+        #{linkPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="thirtySales != null" >
+        #{thirtySales,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.SupplierInfo" >
+    update supplier_info
+    <set >
+      <if test="supplierName != null" >
+        supplier_name = #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="supplyBrand != null" >
+        supply_brand = #{supplyBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyBrandStr != null" >
+        supply_brand_str = #{supplyBrandStr,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyCategory != null" >
+        supply_category = #{supplyCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyCategoryStr != null" >
+        supply_category_str = #{supplyCategoryStr,jdbcType=VARCHAR},
+      </if>
+      <if test="linkName != null" >
+        link_name = #{linkName,jdbcType=VARCHAR},
+      </if>
+      <if test="linkPhone != null" >
+        link_phone = #{linkPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="thirtySales != null" >
+        thirty_sales = #{thirtySales,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where supplier_id = #{supplierId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByStoreId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from supplier_info
+    where is_deleted = 0 and store_id = #{storeId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByPropertyPage" parameterType="com.zefun.web.entity.Page" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from supplier_info where 1 = 1 and is_deleted = 0 
+      <if test="params.supplierInfo.supplierName != null" >
+        and (
+	        supplier_name like concat('%',#{params.supplierInfo.supplierName,jdbcType=VARCHAR},'%') 
+	        or supply_brand_str like concat('%',#{params.supplierInfo.supplierName,jdbcType=VARCHAR},'%') 
+	        or supply_category_str like concat('%',#{params.supplierInfo.supplierName,jdbcType=VARCHAR},'%')
+        ) 
+      </if>
+      <if test="params.supplierInfo.storeId != null" >
+        and store_id = #{params.supplierInfo.storeId,jdbcType=INTEGER}
+      </if>
+      <if test="params.supplierInfo.supplyBrand != null" >
+        and supply_brand = #{params.supplierInfo.supplyBrand,jdbcType=VARCHAR}
+      </if>
+      <if test="params.supplierInfo.supplyCategory != null" >
+        and supply_category = #{params.supplierInfo.supplyCategory,jdbcType=VARCHAR}
+      </if>
+      <if test="params.supplierInfo.linkName != null" >
+        and link_name = #{params.supplierInfo.linkName,jdbcType=VARCHAR}
+      </if>
+      <if test="params.supplierInfo.linkPhone != null" >
+        and link_phone = #{params.supplierInfo.linkPhone,jdbcType=VARCHAR}
+      </if>
+      <if test="params.supplierInfo.thirtySales != null" >
+        and thirty_sales = #{params.supplierInfo.thirtySales,jdbcType=INTEGER}
+      </if>
+      <if test="params.supplierInfo.createTime != null" >
+        and create_time = #{params.supplierInfo.createTime,jdbcType=CHAR}
+      </if>
+      <if test="params.supplierInfo.updateTime != null" >
+        and update_time = #{params.supplierInfo.updateTime,jdbcType=CHAR}
+      </if>
+      <if test="params.supplierInfo.lastOperatorId != null" >
+        and last_operator_id = #{params.supplierInfo.lastOperatorId,jdbcType=INTEGER}
+      </if>
+  </select>
+  
+</mapper>

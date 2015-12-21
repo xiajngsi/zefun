@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.ShiftMahjongProjectStepMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.ShiftMahjongProjectStep" >
+    <id column="shift_mahjong_step_id" property="shiftMahjongStepId" jdbcType="INTEGER" />
+    <result column="project_step_id" property="projectStepId" jdbcType="INTEGER" />
+    <result column="detail_id" property="detailId" jdbcType="INTEGER" />
+    <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+    <result column="begin_time" property="beginTime" jdbcType="CHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="CHAR" />
+    <result column="is_assign" property="isAssign" jdbcType="INTEGER" />
+    <result column="is_designate" property="isDesignate" jdbcType="INTEGER" />
+    <result column="is_appoint" property="isAppoint" jdbcType="INTEGER" />
+    <result column="is_over" property="isOver" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <resultMap id="StepDtoResultMap" type="com.zefun.web.dto.ShiftMahjongProjectStepDto" >
+    <id column="shift_mahjong_step_id" property="shiftMahjongStepId" jdbcType="INTEGER" />
+    <result column="project_step_id" property="projectStepId" jdbcType="INTEGER" />
+    <result column="detail_id" property="detailId" jdbcType="INTEGER" />
+    <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+    <result column="begin_time" property="beginTime" jdbcType="CHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="CHAR" />
+    <result column="is_assign" property="isAssign" jdbcType="INTEGER" />
+    <result column="is_designate" property="isDesignate" jdbcType="INTEGER" />
+    <result column="is_appoint" property="isAppoint" jdbcType="INTEGER" />
+    <result column="is_over" property="isOver" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+    <association property="projectStep"  column="project_step_id" select="com.zefun.web.mapper.ProjectStepMapper.selectByPrimaryKey" />
+    <association property="orderDetail"  column="detail_id" select="com.zefun.web.mapper.OrderDetailMapper.selectByPrimaryKey" />
+  </resultMap>
+  
+  <resultMap id="DetailStepResultMap" type="com.zefun.web.dto.OrderDetailStepDto">
+    <result column="shift_mahjong_step_id" property="shiftMahjongStepId" jdbcType="INTEGER" />
+    <result column="project_step_id" property="projectStepId" jdbcType="INTEGER" />
+    <result column="project_step_name" property="projectStepName" jdbcType="VARCHAR" />
+    <result column="shiftMahjongId" property="shiftMahjongId" jdbcType="VARCHAR" />
+    <result column="shiftMahjongName" property="shiftMahjongName" jdbcType="VARCHAR" />
+    <result column="beginTime" property="beginTime" jdbcType="CHAR" />
+    <result column="finishTime" property="finishTime" jdbcType="CHAR" />
+    <result column="isAssign" property="isAssign" jdbcType="INTEGER" />
+    <result column="is_designate" property="isDesignate" jdbcType="INTEGER" />
+    <result column="isAppoint" property="isAppoint" jdbcType="INTEGER" />
+    <result column="isOver" property="isOver" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <association property="employeeInfo"  column="employeeId" select="com.zefun.web.mapper.EmployeeInfoMapper.selectBaseInfoByEmployeeId" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    shift_mahjong_step_id, project_step_id, detail_id, employee_id, begin_time, finish_time, 
+    is_assign, is_designate, is_appoint, is_over, is_deleted, create_time, update_time, last_operator_id
+  </sql>
+  
+  <select id="selectOrderStepListByDetailId" resultMap="DetailStepResultMap" parameterType="java.lang.Integer">
+    select
+        sms.shift_mahjong_step_id as shiftMahjongStepId,
+        sms.project_step_id as projectStepId,
+        ps.project_step_name as projectStepName,
+        sms.employee_id as employeeId,
+        (select shift_mahjong_id from shift_mahjong where shift_mahjong_id = (select shift_mahjong_id from project_step where project_step_id = sms.project_step_id)) shiftMahjongId,
+        (select shift_mahjong_name from shift_mahjong where shift_mahjong_id = (select shift_mahjong_id from project_step where project_step_id = sms.project_step_id)) shiftMahjongName,
+        substring(sms.begin_time, 12) as beginTime,
+        substring(sms.finish_time, 12) as finishTime,
+        sms.is_assign as isAssign,
+        sms.is_designate as isDesignate,
+        sms.is_appoint as isAppoint,
+        sms.is_over as isOver
+    from shift_mahjong_project_step sms, project_step ps 
+    where sms.detail_id = #{detailId} and sms.project_step_id = ps.project_step_id and sms.is_deleted = 0 order by sms.is_over, ps.project_step_order
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="StepDtoResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from shift_mahjong_project_step
+    where shift_mahjong_step_id = #{shiftMahjongStepId,jdbcType=INTEGER} and is_deleted = 0
+  </select>
+  
+  <select id="selectStepByDetailId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from shift_mahjong_project_step
+    where detail_id = #{detailId,jdbcType=INTEGER} and is_deleted = 0
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from shift_mahjong_project_step
+    where shift_mahjong_step_id = #{shiftMahjongStepId,jdbcType=INTEGER} and is_deleted = 0
+  </delete>
+  
+  <insert id="insert" parameterType="com.zefun.web.entity.ShiftMahjongProjectStep" >
+    insert into shift_mahjong_project_step
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="shiftMahjongStepId != null" >
+        shift_mahjong_step_id,
+      </if>
+      <if test="projectStepId != null" >
+        project_step_id,
+      </if>
+      <if test="detailId != null" >
+        detail_id,
+      </if>
+      <if test="employeeId != null" >
+        employee_id,
+      </if>
+      <if test="beginTime != null" >
+        begin_time,
+      </if>
+      <if test="finishTime != null" >
+        finish_time,
+      </if>
+      <if test="isAssign != null" >
+        is_assign,
+      </if>
+      <if test="isDesignate != null" >
+        is_designate,
+      </if>
+      <if test="isAppoint != null" >
+        is_appoint,
+      </if>
+      <if test="isOver != null" >
+        is_over,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="shiftMahjongStepId != null" >
+        #{shiftMahjongStepId,jdbcType=INTEGER},
+      </if>
+      <if test="projectStepId != null" >
+        #{projectStepId,jdbcType=INTEGER},
+      </if>
+      <if test="detailId != null" >
+        #{detailId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=CHAR},
+      </if>
+      <if test="finishTime != null" >
+        #{finishTime,jdbcType=CHAR},
+      </if>
+      <if test="isAssign != null" >
+        #{isAssign,jdbcType=INTEGER},
+      </if>
+      <if test="isDesignate != null" >
+        #{isDesignate,jdbcType=INTEGER},
+      </if>
+      <if test="isAppoint != null" >
+        #{isAppoint,jdbcType=INTEGER},
+      </if>
+      <if test="isOver != null" >
+        #{isOver,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.ShiftMahjongProjectStep" >
+    update shift_mahjong_project_step
+    <set >
+      <if test="projectStepId != null" >
+        project_step_id = #{projectStepId,jdbcType=INTEGER},
+      </if>
+      <if test="detailId != null" >
+        detail_id = #{detailId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        employee_id = #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="beginTime != null" >
+        begin_time = #{beginTime,jdbcType=CHAR},
+      </if>
+      <if test="finishTime != null" >
+        finish_time = #{finishTime,jdbcType=CHAR},
+      </if>
+      <if test="isAssign != null" >
+        is_assign =#{isAssign,jdbcType=INTEGER},
+      </if>
+      <if test="isDesignate != null" >
+        is_designate =#{isDesignate,jdbcType=INTEGER},
+      </if>
+      <if test="isAppoint != null" >
+        is_appoint = #{isAppoint,jdbcType=INTEGER},
+      </if>
+      <if test="isOver != null" >
+        is_over = #{isOver,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where shift_mahjong_step_id = #{shiftMahjongStepId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateBySpecial" parameterType="com.zefun.web.entity.ShiftMahjongProjectStep" >
+    update shift_mahjong_project_step set
+        employee_id = #{employeeId,jdbcType=INTEGER},
+        begin_time = #{beginTime,jdbcType=CHAR},
+        is_assign =#{isAssign,jdbcType=INTEGER},
+        is_designate =#{isDesignate,jdbcType=INTEGER},
+        is_appoint = #{isAppoint,jdbcType=INTEGER},
+        is_over = #{isOver,jdbcType=INTEGER},
+        update_time = #{updateTime,jdbcType=CHAR},
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER}
+    where shift_mahjong_step_id = #{shiftMahjongStepId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateLastValue" parameterType="com.zefun.web.entity.ShiftMahjongProjectStep" >
+    update shift_mahjong_project_step a, shift_mahjong_project_step b 
+    <set >
+      <if test="projectStepId != null" >
+        a.project_step_id = #{projectStepId,jdbcType=INTEGER},
+      </if>
+      <if test="detailId != null" >
+        a.detail_id = #{detailId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        a.employee_id = #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="beginTime != null" >
+        a.begin_time = #{beginTime,jdbcType=CHAR},
+      </if>
+      <if test="finishTime != null" >
+        a.finish_time = #{finishTime,jdbcType=CHAR},
+      </if>
+      <if test="isAssign != null" >
+        a.is_assign =#{isAssign,jdbcType=INTEGER},
+      </if>
+      <if test="isDesignate != null" >
+        is_designate =#{isDesignate,jdbcType=INTEGER},
+      </if>
+      <if test="isAppoint != null" >
+        a.is_appoint = #{isAppoint,jdbcType=INTEGER},
+      </if>
+      <if test="isOver != null" >
+        a.is_over = #{isOver,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        a.is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        a.create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        a.update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        a.last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where  b.shift_mahjong_step_id = #{shiftMahjongStepId,jdbcType=INTEGER} and b.detail_id = a.detail_id
+		and a.is_over = 1
+  </update>
+  
+  <select id="selectShiftMahjongStepId" resultType="java.lang.Integer" parameterType="java.util.Map" >
+      select shift_mahjong_step_id from shift_mahjong_project_step a 
+      where a.detail_id = #{detailId,jdbcType=INTEGER} and a.is_deleted = 0
+      and exists(select 1 from project_step b where b.project_step_order = #{projectStepOrder,jdbcType=INTEGER}  
+                                                   and project_id = #{projectId,jdbcType=INTEGER} and b.is_deleted = 0 and b.project_step_id = a.project_step_id)
+  </select>
+  
+  <!--  根据项目步骤标识、订单明细查询轮牌项目步骤关系 -->
+  <select id="selectShiftMahjongStep" resultMap="StepDtoResultMap" parameterType="java.util.Map" >
+      select * from shift_mahjong_project_step a where 
+      exists(select 1 from project_step b where a.project_step_id = b.project_step_id and b.project_id = #{projectId,jdbcType=INTEGER} 
+      and b.project_step_order = #{projectStepOrder,jdbcType=INTEGER} and b.is_deleted = 0) 
+      and a.detail_id = #{detailId,jdbcType=INTEGER} and a.is_deleted = 0 and a.is_over != 3
+  </select>
+  
+  <select id="selectByEmployeeId" resultMap="StepDtoResultMap" parameterType="java.lang.Integer" >
+      select * from shift_mahjong_project_step where employee_id = #{employeeId,jdbcType=INTEGER} and is_deleted = 0 and is_over in (1,2) order by is_over,create_time
+  </select>
+  
+  
+  <!-- 查询自助收银模块正在进行中的项目的工作人员详情信息 by luhwen 2015.10.21 18:00:00 -->
+  <select id="selectCashierEmployeeInfo" resultType="com.zefun.web.entity.EmployeeInfo" parameterType="java.lang.Integer" >
+  	select b.employee_id as employeeId, b.employee_code as employeeCode, b.name as name
+  	  from shift_mahjong_project_step a 
+  	  	left join employee_info b on (a.employee_id = b.employee_id)
+  	  where detail_id = #{detailId}
+  	      order by a.is_over limit 1
+  </select>
+  
+  <!--  删除没有做完的项目 -->
+  <select id="selectByIsNotOver" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from shift_mahjong_project_step
+    where detail_id = #{detailId,jdbcType=INTEGER} and is_deleted = 0 and is_over = 2
+  </select>
+  
+  <!-- 根据步骤标识查询该步骤前的没完成的步骤 (由于步骤中会出现不同的项目，该sql不能满足)-->
+  <select id="selectByNotOver" resultMap="BaseResultMap" parameterType="java.util.Map" >
+      select * from shift_mahjong_project_step a 
+      where exists(select 1 from shift_mahjong_project_step b, project_step c, project_step d
+             where b.shift_mahjong_step_id = #{shiftMahjongStepId,jdbcType=INTEGER} and a.detail_id = b.detail_id 
+             and a.project_step_id = c.project_step_id and b.project_step_id = d.project_step_id 
+             and c.project_step_order &lt; d.project_step_order and b.is_deleted = 0 and c.is_deleted = 0 and d.is_deleted = 0) 
+      and a.is_over = #{isOver,jdbcType=INTEGER} and a.is_deleted = 0 
+  </select>
+  
+  <!-- 根据轮牌项目步骤标识，查出上一个轮牌步骤 -->
+  <select id="selectShiftMahjongLastStep" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+	select * from  shift_mahjong_project_step d 
+	where  exists(select 1 from shift_mahjong_project_step a, project_step b 
+	       where a.shift_mahjong_step_id = #{shiftMahjongStepId,jdbcType=INTEGER} and a.detail_id = d.detail_id and d.is_over = 1 and b.is_deleted = 0 and a.is_deleted = 0)
+	       and d.is_deleted = 0 
+
+  </select>
+  
+  <!-- 查询当前员工指定订单 -->
+  <select id="selectAppoint" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+      select * from shift_mahjong_project_step a where a.is_over = 2 and a.is_deleted = 0 
+		and exists(select 1 from shift_mahjong_employee b, project_step c where b.shift_mahjong_employee_id = #{shiftMahjongEmployeeId,jdbcType=INTEGER}
+		and b.employees_id = a.employee_id and b.shift_mahjong_id = c.shift_mahjong_id and c.project_step_id = a.project_step_id and c.is_deleted = 0)
+  </select>
+</mapper>

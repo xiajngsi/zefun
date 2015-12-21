@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.PictureLibraryMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.PictureLibrary" >
+    <id column="picture_id" property="pictureId" jdbcType="INTEGER" />
+    <result column="picture_qiniu" property="pictureQiniu" jdbcType="VARCHAR" />
+    <result column="picture_wechat" property="pictureWechat" jdbcType="VARCHAR" />
+    <result column="thumb_media_id" property="thumbMediaId" jdbcType="VARCHAR" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    picture_id, picture_qiniu, picture_wechat, thumb_media_id, store_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from picture_library
+    where picture_id = #{pictureId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from picture_library
+    where picture_id = #{pictureId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zefun.web.entity.PictureLibrary" useGeneratedKeys="true" keyProperty="pictureId">
+    insert into picture_library (picture_id, picture_qiniu, picture_wechat, 
+      thumb_media_id, store_id)
+    values (#{pictureId,jdbcType=INTEGER}, #{pictureQiniu,jdbcType=VARCHAR}, #{pictureWechat,jdbcType=VARCHAR}, 
+      #{thumbMediaId,jdbcType=VARCHAR}, #{storeId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.PictureLibrary" >
+    insert into picture_library
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pictureId != null" >
+        picture_id,
+      </if>
+      <if test="pictureQiniu != null" >
+        picture_qiniu,
+      </if>
+      <if test="pictureWechat != null" >
+        picture_wechat,
+      </if>
+      <if test="thumbMediaId != null" >
+        thumb_media_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pictureId != null" >
+        #{pictureId,jdbcType=INTEGER},
+      </if>
+      <if test="pictureQiniu != null" >
+        #{pictureQiniu,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureWechat != null" >
+        #{pictureWechat,jdbcType=VARCHAR},
+      </if>
+      <if test="thumbMediaId != null" >
+        #{thumbMediaId,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.PictureLibrary" >
+    update picture_library
+    <set >
+      <if test="pictureQiniu != null" >
+        picture_qiniu = #{pictureQiniu,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureWechat != null" >
+        picture_wechat = #{pictureWechat,jdbcType=VARCHAR},
+      </if>
+      <if test="thumbMediaId != null" >
+        thumb_media_id = #{thumbMediaId,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where picture_id = #{pictureId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.PictureLibrary" >
+    update picture_library
+    set picture_qiniu = #{pictureQiniu,jdbcType=VARCHAR},
+      picture_wechat = #{pictureWechat,jdbcType=VARCHAR},
+      thumb_media_id = #{thumbMediaId,jdbcType=VARCHAR},
+      store_id = #{storeId,jdbcType=INTEGER}
+    where picture_id = #{pictureId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectPicturesByStoreId" parameterType="java.lang.Integer"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from picture_library
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </select>
+</mapper>

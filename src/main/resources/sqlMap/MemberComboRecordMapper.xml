@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.MemberComboRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.MemberComboRecord" >
+    <id column="record_id" property="recordId" jdbcType="INTEGER" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="combo_id" property="comboId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="detail_id" property="detailId" jdbcType="INTEGER" />
+    <result column="combo_name" property="comboName" jdbcType="VARCHAR" />
+    <result column="combo_price" property="comboPrice" jdbcType="DECIMAL" />
+    <result column="combo_image" property="comboImage" jdbcType="VARCHAR" />
+    <result column="project_amount" property="projectAmount" jdbcType="DECIMAL" />
+    <result column="project_count" property="projectCount" jdbcType="INTEGER" />
+    <result column="remaining_count" property="remainingCount" jdbcType="INTEGER" />
+    <result column="overdue_time" property="overdueTime" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <resultMap id="MemberComboResultMap" type="com.zefun.web.dto.MemberComboDto" >
+    <id column="record_id" property="recordId" jdbcType="INTEGER" />
+    <result column="combo_id" property="comboId" jdbcType="INTEGER" />
+    <result column="combo_name" property="comboName" jdbcType="VARCHAR" />
+    <result column="combo_price" property="comboPrice" jdbcType="DECIMAL" />
+    <result column="combo_image" property="comboImage" jdbcType="VARCHAR" />
+    <result column="project_amount" property="projectAmount" jdbcType="DECIMAL" />
+    <result column="project_count" property="projectCount" jdbcType="INTEGER" />
+    <result column="remaining_count" property="remainingCount" jdbcType="INTEGER" />
+    <result column="overdue_time" property="overdueTime" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <association property="projectList" column="record_id" select="com.zefun.web.mapper.MemberComboProjectMapper.selectProjectListByRecordId" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    record_id, member_id, combo_id, store_id, detail_id, combo_name, combo_price, combo_image, project_amount, 
+    project_count, remaining_count, overdue_time, create_time, is_deleted, update_time, last_operator_id
+  </sql>
+  
+  <select id="selectComboListByMemberId" resultMap="MemberComboResultMap" parameterType="java.lang.Integer">
+    select 
+        record_id, combo_id, combo_name, combo_price, combo_image, 
+        project_amount, project_count, remaining_count 
+    from member_combo_record 
+    where member_id = #{memberId} and is_deleted = 0 order by create_time desc
+  </select>
+  
+  <select id="selectComboListByDetailId" resultMap="MemberComboResultMap" parameterType="java.lang.Integer">
+    select 
+        record_id, combo_id, combo_name, combo_price, combo_image, 
+        project_amount, project_count, remaining_count 
+    from member_combo_record 
+    where detail_id = #{detailId} and is_deleted = 0
+  </select>
+  
+  
+  <select id="selectComboListByMemberIdPage" resultMap="MemberComboResultMap" parameterType="com.zefun.web.entity.Page">
+    select 
+        a.record_id, a.combo_id, a.combo_name, a.combo_price, a.combo_image, 
+        a.project_amount, a.project_count, a.remaining_count , a.overdue_time, a.create_time, 
+        (select concat(d.employee_code, '  ', d.name) FROM employee_info d where d.employee_id = a.last_operator_id and d.is_deleted = 0) as lastOperatorName, 
+        (select c.store_name FROM store_info c where c.store_id = a.store_id and c.store_status != 5) as storeName
+    from member_combo_record a
+    where a.member_id = #{params.memberId} and is_deleted = 0 order by a.create_time
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from member_combo_record
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from member_combo_record
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zefun.web.entity.MemberComboRecord" useGeneratedKeys="true" keyProperty="recordId">
+    insert into member_combo_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        record_id,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="comboId != null" >
+        combo_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="detailId != null" >
+        detail_id,
+      </if>
+      <if test="comboName != null" >
+        combo_name,
+      </if>
+      <if test="comboPrice != null" >
+        combo_price,
+      </if>
+      <if test="comboImage != null" >
+        combo_image,
+      </if>
+      <if test="projectAmount != null" >
+        project_amount,
+      </if>
+      <if test="projectCount != null" >
+        project_count,
+      </if>
+      <if test="remainingCount != null" >
+        remaining_count,
+      </if>
+      <if test="overdueTime != null" >
+        overdue_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        #{recordId,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="comboId != null" >
+        #{comboId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="detailId != null" >
+        #{detailId,jdbcType=INTEGER},
+      </if>
+      <if test="comboName != null" >
+        #{comboName,jdbcType=VARCHAR},
+      </if>
+      <if test="comboPrice != null" >
+        #{comboPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="comboImage != null" >
+        #{comboImage,jdbcType=VARCHAR},
+      </if>
+      <if test="projectAmount != null" >
+        #{projectAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="projectCount != null" >
+        #{projectCount,jdbcType=INTEGER},
+      </if>
+      <if test="remainingCount != null" >
+        #{remainingCount,jdbcType=INTEGER},
+      </if>
+      <if test="overdueTime != null" >
+        #{overdueTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.MemberComboRecord" >
+    update member_combo_record
+    <set >
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="comboId != null" >
+        combo_id = #{comboId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="detailId != null" >
+        detail_id = #{detailId,jdbcType=INTEGER},
+      </if>
+      <if test="comboName != null" >
+        combo_name = #{comboName,jdbcType=VARCHAR},
+      </if>
+      <if test="comboPrice != null" >
+        combo_price = #{comboPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="comboImage != null" >
+        combo_image = #{comboImage,jdbcType=VARCHAR},
+      </if>
+      <if test="projectAmount != null" >
+        project_amount = #{projectAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="projectCount != null" >
+        project_count = #{projectCount,jdbcType=INTEGER},
+      </if>
+      <if test="remainingCount != null" >
+        remaining_count = #{remainingCount,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </update>
+  
+  <insert id="insertSelfCashierComboByComboId" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="recordId">
+  	insert into member_combo_record
+  		(member_id, combo_id, store_id, combo_name, combo_price, combo_image,
+            project_amount, project_count, remaining_count, create_time, update_time
+  			<if test="employeeId != null">
+  			, last_operator_id
+  			</if>
+  			)
+	  select #{memberId,jdbcType=INTEGER}, combo_id, store_id, combo_name, combo_sale_price, combo_image, 
+            project_amount, project_count, project_count, sysdate(), sysdate()
+	  		<if test="employeeId != null">
+  			, #{employeeId,jdbcType=INTEGER}
+  			</if>
+	  	from combo_info
+	  	  where combo_id = #{comboId,jdbcType=INTEGER}
+  </insert>
+  
+  <update id="updateOrderComboAmount" parameterType="java.util.Map">
+  	update member_combo_record set remaining_count = remaining_count - #{comboCount,jdbcType=INTEGER}
+  		where record_id = (select detail_id from member_combo_project where detail_id = #{comboId,jdbcType=INTEGER})
+  			and remaining_count &gt; #{comboCount,jdbcType=INTEGER}
+  </update>
+    <select id="selectByComboId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from member_combo_record
+    where combo_id = #{comboId,jdbcType=INTEGER}
+  </select>
+</mapper>

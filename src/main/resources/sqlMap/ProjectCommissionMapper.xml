@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.ProjectCommissionMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.ProjectCommission" >
+    <id column="commission_id" property="commissionId" jdbcType="INTEGER" />
+    <result column="shift_mahjong_id" property="shiftMahjongId" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="level_id" property="levelId" jdbcType="INTEGER" />
+    <result column="assign_cash_type" property="assignCashType" jdbcType="INTEGER" />
+    <result column="assign_cash" property="assignCash" jdbcType="INTEGER" />
+    <result column="assign_card_type" property="assignCardType" jdbcType="INTEGER" />
+    <result column="assign_card" property="assignCard" jdbcType="INTEGER" />
+    <result column="non_assign_cash_type" property="nonAssignCashType" jdbcType="INTEGER" />
+    <result column="non_assign_cash" property="nonAssignCash" jdbcType="INTEGER" />
+    <result column="non_assign_card_type" property="nonAssignCardType" jdbcType="INTEGER" />
+    <result column="non_assign_card" property="nonAssignCard" jdbcType="INTEGER" />
+    <result column="appointment_reward_type" property="appointmentRewardType" jdbcType="INTEGER" />
+    <result column="appointment_reward" property="appointmentReward" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <resultMap id="ProjectCommissionDtoMap" type="com.zefun.web.dto.ProjectCommissionDto" >
+    <id column="commission_id" property="commissionId" jdbcType="INTEGER" />
+    <result column="shift_mahjong_id" property="shiftMahjongId" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="level_id" property="levelId" jdbcType="INTEGER" />
+    <result column="assign_cash_type" property="assignCashType" jdbcType="INTEGER" />
+    <result column="assign_cash" property="assignCash" jdbcType="INTEGER" />
+    <result column="assign_card_type" property="assignCardType" jdbcType="INTEGER" />
+    <result column="assign_card" property="assignCard" jdbcType="INTEGER" />
+    <result column="non_assign_cash_type" property="nonAssignCashType" jdbcType="INTEGER" />
+    <result column="non_assign_cash" property="nonAssignCash" jdbcType="INTEGER" />
+    <result column="non_assign_card_type" property="nonAssignCardType" jdbcType="INTEGER" />
+    <result column="non_assign_card" property="nonAssignCard" jdbcType="INTEGER" />
+    <result column="appointment_reward_type" property="appointmentRewardType" jdbcType="INTEGER" />
+    <result column="appointment_reward" property="appointmentReward" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+    <result column="level_name" property="levelName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    commission_id, shift_mahjong_id, project_id, level_id, assign_cash_type, assign_cash, assign_card_type, 
+    assign_card, non_assign_cash_type, non_assign_cash, non_assign_card_type, non_assign_card, 
+    appointment_reward_type, appointment_reward, is_deleted, create_time, update_time, last_operator_id
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from project_commission
+    where commission_id = #{commissionId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from project_commission
+    where commission_id = #{commissionId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.ProjectCommission" >
+    insert into project_commission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commissionId != null" >
+        commission_id,
+      </if>
+      <if test="shiftMahjongId != null" >
+        shift_mahjong_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="levelId != null" >
+        level_id,
+      </if>
+      <if test="assignCashType != null" >
+        assign_cash_type,
+      </if>
+      <if test="assignCash != null" >
+        assign_cash,
+      </if>
+      <if test="assignCardType != null" >
+        assign_card_type,
+      </if>
+      <if test="assignCard != null" >
+        assign_card,
+      </if>
+      <if test="nonAssignCashType != null" >
+        non_assign_cash_type,
+      </if>
+      <if test="nonAssignCash != null" >
+        non_assign_cash,
+      </if>
+      <if test="nonAssignCardType != null" >
+        non_assign_card_type,
+      </if>
+      <if test="nonAssignCard != null" >
+        non_assign_card,
+      </if>
+      <if test="appointmentRewardType != null" >
+        appointment_reward_type,
+      </if>
+      <if test="appointmentReward != null" >
+        appointment_reward,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commissionId != null" >
+        #{commissionId,jdbcType=INTEGER},
+      </if>
+      <if test="shiftMahjongId != null" >
+        #{shiftMahjongId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="levelId != null" >
+        #{levelId,jdbcType=INTEGER},
+      </if>
+      <if test="assignCashType != null" >
+        #{assignCashType,jdbcType=INTEGER},
+      </if>
+      <if test="assignCash != null" >
+        #{assignCash,jdbcType=INTEGER},
+      </if>
+      <if test="assignCardType != null" >
+        #{assignCardType,jdbcType=INTEGER},
+      </if>
+      <if test="assignCard != null" >
+        #{assignCard,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCashType != null" >
+        #{nonAssignCashType,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCash != null" >
+        #{nonAssignCash,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCardType != null" >
+        #{nonAssignCardType,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCard != null" >
+        #{nonAssignCard,jdbcType=INTEGER},
+      </if>
+      <if test="appointmentRewardType != null" >
+        #{appointmentRewardType,jdbcType=INTEGER},
+      </if>
+      <if test="appointmentReward != null" >
+        #{appointmentReward,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.ProjectCommission" >
+    update project_commission
+    <set >
+      <if test="shiftMahjongId != null" >
+        shift_mahjong_id = #{shiftMahjongId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="levelId != null" >
+        level_id = #{levelId,jdbcType=INTEGER},
+      </if>
+      <if test="assignCashType != null" >
+        assign_cash_type = #{assignCashType,jdbcType=INTEGER},
+      </if>
+      <if test="assignCash != null" >
+        assign_cash = #{assignCash,jdbcType=INTEGER},
+      </if>
+      <if test="assignCardType != null" >
+        assign_card_type = #{assignCardType,jdbcType=INTEGER},
+      </if>
+      <if test="assignCard != null" >
+        assign_card = #{assignCard,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCashType != null" >
+        non_assign_cash_type = #{nonAssignCashType,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCash != null" >
+        non_assign_cash = #{nonAssignCash,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCardType != null" >
+        non_assign_card_type = #{nonAssignCardType,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCard != null" >
+        non_assign_card = #{nonAssignCard,jdbcType=INTEGER},
+      </if>
+      <if test="appointmentRewardType != null" >
+        appointment_reward_type = #{appointmentRewardType,jdbcType=INTEGER},
+      </if>
+      <if test="appointmentReward != null" >
+        appointment_reward = #{appointmentReward,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where commission_id = #{commissionId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByProperty" parameterType="com.zefun.web.entity.ProjectCommission" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" />
+    from project_commission where 1 = 1 and is_deleted = 0 
+      <if test="shiftMahjongId != null" >
+        and shift_mahjong_id = #{shiftMahjongId,jdbcType=INTEGER}
+      </if>
+      <if test="projectId != null" >
+        and project_id = #{projectId,jdbcType=INTEGER}
+      </if>
+      <if test="levelId != null" >
+        and level_id = #{levelId,jdbcType=INTEGER}
+      </if>
+      <if test="assignCashType != null" >
+        and assign_cash_type = #{assignCashType,jdbcType=INTEGER}
+      </if>
+      <if test="assignCash != null" >
+        and assign_cash = #{assignCash,jdbcType=INTEGER}
+      </if>
+      <if test="assignCardType != null" >
+        and assign_card_type = #{assignCardType,jdbcType=INTEGER}
+      </if>
+      <if test="assignCard != null" >
+        and assign_card = #{assignCard,jdbcType=INTEGER}
+      </if>
+      <if test="nonAssignCashType != null" >
+        and non_assign_cash_type = #{nonAssignCashType,jdbcType=INTEGER}
+      </if>
+      <if test="nonAssignCash != null" >
+        and non_assign_cash = #{nonAssignCash,jdbcType=INTEGER}
+      </if>
+      <if test="nonAssignCardType != null" >
+        and non_assign_card_type = #{nonAssignCardType,jdbcType=INTEGER}
+      </if>
+      <if test="nonAssignCard != null" >
+        and non_assign_card = #{nonAssignCard,jdbcType=INTEGER}
+      </if>
+      <if test="appointmentRewardType != null" >
+        and appointment_reward_type = #{appointmentRewardType,jdbcType=INTEGER}
+      </if>
+      <if test="appointmentReward != null" >
+        and appointment_reward = #{appointmentReward,jdbcType=INTEGER}
+      </if>
+      <if test="isDeleted != null" >
+        and is_deleted = #{isDeleted,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        and create_time = #{createTime,jdbcType=CHAR}
+      </if>
+      <if test="updateTime != null" >
+        and update_time = #{updateTime,jdbcType=CHAR}
+      </if>
+      <if test="lastOperatorId != null" >
+        and last_operator_id = #{lastOperatorId,jdbcType=INTEGER}
+      </if>
+  </select>
+  
+  <insert id="insertProjectCommissionList" parameterType="java.util.List">  
+  	insert into project_commission (
+		 shift_mahjong_id, project_id, level_id, 
+		 assign_cash_type, assign_cash,
+	     assign_card_type, assign_card, 
+	     non_assign_cash_type, non_assign_cash, 
+	     non_assign_card_type, non_assign_card, 
+	     appointment_reward_type, appointment_reward, 
+	     is_deleted, create_time, update_time, last_operator_id
+	) values
+    <foreach collection="list" item="item" index="index" separator=",">  
+    	( #{item.shiftMahjongId,jdbcType=INTEGER}, #{item.projectId,jdbcType=INTEGER}, #{item.levelId,jdbcType=INTEGER},
+	      #{item.assignCashType,jdbcType=INTEGER}, #{item.assignCash,jdbcType=INTEGER}, 
+	      #{item.assignCardType,jdbcType=INTEGER}, #{item.assignCard,jdbcType=INTEGER},
+	      #{item.nonAssignCashType,jdbcType=INTEGER}, #{item.nonAssignCash,jdbcType=INTEGER},
+	      #{item.nonAssignCardType,jdbcType=INTEGER}, #{item.nonAssignCard,jdbcType=INTEGER},
+	      #{item.appointmentRewardType,jdbcType=INTEGER}, #{item.appointmentReward,jdbcType=INTEGER}, 
+	      #{item.isDeleted,jdbcType=INTEGER}, #{item.createTime,jdbcType=CHAR}, 
+	      #{item.updateTime,jdbcType=CHAR}, #{item.lastOperatorId,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+  
+  <select id="selectByProjectId" resultMap="ProjectCommissionDtoMap" parameterType="java.lang.Integer" >
+  	select pc.*,el.level_name from project_commission pc
+	left join employee_level el on pc.level_id = el.level_id
+    where pc.project_id = #{projectId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectLevelIdList" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+  	 select a.level_id from project_commission a 
+  	 where exists(
+  	               select 1 from project_step b where b.project_id = a.project_id and b.is_deleted = 0 and b.project_step_id = #{projectStepId,jdbcType=INTEGER}
+  	             ) and a.is_deleted = 0;
+  </select>
+  
+  <update id="deleteByProjectId" parameterType="java.lang.Integer">
+      update project_commission set is_deleted = 1 where project_id = #{projectId}
+  </update>
+  
+  <select id="selectByLevelIsExist" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+      <include refid="Base_Column_List" />
+    from project_commission a 
+    where a.is_deleted = 0 and a.shift_mahjong_id =  #{shiftMahjongId,jdbcType=INTEGER}
+    and a.level_id in (
+                       select 
+                          a.level_id 
+                       from employee_level b 
+                       where b.position_id in (
+						                      <foreach collection="list" open="(" separator="," close=")" item="item">
+											     #{item} 
+										      </foreach>
+									           ) and b.is_deleted = 0
+                       )
+
+  </select>
+  
+</mapper>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.EmployeeRewardMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.EmployeeReward" >
+    <id column="reward_id" property="rewardId" jdbcType="INTEGER" />
+    <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="is_reward" property="isReward" jdbcType="CHAR" />
+    <result column="number" property="number" jdbcType="DOUBLE" />
+    <result column="modifyer" property="modifyer" jdbcType="INTEGER" />
+    <result column="modifytime" property="modifytime" jdbcType="CHAR" />
+    <result column="reasons" property="reasons" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="DtoResultMap" type="com.zefun.web.dto.EmployeeRewardDto" >
+    <id column="reward_id" property="rewardId" jdbcType="INTEGER" />
+    <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="is_reward" property="isReward" jdbcType="CHAR" />
+    <result column="number" property="number" jdbcType="DOUBLE" />
+    <result column="modifyer" property="modifyer" jdbcType="INTEGER" />
+    <result column="modifytime" property="modifytime" jdbcType="CHAR" />
+    <result column="reasons" property="reasons" jdbcType="VARCHAR" />
+    <result column="count" property="count" jdbcType="INTEGER"/>
+    <result column="money" property="money" jdbcType="DOUBLE"/>
+    <result column="employee_name" property="employeeName" jdbcType="VARCHAR" />
+    <result column="employee_code" property="employeeCode" jdbcType="INTEGER"/>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    reward_id, employee_id, type, is_reward, number, modifyer, modifytime, reasons
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from employee_reward
+    where reward_id = #{rewardId,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 根据员工id和类型分组查询奖惩记录汇总 -->
+  <select id="selectCountRewardByPage" resultMap="DtoResultMap" parameterType="com.zefun.web.entity.Page">
+  	select
+		count(1) AS count,
+		sum(er.number) as money,
+		ei.name as employee_name,
+		ei.employee_code as employee_code,
+		er.*
+	from
+		employee_reward er,
+		employee_info ei
+	where
+		er.employee_id = ei.employee_id
+		and ei.store_id = ${params.storeId}
+		<if test="params.rewardType == 'BEHAVIOUR'">
+			and er.type IN (6,7,8)
+		</if>
+		<if test="params.rewardType == 'ATTENDANCE'">
+			and er.type IN (1,2,3,4,5)
+		</if>
+		<if test="params.rewardType == 'SERVICE'">
+			and er.type IN (9,10,11)
+		</if>
+		<if test="params.time != null">
+			and er.modifytime like "${params.time}%"
+		</if>
+		<if test="params.employeeName != null">
+			and ei.name like "%${params.employeeName}%"
+		</if>
+	GROUP BY
+		er.employee_id,
+		er.type 
+	ORDER BY er.employee_id
+  </select>
+  
+  <!-- 分页查询奖惩详细 -->
+  <select id="selectRewardByPage" resultMap="BaseResultMap" parameterType="com.zefun.web.entity.Page">
+  	select * from employee_reward 
+  	where employee_id = ${params.employeeId} and type = #{params.type} 
+  	<if test="params.time != null">
+  		and modifytime like "${params.time}%"
+  	</if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from employee_reward
+    where reward_id = #{rewardId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zefun.web.entity.EmployeeReward" >
+    insert into employee_reward (reward_id, employee_id, type, 
+      is_reward, number, modifyer, 
+      modifytime, reasons)
+    values (#{rewardId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
+      #{isReward,jdbcType=CHAR}, #{number,jdbcType=DOUBLE}, #{modifyer,jdbcType=INTEGER}, 
+      #{modifytime,jdbcType=CHAR}, #{reasons,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.EmployeeReward" >
+    insert into employee_reward
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rewardId != null" >
+        reward_id,
+      </if>
+      <if test="employeeId != null" >
+        employee_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="isReward != null" >
+        is_reward,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="modifyer != null" >
+        modifyer,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="reasons != null" >
+        reasons,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rewardId != null" >
+        #{rewardId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="isReward != null" >
+        #{isReward,jdbcType=CHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=DOUBLE},
+      </if>
+      <if test="modifyer != null" >
+        #{modifyer,jdbcType=INTEGER},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=CHAR},
+      </if>
+      <if test="reasons != null" >
+        #{reasons,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.EmployeeReward" >
+    update employee_reward
+    <set >
+      <if test="employeeId != null" >
+        employee_id = #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="isReward != null" >
+        is_reward = #{isReward,jdbcType=CHAR},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=DOUBLE},
+      </if>
+      <if test="modifyer != null" >
+        modifyer = #{modifyer,jdbcType=INTEGER},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime,jdbcType=CHAR},
+      </if>
+      <if test="reasons != null" >
+        reasons = #{reasons,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where reward_id = #{rewardId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.EmployeeReward" >
+    update employee_reward
+    set employee_id = #{employeeId,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      is_reward = #{isReward,jdbcType=CHAR},
+      number = #{number,jdbcType=DOUBLE},
+      modifyer = #{modifyer,jdbcType=INTEGER},
+      modifytime = #{modifytime,jdbcType=CHAR},
+      reasons = #{reasons,jdbcType=VARCHAR}
+    where reward_id = #{rewardId,jdbcType=INTEGER}
+  </update>
+</mapper>

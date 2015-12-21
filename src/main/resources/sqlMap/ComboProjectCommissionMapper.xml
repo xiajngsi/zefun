@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.ComboProjectCommissionMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.ComboProjectCommission" >
+    <id column="commission_id" property="commissionId" jdbcType="INTEGER" />
+    <result column="combo_id" property="comboId" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="level_id" property="levelId" jdbcType="INTEGER" />
+    <result column="assign_cash_type" property="assignCashType" jdbcType="INTEGER" />
+    <result column="assign_cash" property="assignCash" jdbcType="INTEGER" />
+    <result column="assign_card_type" property="assignCardType" jdbcType="INTEGER" />
+    <result column="assign_card" property="assignCard" jdbcType="INTEGER" />
+    <result column="non_assign_cash_type" property="nonAssignCashType" jdbcType="INTEGER" />
+    <result column="non_assign_cash" property="nonAssignCash" jdbcType="INTEGER" />
+    <result column="non_assign_card_type" property="nonAssignCardType" jdbcType="INTEGER" />
+    <result column="non_assign_card" property="nonAssignCard" jdbcType="INTEGER" />
+    <result column="appointment_reward_type" property="appointmentRewardType" jdbcType="INTEGER" />
+    <result column="appointment_reward" property="appointmentReward" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ComboProjectCommissionDtoMap" type="com.zefun.web.dto.ComboProjectCommissionDto" >
+    <id column="commission_id" property="commissionId" jdbcType="INTEGER" />
+    <result column="combo_id" property="comboId" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="level_id" property="levelId" jdbcType="INTEGER" />
+    <result column="assign_cash_type" property="assignCashType" jdbcType="INTEGER" />
+    <result column="assign_cash" property="assignCash" jdbcType="INTEGER" />
+    <result column="assign_card_type" property="assignCardType" jdbcType="INTEGER" />
+    <result column="assign_card" property="assignCard" jdbcType="INTEGER" />
+    <result column="non_assign_cash_type" property="nonAssignCashType" jdbcType="INTEGER" />
+    <result column="non_assign_cash" property="nonAssignCash" jdbcType="INTEGER" />
+    <result column="non_assign_card_type" property="nonAssignCardType" jdbcType="INTEGER" />
+    <result column="non_assign_card" property="nonAssignCard" jdbcType="INTEGER" />
+    <result column="appointment_reward_type" property="appointmentRewardType" jdbcType="INTEGER" />
+    <result column="appointment_reward" property="appointmentReward" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+    <result column="level_name" property="levelName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    commission_id, combo_id, project_id, level_id, assign_cash_type, assign_cash, assign_card_type, 
+    assign_card, non_assign_cash_type, non_assign_cash, non_assign_card_type, non_assign_card, 
+    appointment_reward_type, appointment_reward, is_deleted, create_time, update_time, 
+    last_operator_id
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from combo_project_commission
+    where commission_id = #{commissionId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from combo_project_commission
+    where commission_id = #{commissionId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.ComboProjectCommission" >
+    insert into combo_project_commission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commissionId != null" >
+        commission_id,
+      </if>
+      <if test="comboId != null" >
+        combo_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="levelId != null" >
+        level_id,
+      </if>
+      <if test="assignCashType != null" >
+        assign_cash_type,
+      </if>
+      <if test="assignCash != null" >
+        assign_cash,
+      </if>
+      <if test="assignCardType != null" >
+        assign_card_type,
+      </if>
+      <if test="assignCard != null" >
+        assign_card,
+      </if>
+      <if test="nonAssignCashType != null" >
+        non_assign_cash_type,
+      </if>
+      <if test="nonAssignCash != null" >
+        non_assign_cash,
+      </if>
+      <if test="nonAssignCardType != null" >
+        non_assign_card_type,
+      </if>
+      <if test="nonAssignCard != null" >
+        non_assign_card,
+      </if>
+      <if test="appointmentRewardType != null" >
+        appointment_reward_type,
+      </if>
+      <if test="appointmentReward != null" >
+        appointment_reward,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commissionId != null" >
+        #{commissionId,jdbcType=INTEGER},
+      </if>
+      <if test="comboId != null" >
+        #{comboId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="levelId != null" >
+        #{levelId,jdbcType=INTEGER},
+      </if>
+      <if test="assignCashType != null" >
+        #{assignCashType,jdbcType=INTEGER},
+      </if>
+      <if test="assignCash != null" >
+        #{assignCash,jdbcType=INTEGER},
+      </if>
+      <if test="assignCardType != null" >
+        #{assignCardType,jdbcType=INTEGER},
+      </if>
+      <if test="assignCard != null" >
+        #{assignCard,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCashType != null" >
+        #{nonAssignCashType,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCash != null" >
+        #{nonAssignCash,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCardType != null" >
+        #{nonAssignCardType,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCard != null" >
+        #{nonAssignCard,jdbcType=INTEGER},
+      </if>
+      <if test="appointmentRewardType != null" >
+        #{appointmentRewardType,jdbcType=INTEGER},
+      </if>
+      <if test="appointmentReward != null" >
+        #{appointmentReward,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.ComboProjectCommission" >
+    update combo_project_commission
+    <set >
+      <if test="comboId != null" >
+        combo_id = #{comboId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="levelId != null" >
+        level_id = #{levelId,jdbcType=INTEGER},
+      </if>
+      <if test="assignCashType != null" >
+        assign_cash_type = #{assignCashType,jdbcType=INTEGER},
+      </if>
+      <if test="assignCash != null" >
+        assign_cash = #{assignCash,jdbcType=INTEGER},
+      </if>
+      <if test="assignCardType != null" >
+        assign_card_type = #{assignCardType,jdbcType=INTEGER},
+      </if>
+      <if test="assignCard != null" >
+        assign_card = #{assignCard,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCashType != null" >
+        non_assign_cash_type = #{nonAssignCashType,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCash != null" >
+        non_assign_cash = #{nonAssignCash,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCardType != null" >
+        non_assign_card_type = #{nonAssignCardType,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCard != null" >
+        non_assign_card = #{nonAssignCard,jdbcType=INTEGER},
+      </if>
+      <if test="appointmentRewardType != null" >
+        appointment_reward_type = #{appointmentRewardType,jdbcType=INTEGER},
+      </if>
+      <if test="appointmentReward != null" >
+        appointment_reward = #{appointmentReward,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where combo_id = #{comboId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByProperty" resultMap="ComboProjectCommissionDtoMap" parameterType="com.zefun.web.entity.ComboProjectCommission" >
+    select cpc.*,el.level_name from combo_project_commission cpc
+	left join employee_level el on cpc.level_id = el.level_id
+	where 1=1
+      <if test="comboId != null" >
+        and cpc.combo_id = #{comboId,jdbcType=INTEGER}
+      </if>
+      <if test="projectId != null" >
+        and cpc.project_id = #{projectId,jdbcType=INTEGER}
+      </if>
+      <if test="levelId != null" >
+        and cpc.level_id = #{levelId,jdbcType=INTEGER}
+      </if>
+  </select>
+  
+  <insert id="insertBatch" parameterType="java.util.List">
+  	insert into combo_project_commission 
+  	(commission_id, combo_id, project_id, level_id, assign_cash_type, assign_cash, assign_card_type, 
+    assign_card, non_assign_cash_type, non_assign_cash, non_assign_card_type, non_assign_card, 
+    appointment_reward_type, appointment_reward, is_deleted, create_time, update_time, 
+    last_operator_id)
+    values 
+    <foreach collection="list" item="item" index="index" separator=",">
+    	( #{item.commissionId,jdbcType=INTEGER}, #{item.comboId,jdbcType=INTEGER},#{item.projectId,jdbcType=INTEGER}, 
+    	  #{item.levelId,jdbcType=INTEGER}, #{item.assignCashType,jdbcType=INTEGER}, #{item.assignCash,jdbcType=INTEGER},
+	      #{item.assignCardType,jdbcType=INTEGER}, #{item.assignCard,jdbcType=INTEGER}, #{item.nonAssignCashType,jdbcType=INTEGER},
+	      #{item.nonAssignCash,jdbcType=INTEGER}, #{item.nonAssignCardType,jdbcType=INTEGER}, #{item.nonAssignCard,jdbcType=INTEGER},
+	      #{item.appointmentRewardType,jdbcType=INTEGER}, #{item.appointmentReward,jdbcType=INTEGER}, #{item.isDeleted,jdbcType=INTEGER},
+	      #{item.createTime,jdbcType=CHAR}, #{item.updateTime,jdbcType=CHAR}, #{item.lastOperatorId,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+  
+  <update id="updateBatch"  parameterType="java.util.List">  
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+        update combo_project_commission
+        <set >
+	      <if test="item.comboId != null" >
+	        combo_id = #{item.comboId,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.projectId != null" >
+	        project_id = #{item.projectId,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.levelId != null" >
+	        level_id = #{item.levelId,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.assignCashType != null" >
+	        assign_cash_type = #{item.assignCashType,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.assignCash != null" >
+	        assign_cash = #{item.assignCash,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.assignCardType != null" >
+	        assign_card_type = #{item.assignCardType,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.assignCard != null" >
+	        assign_card = #{item.assignCard,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.nonAssignCashType != null" >
+	        non_assign_cash_type = #{item.nonAssignCashType,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.nonAssignCash != null" >
+	        non_assign_cash = #{item.nonAssignCash,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.nonAssignCardType != null" >
+	        non_assign_card_type = #{item.nonAssignCardType,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.nonAssignCard != null" >
+	        non_assign_card = #{item.nonAssignCard,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.appointmentRewardType != null" >
+	        appointment_reward_type = #{item.appointmentRewardType,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.appointmentReward != null" >
+	        appointment_reward = #{item.appointmentReward,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.isDeleted != null" >
+	        is_deleted = #{item.isDeleted,jdbcType=INTEGER},
+	      </if>
+	      <if test="item.createTime != null" >
+	        create_time = #{item.createTime,jdbcType=CHAR},
+	      </if>
+	      <if test="item.updateTime != null" >
+	        update_time = #{item.updateTime,jdbcType=CHAR},
+	      </if>
+	      <if test="item.lastOperatorId != null" >
+	        last_operator_id = #{item.lastOperatorId,jdbcType=INTEGER},
+	      </if>
+	    </set>
+    	where commission_id = #{item.commissionId,jdbcType=INTEGER}
+    </foreach>      
+</update>
+ <delete id="deleteByComboId" parameterType="java.lang.Integer">
+ delete from combo_project_commission where combo_id = #{comboId,jdbcType=INTEGER}
+ </delete> 
+ <resultMap type="com.zefun.web.dto.ComboInfoProjectCommissionDto" id="comboInfoProjectCommissionDtoResult">
+    <result column="combo_id" property="comboId" jdbcType="INTEGER" />
+    <result column="combo_name" property="comboName" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="combo_desc" property="comboDesc" jdbcType="VARCHAR" />
+    <result column="dept_id" property="deptId" jdbcType="INTEGER" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <result column="combo_image" property="comboImage" jdbcType="VARCHAR" />
+    <result column="start_date" property="startDate" jdbcType="VARCHAR" />
+    <result column="end_date" property="endDate" jdbcType="VARCHAR" />
+    <result column="valid_date" property="validDate" jdbcType="VARCHAR" />
+    <result column="project_amount" property="projectAmount" jdbcType="DECIMAL" />
+    <result column="non_assign_card" property="nonAssignCard" jdbcType="DECIMAL" />
+    <result column="commission_type" property="commissionType" jdbcType="INTEGER" />
+    <result column="cash_commission" property="cashCommission" jdbcType="INTEGER" />
+    <result column="combo_performance_cal" property="comboPerformanceCal" jdbcType="DECIMAL" />
+    <result column="royalty_rate" property="royaltyRate" jdbcType="DECIMAL" />
+    <result column="card_commission" property="cardCommission" jdbcType="INTEGER" />
+    <result column="project_price" property="projectPrice" jdbcType="DECIMAL" />
+    <result column="project_count" property="projectCount" jdbcType="INTEGER" />
+    <association property="comboProjectCommissionDtos" column="{combo_id=combo_id,project_id=project_id}"  select="selectSecount"></association>
+ </resultMap>
+ <resultMap type="com.zefun.web.dto.ComboProjectCommissionDto" id="selectSecountMap" >
+    <id column="commission_id" property="commissionId" jdbcType="INTEGER" />
+    <result column="combo_id" property="comboId" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="level_id" property="levelId" jdbcType="INTEGER" />
+    <result column="assign_cash_type" property="assignCashType" jdbcType="INTEGER" />
+    <result column="assign_cash" property="assignCash" jdbcType="INTEGER" />
+    <result column="assign_card_type" property="assignCardType" jdbcType="INTEGER" />
+    <result column="assign_card" property="assignCard" jdbcType="INTEGER" />
+    <result column="non_assign_cash_type" property="nonAssignCashType" jdbcType="INTEGER" />
+    <result column="non_assign_cash" property="nonAssignCash" jdbcType="INTEGER" />
+    <result column="non_assign_card_type" property="nonAssignCardType" jdbcType="INTEGER" />
+    <result column="non_assign_card" property="nonAssignCard" jdbcType="INTEGER" />
+    <result column="appointment_reward_type" property="appointmentRewardType" jdbcType="INTEGER" />
+    <result column="appointment_reward" property="appointmentReward" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+    <result column="level_name" property="levelName" jdbcType="VARCHAR" />
+ </resultMap>
+ <select id="selectByCommissionId" parameterType="java.lang.Integer" resultMap="comboInfoProjectCommissionDtoResult">
+	 SELECT i.combo_id,i.combo_name,i.combo_desc,
+		i.start_date,i.end_date,i.valid_date,i.combo_image,
+		i.project_amount,i.combo_sale_price,i.commission_type,
+		i.cash_commission,i.card_commission,p.project_Count,
+		p.combo_performance_cal,p.royalty_rate,i.dept_id,d.dept_name,
+		p.project_id,p.project_name,p.project_price
+		FROM  combo_info i,combo_project p,dept_info d WHERE 1=1
+		AND i.combo_id = p.combo_id
+		AND i.dept_id = d.dept_id
+		AND i.combo_id = #{comboId,jdbcType=INTEGER}
+		AND i.is_deleted = 0
+ </select>
+ <select id="selectSecount" resultMap="selectSecountMap" resultType="java.util.Map">
+ SELECT c.*,e.level_name FROM combo_project_commission c,employee_level e WHERE c.combo_id = #{combo_id,jdbcType=INTEGER} 
+   AND c.project_id = #{project_id,jdbcType=INTEGER}
+   AND c.level_id = e.level_id
+ </select>
+</mapper>

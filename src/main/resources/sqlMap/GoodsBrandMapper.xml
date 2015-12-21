@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.GoodsBrandMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.GoodsBrand" >
+    <id column="brand_id" property="brandId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="BaseResultDtoMap" type="com.zefun.web.dto.GoodsBrandDto" >
+    <id column="brand_id" property="brandId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+    <result column="name" property="employeeName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    brand_id, store_id, brand_name, create_time, update_time, last_operator_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods_brand
+    where brand_id = #{brandId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from goods_brand
+    where brand_id = #{brandId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.GoodsBrand" useGeneratedKeys="true" keyProperty="brandId">
+    insert into goods_brand
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="brandId != null" >
+        brand_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="brandName != null" >
+        brand_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="brandId != null" >
+        #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="brandName != null" >
+        #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.GoodsBrand" >
+    update goods_brand
+    <set >
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="brandName != null" >
+        brand_name = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where brand_id = #{brandId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByStoreId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods_brand
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </select>
+  
+  <resultMap type="com.zefun.web.dto.GoodsBrandDto" id="GoodsBrandResultMap">
+        <result column="brandId" property="brandId" />
+        <result column="brandName" property="brandName" />
+        <association property="goodsInfo" column="{brandId=brandId,storeId=storeId}" select="getGoodsInfoAss" />
+  </resultMap>
+  <select id="getGoodsBrandInfo" resultMap="GoodsBrandResultMap" parameterType="java.lang.Integer" >
+    	select brand_id brandId,brand_name brandName, store_id storeId from goods_brand where store_id = #{storeId}
+  </select>
+   <select id="getGoodsInfoAss" resultType="com.zefun.web.entity.GoodsInfo" parameterType="java.util.Map">
+    	select goods_id goodsId,goods_name goodsName from goods_info where is_deleted = 0 and  brand_id = #{brandId} and store_id = #{storeId}
+  </select>
+  <select id="selectByPage" parameterType="com.zefun.web.entity.Page" resultMap="BaseResultDtoMap">
+    select  s.brand_id, s.store_id, s.brand_name, s.create_time, s.update_time, s.last_operator_id, e.name
+      from goods_brand s
+      LEFT JOIN  employee_info e ON e.employee_id = s.last_operator_id  
+      where 1=1
+    <if test="params.storeId != null" >
+      and s.store_id = #{params.storeId,jdbcType=INTEGER}
+    </if>
+    <if test="params.brandId != null" >
+      and s.brand_id = #{params.brandId,jdbcType=INTEGER}
+    </if>
+    <if test="params.brandName != null" >
+      and s.brand_name  LIKE CONCAT('%',#{params.brandName},'%')
+    </if>
+</select>
+</mapper>

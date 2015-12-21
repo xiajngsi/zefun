@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+	xmlns:aop="http://www.springframework.org/schema/aop"   
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd    
+	http://www.springframework.org/schema/rabbit 
+	http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
+
+	<!-- 连接服务配置  -->
+	<rabbit:connection-factory id="connectionFactory" 
+		host="${rabbitmq.host}" port="${rabbitmq.port}" 
+		username="${rabbitmq.username}" password="${rabbitmq.password}"/>  
+  	
+  	<!-- 创建rabbitAdmin 代理类 -->
+    <rabbit:admin connection-factory="connectionFactory" />  
+    
+    <!-- 创建rabbitTemplate 消息模板类 --> 
+    <rabbit:template id="rabbitTemplate"  connection-factory="connectionFactory"/>
+    
+</beans>

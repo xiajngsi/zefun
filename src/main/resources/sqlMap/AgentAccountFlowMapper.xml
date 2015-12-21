@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.AgentAccountFlowMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.AgentAccountFlow" >
+    <id column="flow_id" property="flowId" jdbcType="INTEGER" />
+    <result column="agent_id" property="agentId" jdbcType="INTEGER" />
+    <result column="flow_type" property="flowType" jdbcType="INTEGER" />
+    <result column="flow_amount" property="flowAmount" jdbcType="INTEGER" />
+    <result column="flow_desc" property="flowDesc" jdbcType="VARCHAR" />
+    <result column="flow_time" property="flowTime" jdbcType="CHAR" />
+  </resultMap>
+
+    <resultMap id="IncomeResultMap" type="com.zefun.web.dto.IncomeDto" >
+    <result column="smonth" property="time" jdbcType="VARCHAR" />
+    <result column="income" property="income" jdbcType="DOUBLE" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    flow_id, agent_id, flow_type, flow_amount, flow_desc, flow_time
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from agent_account_flow
+    where flow_id = #{flowId,jdbcType=INTEGER}
+  </select>
+
+  <insert id="insert" parameterType="com.zefun.web.entity.AgentAccountFlow" >
+    insert into agent_account_flow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="flowId != null" >
+        flow_id,
+      </if>
+      <if test="agentId != null" >
+        agent_id,
+      </if>
+      <if test="flowType != null" >
+        flow_type,
+      </if>
+      <if test="flowAmount != null" >
+        flow_amount,
+      </if>
+      <if test="flowDesc != null" >
+        flow_desc,
+      </if>
+      <if test="flowTime != null" >
+        flow_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="flowId != null" >
+        #{flowId,jdbcType=INTEGER},
+      </if>
+      <if test="agentId != null" >
+        #{agentId,jdbcType=INTEGER},
+      </if>
+      <if test="flowType != null" >
+        #{flowType,jdbcType=INTEGER},
+      </if>
+      <if test="flowAmount != null" >
+        #{flowAmount,jdbcType=INTEGER},
+      </if>
+      <if test="flowDesc != null" >
+        #{flowDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="flowTime != null" >
+        #{flowTime,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.AgentAccountFlow" >
+    update agent_account_flow
+    <set >
+      <if test="agentId != null" >
+        agent_id = #{agentId,jdbcType=INTEGER},
+      </if>
+      <if test="flowType != null" >
+        flow_type = #{flowType,jdbcType=INTEGER},
+      </if>
+      <if test="flowAmount != null" >
+        flow_amount = #{flowAmount,jdbcType=INTEGER},
+      </if>
+      <if test="flowDesc != null" >
+        flow_desc = #{flowDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="flowTime != null" >
+        flow_time = #{flowTime,jdbcType=CHAR},
+      </if>
+    </set>
+    where flow_id = #{flowId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectMonthIncomeByTime" resultMap="IncomeResultMap" parameterType="java.util.Map" >
+    SELECT a.smonth as smonth, sum(a.income) / 10000 as income from (
+
+    select
+    left(flow_time,7) as smonth,
+    sum(if(flow_type = 2, flow_amount, flow_amount * -1)) as income
+    from agent_account_flow where agent_id = #{agentId,jdbcType=INTEGER} and flow_time <![CDATA[ >= ]]> #{begin,jdbcType=CHAR} and flow_time <![CDATA[ < ]]> #{end,jdbcType=CHAR}
+    GROUP BY smonth
+
+    ) as a
+    GROUP BY smonth order by smonth
+  </select>
+</mapper>

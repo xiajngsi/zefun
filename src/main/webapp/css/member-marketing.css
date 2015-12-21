@@ -1,0 +1,19 @@
+/*会员卡类模态框内的“折”和二级input设置*/
+.second-word {
+  display: inline-block;
+}
+.more-condition-table {
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+.more-condition-table td {
+  border-top: 0px;
+}
+.more-toolbar .table-toolbar {
+  float: left;
+}
+.more-toolbar .table-toolbar .show-more {
+  display: inline-block;
+  cursor: pointer;
+}
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm1lbWJlci1tYXJrZXRpbmcubGVzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBQ0E7RUFDRSxxQkFBQTs7QUFHRjtFQUNFLHNCQUFBO0VBQ0EsZ0JBQUE7O0FBRkYscUJBR0U7RUFDRSxlQUFBOztBQUlKLGFBQWM7RUFDWixXQUFBOztBQURGLGFBQWMsZUFFWjtFQUNFLHFCQUFBO0VBQ0EsZUFBQSIsImZpbGUiOiJ1bmRlZmluZWQifQ== */

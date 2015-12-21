@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.MemberErrorScMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.MemberErrorSc" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="level_num" property="levelNum" jdbcType="VARCHAR" />
+    <result column="level_name" property="levelName" jdbcType="VARCHAR" />
+    <result column="level_type" property="levelType" jdbcType="VARCHAR" />
+    <result column="discount" property="discount" jdbcType="DECIMAL" />
+    <result column="total_amount" property="totalAmount" jdbcType="DECIMAL" />
+    <result column="total_consume_amount" property="totalConsumeAmount" jdbcType="DECIMAL" />
+    <result column="balance_amount" property="balanceAmount" jdbcType="DECIMAL" />
+    <result column="send_amount" property="sendAmount" jdbcType="DECIMAL" />
+    <result column="aead_time" property="aeadTime" jdbcType="VARCHAR" />
+    <result column="consume_amount" property="consumeAmount" jdbcType="INTEGER" />
+    <result column="balance_integral" property="balanceIntegral" jdbcType="INTEGER" />
+    <result column="last_consume_time" property="lastConsumeTime" jdbcType="VARCHAR" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, phone, name, sex, create_time, level_num, level_name, level_type, discount, total_amount, 
+    total_consume_amount, balance_amount, send_amount, aead_time, consume_amount, balance_integral, 
+    last_consume_time, store_id, is_deleted, last_operator_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from member_error_sc
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from member_error_sc
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zefun.web.entity.MemberErrorSc" >
+    insert into member_error_sc (id, phone, name, 
+      sex, create_time, level_num, 
+      level_name, level_type, discount, 
+      total_amount, total_consume_amount, balance_amount, 
+      send_amount, aead_time, consume_amount, 
+      balance_integral, last_consume_time, store_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{levelNum,jdbcType=VARCHAR}, 
+      #{levelName,jdbcType=VARCHAR}, #{levelType,jdbcType=VARCHAR}, #{discount,jdbcType=DECIMAL}, 
+      #{totalAmount,jdbcType=DECIMAL}, #{totalConsumeAmount,jdbcType=DECIMAL}, #{balanceAmount,jdbcType=DECIMAL}, 
+      #{sendAmount,jdbcType=DECIMAL}, #{aeadTime,jdbcType=VARCHAR}, #{consumeAmount,jdbcType=INTEGER}, 
+      #{balanceIntegral,jdbcType=INTEGER}, #{lastConsumeTime,jdbcType=VARCHAR}, #{storeId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.MemberErrorSc" >
+    insert into member_error_sc
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="levelNum != null" >
+        level_num,
+      </if>
+      <if test="levelName != null" >
+        level_name,
+      </if>
+      <if test="levelType != null" >
+        level_type,
+      </if>
+      <if test="discount != null" >
+        discount,
+      </if>
+      <if test="totalAmount != null" >
+        total_amount,
+      </if>
+      <if test="totalConsumeAmount != null" >
+        total_consume_amount,
+      </if>
+      <if test="balanceAmount != null" >
+        balance_amount,
+      </if>
+      <if test="sendAmount != null" >
+        send_amount,
+      </if>
+      <if test="aeadTime != null" >
+        aead_time,
+      </if>
+      <if test="consumeAmount != null" >
+        consume_amount,
+      </if>
+      <if test="balanceIntegral != null" >
+        balance_integral,
+      </if>
+      <if test="lastConsumeTime != null" >
+        last_consume_time,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="levelNum != null" >
+        #{levelNum,jdbcType=VARCHAR},
+      </if>
+      <if test="levelName != null" >
+        #{levelName,jdbcType=VARCHAR},
+      </if>
+      <if test="levelType != null" >
+        #{levelType,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalAmount != null" >
+        #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalConsumeAmount != null" >
+        #{totalConsumeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceAmount != null" >
+        #{balanceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="sendAmount != null" >
+        #{sendAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="aeadTime != null" >
+        #{aeadTime,jdbcType=VARCHAR},
+      </if>
+      <if test="consumeAmount != null" >
+        #{consumeAmount,jdbcType=INTEGER},
+      </if>
+      <if test="balanceIntegral != null" >
+        #{balanceIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="lastConsumeTime != null" >
+        #{lastConsumeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.MemberErrorSc" >
+    update member_error_sc
+    <set >
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="levelNum != null" >
+        level_num = #{levelNum,jdbcType=VARCHAR},
+      </if>
+      <if test="levelName != null" >
+        level_name = #{levelName,jdbcType=VARCHAR},
+      </if>
+      <if test="levelType != null" >
+        level_type = #{levelType,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null" >
+        discount = #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalAmount != null" >
+        total_amount = #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalConsumeAmount != null" >
+        total_consume_amount = #{totalConsumeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceAmount != null" >
+        balance_amount = #{balanceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="sendAmount != null" >
+        send_amount = #{sendAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="aeadTime != null" >
+        aead_time = #{aeadTime,jdbcType=VARCHAR},
+      </if>
+      <if test="consumeAmount != null" >
+        consume_amount = #{consumeAmount,jdbcType=INTEGER},
+      </if>
+      <if test="balanceIntegral != null" >
+        balance_integral = #{balanceIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="lastConsumeTime != null" >
+        last_consume_time = #{lastConsumeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.MemberErrorSc" >
+    update member_error_sc
+    set phone = #{phone,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      level_num = #{levelNum,jdbcType=VARCHAR},
+      level_name = #{levelName,jdbcType=VARCHAR},
+      level_type = #{levelType,jdbcType=VARCHAR},
+      discount = #{discount,jdbcType=DECIMAL},
+      total_amount = #{totalAmount,jdbcType=DECIMAL},
+      total_consume_amount = #{totalConsumeAmount,jdbcType=DECIMAL},
+      balance_amount = #{balanceAmount,jdbcType=DECIMAL},
+      send_amount = #{sendAmount,jdbcType=DECIMAL},
+      aead_time = #{aeadTime,jdbcType=VARCHAR},
+      consume_amount = #{consumeAmount,jdbcType=INTEGER},
+      balance_integral = #{balanceIntegral,jdbcType=INTEGER},
+      last_consume_time = #{lastConsumeTime,jdbcType=VARCHAR},
+      store_id = #{storeId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <insert id="insertList" parameterType="java.util.List" useGeneratedKeys="true">
+      insert into member_error_sc (id, phone, name, sex, create_time, level_num, level_name, level_type, discount, total_amount, 
+	  total_consume_amount, balance_amount, send_amount, aead_time, consume_amount, balance_integral, 
+	  last_consume_time, store_id)
+      values 
+      <foreach collection="list" item="item" index="index" separator="," >
+        (#{item.id},#{item.phone},#{item.name},#{item.sex},#{item.createTime},#{item.levelNum},#{item.levelName},#{item.levelType},#{item.discount},
+        #{item.totalAmount},#{item.totalConsumeAmount},#{item.balanceAmount},#{item.sendAmount},#{item.aeadTime},#{item.consumeAmount},
+        #{item.balanceIntegral},#{item.lastConsumeTime},#{item.storeId}
+        )  
+     </foreach>  
+  </insert>
+  
+  <select id="selectByPage" parameterType="com.zefun.web.entity.Page" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from member_error_sc
+    where store_id = #{params.storeId}
+    <if test="params.content!=null">
+    and (
+    name LIKE CONCAT('%',#{params.content},'%')
+    or phone LIKE CONCAT('%',#{params.content},'%')
+    or level_num LIKE CONCAT('%',#{params.content},'%')
+    )
+    </if>
+    and is_deleted = 0
+  </select>
+  
+  <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from member_error_sc
+    where store_id = #{storeId}
+  </select>
+  
+  <select id="selectStoreMemberAmount" parameterType="java.lang.Integer" resultType="com.zefun.web.entity.MemberErrorSc">
+  select sum(balance_amount) as balanceAmounts from member_error_sc where store_id = #{storeId} and is_deleted = 0
+  </select>
+</mapper>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.StoreSettingMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.StoreSetting" >
+    <id column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="gift_clean_days" property="giftCleanDays" jdbcType="INTEGER" />
+    <result column="integral_clean_days" property="integralCleanDays" jdbcType="INTEGER" />
+    <result column="cost_commission_type" property="costCommissionType" jdbcType="INTEGER" />
+    <result column="gift_commission_rate" property="giftCommissionRate" jdbcType="INTEGER" />
+    <result column="coupon_commission_rate" property="couponCommissionRate" jdbcType="INTEGER" />
+    <result column="appoint_remind_hour" property="appointRemindHour" jdbcType="INTEGER" />
+    <result column="speech_type" property="speechType" jdbcType="INTEGER" />
+    <result column="speech_turn_use" property="speechTurnUse" jdbcType="INTEGER" />
+    <result column="first_follow_coupon" property="firstFollowCoupon" jdbcType="VARCHAR" />
+    <result column="first_follow_gift" property="firstFollowGift" jdbcType="INTEGER" />
+    <result column="sms_fee" property="smsFee" jdbcType="INTEGER" />
+    <result column="last_facilitator" property="lastFacilitator" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    store_id, gift_clean_days, integral_clean_days, cost_commission_type, gift_commission_rate, 
+    coupon_commission_rate, appoint_remind_hour, speech_type, speech_turn_use, first_follow_coupon, 
+    first_follow_gift, sms_fee, last_facilitator
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from store_setting
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from store_setting
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zefun.web.entity.StoreSetting" >
+    insert into store_setting
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="giftCleanDays != null" >
+        gift_clean_days,
+      </if>
+      <if test="integralCleanDays != null" >
+        integral_clean_days,
+      </if>
+      <if test="costCommissionType != null" >
+        cost_commission_type,
+      </if>
+      <if test="giftCommissionRate != null" >
+        gift_commission_rate,
+      </if>
+      <if test="couponCommissionRate != null" >
+        coupon_commission_rate,
+      </if>
+      <if test="appointRemindHour != null" >
+        appoint_remind_hour,
+      </if>
+      <if test="speechType != null" >
+        speech_type,
+      </if>
+      <if test="speechTurnUse != null" >
+        speech_turn_use,
+      </if>
+      <if test="firstFollowCoupon != null" >
+        first_follow_coupon,
+      </if>
+      <if test="firstFollowGift != null" >
+        first_follow_gift,
+      </if>
+      <if test="smsFee != null" >
+        sms_fee,
+      </if>
+      <if test="lastFacilitator != null" >
+        last_facilitator,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="giftCleanDays != null" >
+        #{giftCleanDays,jdbcType=INTEGER},
+      </if>
+      <if test="integralCleanDays != null" >
+        #{integralCleanDays,jdbcType=INTEGER},
+      </if>
+      <if test="costCommissionType != null" >
+        #{costCommissionType,jdbcType=INTEGER},
+      </if>
+      <if test="giftCommissionRate != null" >
+        #{giftCommissionRate,jdbcType=INTEGER},
+      </if>
+      <if test="couponCommissionRate != null" >
+        #{couponCommissionRate,jdbcType=INTEGER},
+      </if>
+      <if test="appointRemindHour != null" >
+        #{appointRemindHour,jdbcType=INTEGER},
+      </if>
+      <if test="speechType != null" >
+        #{speechType,jdbcType=INTEGER},
+      </if>
+      <if test="speechTurnUse != null" >
+        #{speechTurnUse,jdbcType=INTEGER},
+      </if>
+      <if test="firstFollowCoupon != null" >
+        #{firstFollowCoupon,jdbcType=VARCHAR},
+      </if>
+      <if test="firstFollowGift != null" >
+        #{firstFollowGift,jdbcType=INTEGER},
+      </if>
+      <if test="smsFee != null" >
+        #{smsFee,jdbcType=INTEGER},
+      </if>
+      <if test="lastFacilitator != null" >
+        #{lastFacilitator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.StoreSetting" >
+    update store_setting
+    <set >
+      <if test="giftCleanDays != null" >
+        gift_clean_days = #{giftCleanDays,jdbcType=INTEGER},
+      </if>
+      <if test="integralCleanDays != null" >
+        integral_clean_days = #{integralCleanDays,jdbcType=INTEGER},
+      </if>
+      <if test="costCommissionType != null" >
+        cost_commission_type = #{costCommissionType,jdbcType=INTEGER},
+      </if>
+      <if test="giftCommissionRate != null" >
+        gift_commission_rate = #{giftCommissionRate,jdbcType=INTEGER},
+      </if>
+      <if test="couponCommissionRate != null" >
+        coupon_commission_rate = #{couponCommissionRate,jdbcType=INTEGER},
+      </if>
+      <if test="appointRemindHour != null" >
+        appoint_remind_hour = #{appointRemindHour,jdbcType=INTEGER},
+      </if>
+      <if test="speechType != null" >
+        speech_type = #{speechType,jdbcType=INTEGER},
+      </if>
+      <if test="speechTurnUse != null" >
+        speech_turn_use = #{speechTurnUse,jdbcType=INTEGER},
+      </if>
+      <if test="firstFollowCoupon != null" >
+        first_follow_coupon = #{firstFollowCoupon,jdbcType=VARCHAR},
+      </if>
+      <if test="firstFollowGift != null" >
+        first_follow_gift = #{firstFollowGift,jdbcType=INTEGER},
+      </if>
+      <if test="smsFee != null" >
+        sms_fee = #{smsFee,jdbcType=INTEGER},
+      </if>
+      <if test="lastFacilitator != null" >
+        last_facilitator = #{lastFacilitator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </update>
+</mapper>

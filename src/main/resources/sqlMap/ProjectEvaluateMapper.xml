@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.ProjectEvaluateMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.ProjectEvaluate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="detail_id" property="detailId" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="evaluate_rate" property="evaluateRate" jdbcType="INTEGER" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="CHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, member_id, order_id, detail_id, project_id, evaluate_rate, comment, time
+  </sql>
+  
+  <select id="selectListByProjectId" parameterType="java.lang.Integer" resultType="com.zefun.web.dto.ProjectEvaluateDto">
+    select 
+        member_id as memberId, project_id as projectId, evaluate_rate as evaluateRate, comment, time
+    from project_evaluate
+    where project_id = #{projectId}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from project_evaluate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from project_evaluate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertBatch" useGeneratedKeys="true" parameterType="java.util.List">  
+    insert into project_evaluate (member_id, order_id, detail_id, project_id, evaluate_rate, comment, time)   
+    values  
+    <foreach collection="list" item="item" index="index" separator="," >  
+        (#{item.memberId},#{item.orderId}, #{item.detailId},#{item.projectId},#{item.evaluateRate},#{item.comment}, #{item.time})  
+    </foreach>  
+  </insert> 
+  
+  <insert id="insert" parameterType="com.zefun.web.entity.ProjectEvaluate" >
+    insert into project_evaluate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="detailId != null" >
+        detail_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="evaluateRate != null" >
+        evaluate_rate,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="detailId != null" >
+        #{detailId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateRate != null" >
+        #{evaluateRate,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.ProjectEvaluate" >
+    update project_evaluate
+    <set >
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="detailId != null" >
+        detail_id = #{detailId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateRate != null" >
+        evaluate_rate = #{evaluateRate,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

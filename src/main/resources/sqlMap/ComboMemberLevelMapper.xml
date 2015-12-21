@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.ComboMemberLevelMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.ComboMemberLevel" >
+    <id column="combo_id" property="comboId" jdbcType="INTEGER" />
+    <id column="level_id" property="levelId" jdbcType="INTEGER" />
+    <result column="valid_date" property="validDate" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    combo_id, level_id, valid_date, create_time, update_time, last_operator_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.zefun.web.entity.ComboMemberLevel" >
+    select 
+    <include refid="Base_Column_List" />
+    from combo_member_level
+    where combo_id = #{comboId,jdbcType=INTEGER}
+      and level_id = #{levelId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.zefun.web.entity.ComboMemberLevel" >
+    delete from combo_member_level
+    where combo_id = #{comboId,jdbcType=INTEGER}
+      and level_id = #{levelId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.ComboMemberLevel" >
+    insert into combo_member_level
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="comboId != null" >
+        combo_id,
+      </if>
+      <if test="levelId != null" >
+        level_id,
+      </if>
+      <if test="validDate != null" >
+        valid_date,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="comboId != null" >
+        #{comboId,jdbcType=INTEGER},
+      </if>
+      <if test="levelId != null" >
+        #{levelId,jdbcType=INTEGER},
+      </if>
+      <if test="validDate != null" >
+        #{validDate,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.ComboMemberLevel" >
+    update combo_member_level
+    <set >
+      <if test="validDate != null" >
+        valid_date = #{validDate,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where combo_id = #{comboId,jdbcType=INTEGER}
+      and level_id = #{levelId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByComboId" resultMap="BaseResultMap" parameterType="com.zefun.web.entity.ComboMemberLevel" >
+    select 
+    <include refid="Base_Column_List" />
+    from combo_member_level
+    where combo_id = #{comboId,jdbcType=INTEGER}
+  </select>
+  
+</mapper>

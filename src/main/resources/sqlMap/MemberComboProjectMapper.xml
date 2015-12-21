@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.MemberComboProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.MemberComboProject" >
+    <id column="detail_id" property="detailId" jdbcType="INTEGER" />
+    <result column="combo_id" property="comboId" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_price" property="projectPrice" jdbcType="DECIMAL" />
+    <result column="project_image" property="projectImage" jdbcType="VARCHAR" />
+    <result column="project_count" property="projectCount" jdbcType="INTEGER" />
+    <result column="remaining_count" property="remainingCount" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    detail_id, combo_id, project_id, project_name, project_price, project_image, project_count, 
+    remaining_count, create_time, is_deleted, update_time, last_operator_id
+  </sql>
+  
+  <select id="selectPaymentOffListByMemberIdAndProjectId" resultType="com.zefun.web.dto.PaymentOffDto" parameterType="java.util.Map">
+    select 
+	    mcp.detail_id as id,
+	    1 as type,
+	    mcr.combo_name as name, 
+	    mcp.remaining_count as count,
+	    mcp.remaining_count as balance,
+	    mcp.project_price as amount
+	from member_combo_record mcr
+	left join member_combo_project mcp
+	on mcp.record_id = mcr.record_id
+    where mcr.member_id = #{memberId} and mcp.project_id = #{projectId} and mcp.remaining_count > 0 and mcp.is_deleted = 0
+  </select>
+  
+  <select id="selectProjectListByRecordId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from member_combo_project where record_id = #{recordId} and is_deleted = 0
+  </select>
+  
+  <select id="selectComboIdByDetailId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select combo_id from member_combo_project where detail_id = #{detailId}
+  </select>
+  
+  <insert id="insert" parameterType="com.zefun.web.entity.MemberComboProject" >
+    insert into member_combo_project
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="comboId != null" >
+        combo_id,
+      </if>
+      <if test="recordId != null" >
+        record_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="projectPrice != null" >
+        project_price,
+      </if>
+      <if test="projectImage != null" >
+        project_image,
+      </if>
+      <if test="projectCount != null" >
+        project_count,
+      </if>
+      <if test="remainingCount != null" >
+        remaining_count,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="comboId != null" >
+        #{comboId,jdbcType=INTEGER},
+      </if>
+      <if test="recordId != null" >
+        #{recordId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectPrice != null" >
+        #{projectPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="projectImage != null" >
+        #{projectImage,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCount != null" >
+        #{projectCount,jdbcType=INTEGER},
+      </if>
+      <if test="remainingCount != null" >
+        #{remainingCount,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.MemberComboProject" >
+    update member_combo_project
+    <set >
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectPrice != null" >
+        project_price = #{projectPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="projectImage != null" >
+        project_image = #{projectImage,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCount != null" >
+        project_count = #{projectCount,jdbcType=INTEGER},
+      </if>
+      <if test="remainingCount != null" >
+        remaining_count = #{remainingCount,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where combo_id = #{comboId,jdbcType=INTEGER}
+      and project_id = #{projectId,jdbcType=INTEGER}
+  </update>
+  
+  <insert id="insertSelfCashierComboDetail" parameterType="java.util.Map">
+  	insert into member_combo_project
+  		(record_id, combo_id, project_id, project_name, project_price, project_image, project_count,
+  			remaining_count, create_time, update_time
+  			<if test="employeeId != null">
+  			  , last_operator_id
+  			</if>
+  			
+  			)
+	  select #{recordId,jdbcType=INTEGER}, combo_id, project_id, project_name, project_price, project_image, 
+	  	  project_count, project_count, sysdate(), sysdate()
+	  	  <if test="employeeId != null">
+  			, #{employeeId,jdbcType=INTEGER}
+ 		  </if>
+	  	from combo_project where #{comboId,jdbcType=INTEGER}
+  </insert>
+  
+  <update id="updateSelfCashierCombo" parameterType="java.util.Map">
+  	update member_combo_project set remaining_count = remaining_count - #{comboCount,jdbcType=INTEGER}, update_time = #{updateTime,jdbcType=CHAR}
+  		where detail_id = #{detailId,jdbcType=INTEGER} and remaining_count >= #{comboCount,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateAddComboNum" parameterType="java.util.Map">
+  	update member_combo_project set remaining_count = remaining_count + #{comboCount,jdbcType=INTEGER}, update_time = #{updateTime,jdbcType=CHAR}
+  		where detail_id = #{detailId,jdbcType=INTEGER} and project_count > remaining_count
+  </update>
+  
+</mapper>

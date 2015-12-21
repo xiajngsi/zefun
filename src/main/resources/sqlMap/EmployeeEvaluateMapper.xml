@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.EmployeeEvaluateMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.EmployeeEvaluate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="detail_id" property="detailId" jdbcType="INTEGER" />
+    <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+    <result column="evaluate_rate" property="evaluateRate" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, member_id, detail_id, employee_id, evaluate_rate, create_time
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from employee_evaluate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from employee_evaluate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertBatch" useGeneratedKeys="true" parameterType="java.util.List">  
+    insert into employee_evaluate (member_id, detail_id, employee_id, evaluate_rate, create_time)   
+    values  
+    <foreach collection="list" item="item" index="index" separator="," >  
+        (#{item.memberId},#{item.detailId},#{item.employeeId},#{item.evaluateRate},#{item.createTime})  
+    </foreach>  
+  </insert>  
+
+  <insert id="insert" parameterType="com.zefun.web.entity.EmployeeEvaluate" >
+    insert into employee_evaluate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="detailId != null" >
+        detail_id,
+      </if>
+      <if test="employeeId != null" >
+        employee_id,
+      </if>
+      <if test="evaluateRate != null" >
+        evaluate_rate,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="detailId != null" >
+        #{detailId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateRate != null" >
+        #{evaluateRate,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimary" parameterType="com.zefun.web.entity.EmployeeEvaluate" >
+    update employee_evaluate
+    <set >
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="detailId != null" >
+        detail_id = #{detailId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        employee_id = #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateRate != null" >
+        evaluate_rate = #{evaluateRate,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

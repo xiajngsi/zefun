@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.MemberScreeningMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.MemberScreening" >
+    <id column="screening_id" property="screeningId" jdbcType="INTEGER" />
+    <result column="screening_name" property="screeningName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="unused_balance_start" property="unusedBalanceStart" jdbcType="INTEGER" />
+    <result column="unused_balance_end" property="unusedBalanceEnd" jdbcType="INTEGER" />
+    <result column="integral_balance_start" property="integralBalanceStart" jdbcType="INTEGER" />
+    <result column="integral_balance_end" property="integralBalanceEnd" jdbcType="INTEGER" />
+    <result column="birthday_start" property="birthdayStart" jdbcType="VARCHAR" />
+    <result column="birthday_end" property="birthdayEnd" jdbcType="VARCHAR" />
+    <result column="registration_date_start" property="registrationDateStart" jdbcType="VARCHAR" />
+    <result column="registration_date_end" property="registrationDateEnd" jdbcType="VARCHAR" />
+    <result column="consumption_average_start" property="consumptionAverageStart" jdbcType="INTEGER" />
+    <result column="consumption_average_end" property="consumptionAverageEnd" jdbcType="INTEGER" />
+    <result column="cumulative_consumption_start" property="cumulativeConsumptionStart" jdbcType="INTEGER" />
+    <result column="cumulative_consumption_end" property="cumulativeConsumptionEnd" jdbcType="INTEGER" />
+    <result column="last_consume_time_start" property="lastConsumeTimeStart" jdbcType="INTEGER" />
+    <result column="last_consume_time_end" property="lastConsumeTimeEnd" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER"/>
+    <result column="branch_store_ids" property="branchStoreIds" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  
+  <resultMap id="BaseResultMapDto" type="com.zefun.web.dto.ScreeningDto" >
+	    <id column="screening_id" property="screeningId" jdbcType="INTEGER" />
+	    <result column="screening_name" property="screeningName" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="CHAR" />
+	    <result column="unused_balance_start" property="unusedBalanceStart" jdbcType="INTEGER" />
+	    <result column="unused_balance_end" property="unusedBalanceEnd" jdbcType="INTEGER" />
+	    <result column="integral_balance_start" property="integralBalanceStart" jdbcType="INTEGER" />
+	    <result column="integral_balance_end" property="integralBalanceEnd" jdbcType="INTEGER" />
+	    <result column="birthday_start" property="birthdayStart" jdbcType="VARCHAR" />
+	    <result column="birthday_end" property="birthdayEnd" jdbcType="VARCHAR" />
+	    <result column="registration_date_start" property="registrationDateStart" jdbcType="VARCHAR" />
+	    <result column="registration_date_end" property="registrationDateEnd" jdbcType="VARCHAR" />
+	    <result column="consumption_average_start" property="consumptionAverageStart" jdbcType="INTEGER" />
+	    <result column="consumption_average_end" property="consumptionAverageEnd" jdbcType="INTEGER" />
+	    <result column="cumulative_consumption_start" property="cumulativeConsumptionStart" jdbcType="INTEGER" />
+	    <result column="cumulative_consumption_end" property="cumulativeConsumptionEnd" jdbcType="INTEGER" />
+	    <result column="last_consume_time_start" property="lastConsumeTimeStart" jdbcType="INTEGER" />
+	    <result column="last_consume_time_end" property="lastConsumeTimeEnd" jdbcType="INTEGER" />
+	    <result column="store_id" property="storeId" jdbcType="INTEGER"/>
+	    <result column="branch_store_ids" property="branchStoreIds" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    screening_id, screening_name, create_time, unused_balance_start, unused_balance_end, 
+    integral_balance_start, integral_balance_end, birthday_start, birthday_end, registration_date_start, 
+    registration_date_end, consumption_average_start, consumption_average_end, cumulative_consumption_start, 
+    cumulative_consumption_end, last_consume_time_start, last_consume_time_end, store_id, branch_store_ids
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from member_screening
+    where screening_id = #{screeningId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from member_screening
+    where screening_id = #{screeningId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zefun.web.entity.MemberScreening" >
+    insert into member_screening (screening_id, screening_name, create_time, 
+      unused_balance_start, unused_balance_end, integral_balance_start, 
+      integral_balance_end, birthday_start, birthday_end, 
+      registration_date_start, registration_date_end, 
+      consumption_average_start, consumption_average_end, 
+      cumulative_consumption_start, cumulative_consumption_end,store_id
+      )
+    values (#{screeningId,jdbcType=INTEGER}, #{screeningName,jdbcType=VARCHAR}, #{createTime,jdbcType=CHAR}, 
+      #{unusedBalanceStart,jdbcType=INTEGER}, #{unusedBalanceEnd,jdbcType=INTEGER}, #{integralBalanceStart,jdbcType=INTEGER}, 
+      #{integralBalanceEnd,jdbcType=INTEGER}, #{birthdayStart,jdbcType=VARCHAR}, #{birthdayEnd,jdbcType=VARCHAR}, 
+      #{registrationDateStart,jdbcType=VARCHAR}, #{registrationDateEnd,jdbcType=VARCHAR}, 
+      #{consumptionAverageStart,jdbcType=INTEGER}, #{consumptionAverageEnd,jdbcType=INTEGER}, 
+      #{cumulativeConsumptionStart,jdbcType=INTEGER}, #{cumulativeConsumptionEnd,jdbcType=INTEGER},
+      #{storeId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.MemberScreening" >
+    insert into member_screening
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="screeningId != null" >
+        screening_id,
+      </if>
+      <if test="screeningName != null" >
+        screening_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="unusedBalanceStart != null" >
+        unused_balance_start,
+      </if>
+      <if test="unusedBalanceEnd != null" >
+        unused_balance_end,
+      </if>
+      <if test="integralBalanceStart != null" >
+        integral_balance_start,
+      </if>
+      <if test="integralBalanceEnd != null" >
+        integral_balance_end,
+      </if>
+      <if test="birthdayStart != null" >
+        birthday_start,
+      </if>
+      <if test="birthdayEnd != null" >
+        birthday_end,
+      </if>
+      <if test="registrationDateStart != null" >
+        registration_date_start,
+      </if>
+      <if test="registrationDateEnd != null" >
+        registration_date_end,
+      </if>
+      <if test="consumptionAverageStart != null" >
+        consumption_average_start,
+      </if>
+      <if test="consumptionAverageEnd != null" >
+        consumption_average_end,
+      </if>
+      <if test="cumulativeConsumptionStart != null" >
+        cumulative_consumption_start,
+      </if>
+      <if test="cumulativeConsumptionEnd != null" >
+        cumulative_consumption_end,
+      </if>
+      <if test="lastConsumeTimeStart != null" >
+        last_consume_time_start,
+      </if>
+      <if test="lastConsumeTimeEnd != null" >
+        last_consume_time_end,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="branchStoreIds != null" >
+        branch_store_ids,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="screeningId != null" >
+        #{screeningId,jdbcType=INTEGER},
+      </if>
+      <if test="screeningName != null" >
+        #{screeningName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="unusedBalanceStart != null" >
+        #{unusedBalanceStart,jdbcType=INTEGER},
+      </if>
+      <if test="unusedBalanceEnd != null" >
+        #{unusedBalanceEnd,jdbcType=INTEGER},
+      </if>
+      <if test="integralBalanceStart != null" >
+        #{integralBalanceStart,jdbcType=INTEGER},
+      </if>
+      <if test="integralBalanceEnd != null" >
+        #{integralBalanceEnd,jdbcType=INTEGER},
+      </if>
+      <if test="birthdayStart != null" >
+        #{birthdayStart,jdbcType=VARCHAR},
+      </if>
+      <if test="birthdayEnd != null" >
+        #{birthdayEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationDateStart != null" >
+        #{registrationDateStart,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationDateEnd != null" >
+        #{registrationDateEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="consumptionAverageStart != null" >
+        #{consumptionAverageStart,jdbcType=INTEGER},
+      </if>
+      <if test="consumptionAverageEnd != null" >
+        #{consumptionAverageEnd,jdbcType=INTEGER},
+      </if>
+      <if test="cumulativeConsumptionStart != null" >
+        #{cumulativeConsumptionStart,jdbcType=INTEGER},
+      </if>
+      <if test="cumulativeConsumptionEnd != null" >
+        #{cumulativeConsumptionEnd,jdbcType=INTEGER},
+      </if>
+      <if test="lastConsumeTimeStart != null" >
+        #{lastConsumeTimeStart,jdbcType=INTEGER},
+      </if>
+      <if test="lastConsumeTimeEnd != null" >
+        #{lastConsumeTimeEnd,jdbcType=INTEGER},
+      </if>
+       <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="branchStoreIds != null" >
+        #{branchStoreIds,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.MemberScreening" >
+    update member_screening
+    <set >
+      <if test="screeningName != null" >
+        screening_name = #{screeningName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="unusedBalanceStart != null" >
+        unused_balance_start = #{unusedBalanceStart,jdbcType=INTEGER},
+      </if>
+      <if test="unusedBalanceEnd != null" >
+        unused_balance_end = #{unusedBalanceEnd,jdbcType=INTEGER},
+      </if>
+      <if test="integralBalanceStart != null" >
+        integral_balance_start = #{integralBalanceStart,jdbcType=INTEGER},
+      </if>
+      <if test="integralBalanceEnd != null" >
+        integral_balance_end = #{integralBalanceEnd,jdbcType=INTEGER},
+      </if>
+      <if test="birthdayStart != null" >
+        birthday_start = #{birthdayStart,jdbcType=VARCHAR},
+      </if>
+      <if test="birthdayEnd != null" >
+        birthday_end = #{birthdayEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationDateStart != null" >
+        registration_date_start = #{registrationDateStart,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationDateEnd != null" >
+        registration_date_end = #{registrationDateEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="consumptionAverageStart != null" >
+        consumption_average_start = #{consumptionAverageStart,jdbcType=INTEGER},
+      </if>
+      <if test="consumptionAverageEnd != null" >
+        consumption_average_end = #{consumptionAverageEnd,jdbcType=INTEGER},
+      </if>
+      <if test="cumulativeConsumptionStart != null" >
+        cumulative_consumption_start = #{cumulativeConsumptionStart,jdbcType=INTEGER},
+      </if>
+      <if test="cumulativeConsumptionEnd != null" >
+        cumulative_consumption_end = #{cumulativeConsumptionEnd,jdbcType=INTEGER},
+      </if>
+    </set>
+    where screening_id = #{screeningId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.MemberScreening" >
+    update member_screening
+    set screening_name = #{screeningName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=CHAR},
+      unused_balance_start = #{unusedBalanceStart,jdbcType=INTEGER},
+      unused_balance_end = #{unusedBalanceEnd,jdbcType=INTEGER},
+      integral_balance_start = #{integralBalanceStart,jdbcType=INTEGER},
+      integral_balance_end = #{integralBalanceEnd,jdbcType=INTEGER},
+      birthday_start = #{birthdayStart,jdbcType=VARCHAR},
+      birthday_end = #{birthdayEnd,jdbcType=VARCHAR},
+      registration_date_start = #{registrationDateStart,jdbcType=VARCHAR},
+      registration_date_end = #{registrationDateEnd,jdbcType=VARCHAR},
+      consumption_average_start = #{consumptionAverageStart,jdbcType=INTEGER},
+      consumption_average_end = #{consumptionAverageEnd,jdbcType=INTEGER},
+      cumulative_consumption_start = #{cumulativeConsumptionStart,jdbcType=INTEGER},
+      cumulative_consumption_end = #{cumulativeConsumptionEnd,jdbcType=INTEGER}
+    where screening_id = #{screeningId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByStoreId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from member_screening
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectSendItemsWechatCountNotZero" parameterType="java.util.List" resultType="java.lang.Integer">
+  select account_id from member_account where account_id in 
+  	  <foreach collection="list" open="(" separator="," close=")" item="item">
+		#{item} 
+	  </foreach>
+	  and wechat_count !=0
+  </select>
+  <update id="updateWechatCountByMemberId" parameterType="java.util.List">
+  	UPDATE member_account SET wechat_count = wechat_count-1 WHERE account_id in 
+	  <foreach collection="list" open="(" separator="," close=")" item="item">
+		#{item} 
+	  </foreach>
+  </update>
+  
+  <select id="selectByDto" parameterType="java.lang.Integer" resultMap="BaseResultMapDto">
+	select 
+    <include refid="Base_Column_List" />
+    from member_screening
+    where screening_id = #{groupId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByDtos" parameterType="java.util.List" resultMap="BaseResultMapDto">
+	select 
+    <include refid="Base_Column_List" />
+    from member_screening
+    where screening_id in 
+    <foreach collection="list" item="aslist"  open="(" separator="," close=")">  
+        #{aslist}  
+    </foreach>
+  </select>
+  
+  <select id="selectDtosByStoreId" resultMap="BaseResultMapDto" parameterType="java.lang.Integer">
+  	select 
+    <include refid="Base_Column_List" />
+    from member_screening
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </select>
+  
+</mapper>

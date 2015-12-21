@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.AuthorityRequestMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.AuthorityRequest" >
+    <id column="authority_id" property="authorityId" jdbcType="INTEGER" />
+    <result column="authority_name" property="authorityName" jdbcType="VARCHAR" />
+    <result column="authority_url" property="authorityUrl" jdbcType="VARCHAR" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    authority_id, authority_name, authority_url, role_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from authority_request
+    where authority_id = #{authorityId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from authority_request
+    where authority_id = #{authorityId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zefun.web.entity.AuthorityRequest" >
+    insert into authority_request (authority_id, authority_name, authority_url, 
+      role_id)
+    values (#{authorityId,jdbcType=INTEGER}, #{authorityName,jdbcType=VARCHAR}, #{authorityUrl,jdbcType=VARCHAR}, 
+      #{roleId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.AuthorityRequest" >
+    insert into authority_request
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="authorityId != null" >
+        authority_id,
+      </if>
+      <if test="authorityName != null" >
+        authority_name,
+      </if>
+      <if test="authorityUrl != null" >
+        authority_url,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="authorityId != null" >
+        #{authorityId,jdbcType=INTEGER},
+      </if>
+      <if test="authorityName != null" >
+        #{authorityName,jdbcType=VARCHAR},
+      </if>
+      <if test="authorityUrl != null" >
+        #{authorityUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.dto.AuthorityDto" >
+    update authority_request
+    <set >
+      <if test="authorityName != null" >
+        authority_name = #{authorityName,jdbcType=VARCHAR},
+      </if>
+      <if test="authorityUrl != null" >
+        authority_url = #{authorityUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where authority_url = #{oldUrl,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.AuthorityRequest" >
+    update authority_request
+    set authority_name = #{authorityName,jdbcType=VARCHAR},
+      authority_url = #{authorityUrl,jdbcType=VARCHAR},
+      role_id = #{roleId,jdbcType=INTEGER}
+    where authority_id = #{authorityId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByUserRoleId" parameterType="java.lang.Integer" resultType="java.lang.String">
+  SELECT authority_url FROM authority_request WHERE role_id = #{roleId}
+  </select>
+  
+  <select id="selectAllRequest" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select 
+    authority_id, REPLACE(authority_name,' ','') AS authority_name, authority_url, role_id
+    from authority_request
+    where role_id = #{roleId}
+  </select>
+  <delete id="deleteByRoleId" parameterType="java.lang.Integer" >
+    delete from authority_request where role_id = #{roleId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByAuthorityUrl" parameterType="java.lang.String">
+   delete from authority_request where authority_url = #{authorityUrl,jdbcType=VARCHAR}
+  </delete>
+</mapper>

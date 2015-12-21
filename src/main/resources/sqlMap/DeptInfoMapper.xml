@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.DeptInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.DeptInfo" >
+    <id column="dept_id" property="deptId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="dept_code" property="deptCode" jdbcType="INTEGER" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <result column="operate_time" property="operateTime" jdbcType="CHAR" />
+    <result column="operate_id" property="operateId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <resultMap id="DeptInfoDtoMap" type="com.zefun.web.dto.DeptInfoDto" >
+    <id column="dept_id" property="deptId" jdbcType="INTEGER" />
+    <result column="dept_code" property="deptCode" jdbcType="INTEGER" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <association property="positionInfo"  column="dept_id" select="com.zefun.web.mapper.PositioninfoMapper.getStridePositionInfo"></association>
+    <association property="shiftMahjongList"  column="dept_id" select="com.zefun.web.mapper.ShiftMahjongMapper.selectByDeptId"></association>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    dept_id, store_id, dept_code, dept_name, operate_time, operate_id
+  </sql>
+  
+  <!-- 根据门店编号查询部门编号列表，by 张进军 -->
+  <select id="selectDeptIdByStoreId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select dept_id from dept_info where store_id = #{storeId} and is_deleted=0
+  </select>
+  <!-- 根据门店编号查询部门编号列表，业绩部门,by 张进军 -->
+  <select id="selectDeptIdByStoreIdIsResults" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select dept_id from dept_info where store_id = #{storeId} and  is_results = 1 and is_deleted = 0
+  </select>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    update  dept_info set is_deleted=1
+    where dept_id = #{deptId,jdbcType=INTEGER}
+  </update>
+  <insert id="insert" parameterType="com.zefun.web.entity.DeptInfo" useGeneratedKeys = "true" keyProperty="deptId">
+    insert into dept_info (dept_id, store_id, dept_code, 
+      dept_name,is_results, operate_time, operate_id
+      )
+    values (#{deptId,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER}, #{deptCode,jdbcType=INTEGER}, 
+      #{deptName,jdbcType=VARCHAR},#{isResults,jdbcType=INTEGER}, #{operateTime,jdbcType=CHAR}, #{operateId,jdbcType=INTEGER}
+      )
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.DeptInfo" >
+    update dept_info
+    <set >
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="deptCode != null" >
+        dept_code = #{deptCode,jdbcType=INTEGER},
+      </if>
+      <if test="deptName != null" >
+        dept_name = #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="isResults != null" >
+        is_results = #{isResults,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null" >
+        operate_time = #{operateTime,jdbcType=CHAR},
+      </if>
+      <if test="operateId != null" >
+        operate_id = #{operateId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where dept_id = #{deptId,jdbcType=INTEGER}
+  </update>
+  <!-- 查询部门下轮牌信息 -->
+  <select id="selectByshiftMahjong"  resultMap="DeptInfoDtoMap" parameterType="java.lang.Integer" >
+    select 
+    *
+    from dept_info
+    where store_id = #{storeId,jdbcType=INTEGER} and is_deleted=0 and is_results = 1
+  </select>
+  
+  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+  select count(0) from dept_info where  store_id = #{storeId} and is_deleted=0
+  <if test="deptCode != null and deptCode != ''" >
+  	and dept_code = #{deptCode}
+  </if>
+  <if test="deptName != null and deptName != ''" >
+  	and dept_code = #{deptName}
+  </if>
+  <if test="deptId != null and deptId != ''" >
+  	<![CDATA[ and dept_id <> #{deptId}]]>
+  </if>
+  </select>
+  
+  <!-- 查询岗位是否被引用 -->
+    <select id="isQuote" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    	select count(0) from position_info where dept_id=#{deptId} and is_deleted=0
+    </select>
+    
+  <select id="getDeptInfo" resultType="com.zefun.web.entity.DeptInfo" parameterType="java.lang.Integer" >
+   select dept_id deptId,dept_name deptName,dept_code deptCode,is_results isResults from dept_info 
+   where store_id=#{storeId} and is_deleted=0
+  </select>
+  
+  <select id="getDeptDetail" resultType="com.zefun.web.entity.DeptInfo" parameterType="com.zefun.web.entity.DeptInfo" >
+   select dept_id deptId,dept_name deptName,dept_code deptCode,is_results isResults from dept_info where store_id=#{storeId} and is_deleted=0
+   <if test="deptName != null and deptName != ''">
+   and dept_name=#{deptName}
+   </if>
+   <if test="deptCode != null and deptCode != ''">
+   and dept_code=#{deptCode}
+   </if>
+  </select>
+  <!-- 统计项目是否有引用部门 -->
+  <select id="countProjectDept" parameterType="java.util.Map" resultType="java.lang.Integer">
+  SELECT COUNT(0) FROM project_info where dept_id=#{deptId} and store_id=#{storeId} and is_deleted=0
+  </select>
+  
+  <!-- 统计商品是否有引用部门 -->
+  <select id="countGoodsDept" parameterType="java.util.Map" resultType="java.lang.Integer">
+  SELECT COUNT(0) FROM goods_info where dept_id=#{deptId} and store_id=#{storeId} and is_deleted=0
+  </select>
+  
+  <!-- 统计套餐是否有引用部门 -->
+  <select id="countComboDept" parameterType="java.util.Map" resultType="java.lang.Integer">
+  SELECT COUNT(0) FROM combo_info where dept_id=#{deptId} and store_id=#{storeId} and is_deleted=0
+  </select>
+  
+  <!-- 统计商品类别是否有引用部门 -->
+  <select id="countCategoryDept" parameterType="java.util.Map" resultType="java.lang.Integer">
+  SELECT COUNT(0) FROM goods_category where dept_id=#{deptId} and store_id=#{storeId} 
+  </select>
+  
+  <select id="getDeptIdAndNameByStoreId" parameterType="java.lang.Integer" resultType="com.zefun.web.entity.DeptInfo">
+  	select dept_id as deptId, dept_name as deptName from dept_info
+    where store_id = #{storeId,jdbcType=INTEGER} and is_deleted=0 and is_results = 1
+  </select>
+    
+    <select id="getResultsDeptInfo" resultType="com.zefun.web.entity.DeptInfo" parameterType="java.lang.Integer" >
+   select dept_id deptId,dept_name deptName,dept_code deptCode,is_results isResults from dept_info 
+   where store_id=#{storeId} and is_deleted=0 and is_results=1
+  </select>
+</mapper>

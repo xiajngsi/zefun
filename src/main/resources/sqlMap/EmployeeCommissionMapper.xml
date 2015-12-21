@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.EmployeeCommissionMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.EmployeeCommission" >
+    <id column="commission_id" property="commissionId" jdbcType="INTEGER" />
+    <result column="detail_id" property="detailId" jdbcType="INTEGER" />
+    <result column="shift_mahjong_step_id" property="shiftMahjongStepId" jdbcType="INTEGER" />
+    <result column="order_type" property="orderType" jdbcType="DECIMAL" />
+    <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+    <result column="commission_calculate" property="commissionCalculate" jdbcType="DECIMAL" />
+    <result column="commission_amount" property="commissionAmount" jdbcType="DECIMAL" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="charge_time" property="chargeTime" jdbcType="CHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    commission_id, detail_id, shift_mahjong_step_id, order_type, employee_id, commission_calculate, commission_amount, is_deleted,
+    charge_time
+  </sql>
+  
+  <select id="selectServiceDayMoneyByEmployeeId" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+    select IFNULL(sum(commission_calculate), 0) from employee_commission where employee_id = #{employeeId} and to_days(charge_time) = to_days(now()) and is_deleted = 0
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from employee_commission
+    where commission_id = #{commissionId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from employee_commission
+    where commission_id = #{commissionId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zefun.web.entity.EmployeeCommission" >
+    insert into employee_commission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commissionId != null" >
+        commission_id,
+      </if>
+      <if test="detailId != null" >
+        detail_id,
+      </if>
+      <if test="shiftMahjongStepId != null" >
+        shift_mahjong_step_id,
+      </if>
+      <if test="orderType != null" >
+        order_type,
+      </if>
+      <if test="employeeId != null" >
+        employee_id,
+      </if>
+      <if test="commissionCalculate != null" >
+        commission_calculate,
+      </if>
+      <if test="commissionAmount != null" >
+        commission_amount,
+      </if>
+      <if test="chargeTime != null" >
+        charge_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commissionId != null" >
+        #{commissionId,jdbcType=INTEGER},
+      </if>
+      <if test="detailId != null" >
+        #{detailId,jdbcType=INTEGER},
+      </if>
+      <if test="shiftMahjongStepId != null" >
+        #{shiftMahjongStepId,jdbcType=INTEGER},
+      </if>
+      <if test="orderType != null" >
+        #{orderType,jdbcType=DECIMAL},
+      </if>
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="commissionCalculate != null" >
+        #{commissionCalculate,jdbcType=DECIMAL},
+      </if>
+      <if test="commissionAmount != null" >
+        #{commissionAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="chargeTime != null" >
+        #{chargeTime,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.EmployeeCommission" >
+    update employee_commission
+    <set >
+      <if test="detailId != null" >
+        detail_id = #{detailId,jdbcType=INTEGER},
+      </if>
+      <if test="shiftMahjongStepId != null" >
+        shift_mahjong_step_id = #{shiftMahjongStepId,jdbcType=INTEGER},
+      </if>
+      <if test="orderType != null" >
+        order_type = #{orderType,jdbcType=DECIMAL},
+      </if>
+      <if test="employeeId != null" >
+        employee_id = #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="commissionCalculate != null" >
+        commission_calculate = #{commissionCalculate,jdbcType=DECIMAL},
+      </if>
+      <if test="commissionAmount != null" >
+        commission_amount = #{commissionAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="chargeTime != null" >
+        charge_time = #{chargeTime,jdbcType=CHAR},
+      </if>
+    </set>
+    where commission_id = #{commissionId,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 计算时间区间的提成 -->
+  <select id="selectBySectionDayCommission" resultType="java.math.BigDecimal" parameterType="java.util.Map" >
+    select 
+    IFNULL(sum(commission_amount), 0)
+    from employee_commission where employee_id = #{employeeId,jdbcType=INTEGER} 
+     and cast(date(#{beginTime,jdbcType=CHAR}) as unsigned int) &lt;= cast(date(charge_time) as unsigned int) 
+	 and cast(date(charge_time) as unsigned int) &lt;= cast(date(#{endTime,jdbcType=CHAR}) as unsigned int) and is_deleted = 0
+  </select>
+  
+  <!-- 计算时间区间，类型的业绩 -->
+  <select id="selectBySectionDayCalculate" resultType="java.math.BigDecimal" parameterType="java.util.Map" >
+    select 
+    IFNULL(sum(commission_calculate), 0)
+    from employee_commission where employee_id = #{employeeId,jdbcType=INTEGER} and is_deleted = 0
+     and cast(date(#{beginTime,jdbcType=CHAR}) as unsigned int) &lt;= cast(date(charge_time) as unsigned int) 
+	 and cast(date(charge_time) as unsigned int) &lt;= cast(date(#{endTime,jdbcType=CHAR}) as unsigned int)
+	 and order_type in 
+	 <foreach item="item" index="index" collection="orderTypeList" open="(" separator="," close=")">  
+	  #{item}  
+	 </foreach> 
+  </select>
+  
+  <!-- 计算时间区间，指定项目的业绩 -->
+  <select id="selectBySectionAssignProjectCalculate" resultType="java.math.BigDecimal" parameterType="java.util.Map" >
+    select 
+    IFNULL(sum(a.commission_calculate), 0)
+    from employee_commission a where a.employee_id = #{employeeId,jdbcType=INTEGER} and a.is_deleted = 0
+     and cast(date(#{beginTime,jdbcType=CHAR}) as unsigned int) &lt;= cast(date(a.charge_time) as unsigned int) 
+	 and cast(date(a.charge_time) as unsigned int) &lt;= cast(date(#{endTime,jdbcType=CHAR}) as unsigned int)
+	 and a.order_type = 1
+	 and exists(select * from shift_mahjong_project_step b where b.shift_mahjong_step_id = a.shift_mahjong_step_id and b.is_assign = 1) 
+  </select>
+  
+  <!-- 根据员工集合排序 -->
+  <select id="selectByEmployeeIdList" resultType="java.util.Map" parameterType="java.util.Map">
+      select 
+          sum(a.commission_calculate) as commissionCalculate, a.employee_id as employeeId
+      from employee_commission a 
+	  where a.employee_id in 
+	         <foreach item="employeeIdItem" index="index" collection="employeeIdList" open="(" separator="," close=")">  
+			  #{employeeIdItem}  
+			 </foreach> 
+	         and #{beginTime,jdbcType=CHAR} &lt;= a.charge_time
+			 and a.charge_time &lt;= #{endTime,jdbcType=CHAR}
+			 and a.is_deleted = 0
+			 and a.order_type in 
+             <foreach item="orderTypeItem" index="index" collection="orderTypeList" open="(" separator="," close=")">  
+			  #{orderTypeItem}  
+			 </foreach>  
+			 group by a.employee_id order by commissionCalculate desc
+  </select>
+  
+  <!-- 查询区域时间内，岗位对应的总业绩 -->
+  <select id="selectByTotalEmployeeIdList" resultType="java.math.BigDecimal" parameterType="java.util.Map">
+      select 
+          IFNULL(sum(a.commission_calculate), 0)
+      from employee_commission a 
+	  where a.employee_id in 
+	         <foreach item="employeeIdItem" index="index" collection="employeeIdList" open="(" separator="," close=")">  
+			  #{employeeIdItem}  
+			 </foreach> 
+			 and a.is_deleted = 0
+	         and cast(date(#{beginTime,jdbcType=CHAR}) as unsigned int) &lt;= cast(date(a.charge_time) as unsigned int) 
+			 and cast(date(a.charge_time) as unsigned int) &lt;= cast(date(#{endTime,jdbcType=CHAR}) as unsigned int) 
+			 and a.order_type in 
+             <foreach item="orderTypeItem" index="index" collection="orderTypeList" open="(" separator="," close=")">  
+			    #{orderTypeItem}  
+			 </foreach>  
+  </select>
+  
+  <!-- 计算时间区间，指定项目的业绩 -->
+  <select id="selectByTotalSectionAssignProjectCalculate" resultType="java.math.BigDecimal" parameterType="java.util.Map" >
+    select 
+    IFNULL(sum(a.commission_calculate), 0)
+    from employee_commission a where a.employee_id in
+     <foreach item="employeeIdItem" index="index" collection="employeeIdList" open="(" separator="," close=")">  
+	  #{employeeIdItem}  
+	 </foreach> 
+	 and a.is_deleted = 0
+     and cast(date(#{beginTime,jdbcType=CHAR}) as unsigned int) &lt;= cast(date(a.charge_time) as unsigned int) 
+	 and cast(date(a.charge_time) as unsigned int) &lt;= cast(date(#{endTime,jdbcType=CHAR}) as unsigned int)
+	 and a.order_type = 1
+	 and exists(select * from shift_mahjong_project_step b where b.shift_mahjong_step_id = a.shift_mahjong_step_id and b.is_assign = 1) 
+  </select>
+  
+  <select id="selectByDetailId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from employee_commission
+    where detail_id = #{detailId,jdbcType=INTEGER} and is_deleted = 0 
+  </select>
+  
+  <select id="selectByEmployeeIdShift" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from employee_commission
+    where shift_mahjong_step_id = #{shiftMahjongStepId,jdbcType=INTEGER} and is_deleted = 0 
+  </select>
+  
+</mapper>

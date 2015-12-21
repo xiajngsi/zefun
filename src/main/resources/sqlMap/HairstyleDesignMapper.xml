@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.HairstyleDesignMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.HairstyleDesign" >
+    <id column="hairstyle_id" property="hairstyleId" jdbcType="INTEGER" />
+    <result column="hairstyle_category_id" property="hairstyleCategoryId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="hairstyle_cover" property="hairstyleCover" jdbcType="VARCHAR" />
+    <result column="hairstyle_title" property="hairstyleTitle" jdbcType="VARCHAR" />
+    <result column="hairstyle_content" property="hairstyleContent" jdbcType="VARCHAR" />
+    <result column="hair" property="hair" jdbcType="VARCHAR" />
+    <result column="hair_quality" property="hairQuality" jdbcType="VARCHAR" />
+    <result column="style" property="style" jdbcType="VARCHAR" />
+    <result column="scenario" property="scenario" jdbcType="VARCHAR" />
+    <result column="affiliated_img" property="affiliatedImg" jdbcType="VARCHAR" />
+    <result column="related_product" property="relatedProduct" jdbcType="VARCHAR" />
+    <result column="related_project" property="relatedProject" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    hairstyle_id, hairstyle_category_id, store_id, hairstyle_cover, hairstyle_title, 
+    hairstyle_content, hair, hair_quality, style, scenario, affiliated_img, related_product, 
+    related_project, create_time, update_time, last_operator_id
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hairstyle_design
+    where hairstyle_id = #{hairstyleId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hairstyle_design
+    where hairstyle_id = #{hairstyleId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.HairstyleDesign" >
+    insert into hairstyle_design
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="hairstyleId != null" >
+        hairstyle_id,
+      </if>
+      <if test="hairstyleCategoryId != null" >
+        hairstyle_category_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="hairstyleCover != null" >
+        hairstyle_cover,
+      </if>
+      <if test="hairstyleTitle != null" >
+        hairstyle_title,
+      </if>
+      <if test="hairstyleContent != null" >
+        hairstyle_content,
+      </if>
+      <if test="hair != null" >
+        hair,
+      </if>
+      <if test="hairQuality != null" >
+        hair_quality,
+      </if>
+      <if test="style != null" >
+        style,
+      </if>
+      <if test="scenario != null" >
+        scenario,
+      </if>
+      <if test="affiliatedImg != null" >
+        affiliated_img,
+      </if>
+      <if test="relatedProduct != null" >
+        related_product,
+      </if>
+      <if test="relatedProject != null" >
+        related_project,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="hairstyleId != null" >
+        #{hairstyleId,jdbcType=INTEGER},
+      </if>
+      <if test="hairstyleCategoryId != null" >
+        #{hairstyleCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="hairstyleCover != null" >
+        #{hairstyleCover,jdbcType=VARCHAR},
+      </if>
+      <if test="hairstyleTitle != null" >
+        #{hairstyleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="hairstyleContent != null" >
+        #{hairstyleContent,jdbcType=VARCHAR},
+      </if>
+      <if test="hair != null" >
+        #{hair,jdbcType=VARCHAR},
+      </if>
+      <if test="hairQuality != null" >
+        #{hairQuality,jdbcType=VARCHAR},
+      </if>
+      <if test="style != null" >
+        #{style,jdbcType=VARCHAR},
+      </if>
+      <if test="scenario != null" >
+        #{scenario,jdbcType=VARCHAR},
+      </if>
+      <if test="affiliatedImg != null" >
+        #{affiliatedImg,jdbcType=VARCHAR},
+      </if>
+      <if test="relatedProduct != null" >
+        #{relatedProduct,jdbcType=VARCHAR},
+      </if>
+      <if test="relatedProject != null" >
+        #{relatedProject,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.HairstyleDesign" >
+    update hairstyle_design
+    <set >
+      <if test="hairstyleCategoryId != null" >
+        hairstyle_category_id = #{hairstyleCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="hairstyleCover != null" >
+        hairstyle_cover = #{hairstyleCover,jdbcType=VARCHAR},
+      </if>
+      <if test="hairstyleTitle != null" >
+        hairstyle_title = #{hairstyleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="hairstyleContent != null" >
+        hairstyle_content = #{hairstyleContent,jdbcType=VARCHAR},
+      </if>
+      <if test="hair != null" >
+        hair = #{hair,jdbcType=VARCHAR},
+      </if>
+      <if test="hairQuality != null" >
+        hair_quality = #{hairQuality,jdbcType=VARCHAR},
+      </if>
+      <if test="style != null" >
+        style = #{style,jdbcType=VARCHAR},
+      </if>
+      <if test="scenario != null" >
+        scenario = #{scenario,jdbcType=VARCHAR},
+      </if>
+      <if test="affiliatedImg != null" >
+        affiliated_img = #{affiliatedImg,jdbcType=VARCHAR},
+      </if>
+      <if test="relatedProduct != null" >
+        related_product = #{relatedProduct,jdbcType=VARCHAR},
+      </if>
+      <if test="relatedProject != null" >
+        related_project = #{relatedProject,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where hairstyle_id = #{hairstyleId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByStoreId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hairstyle_design
+    where store_id = #{storeId,jdbcType=INTEGER} 
+  </select>
+  
+</mapper>

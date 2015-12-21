@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.ProjectStepMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.ProjectStep" >
+    <id column="project_step_id" property="projectStepId" jdbcType="INTEGER" />
+    <result column="project_step_name" property="projectStepName" jdbcType="VARCHAR" />
+    <result column="step_performance" property="stepPerformance" jdbcType="DECIMAL" />
+    <result column="step_performance_type" property="stepPerformanceType" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="shift_mahjong_id" property="shiftMahjongId" jdbcType="INTEGER" />
+    <result column="project_step_order" property="projectStepOrder" jdbcType="INTEGER" />
+    <result column="project_step_desc" property="projectStepDesc" jdbcType="VARCHAR" />
+    <result column="is_disable" property="isDisable" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="is_permissions_update" property="isPermissionsUpdate" jdbcType="INTEGER" />
+    <result column="is_hang_up" property="isHangUp" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    project_step_id, project_step_name,step_performance, step_performance_type, project_id, shift_mahjong_id, project_step_order, 
+    project_step_desc, is_disable, is_deleted, is_permissions_update, is_hang_up, create_time, 
+    update_time, last_operator_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from project_step
+    where project_step_id = #{projectStepId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByProjectId" parameterType="java.lang.Integer">
+    update project_step set is_deleted = 1 where project_id = #{projectId}
+    <!-- delete from project_step where project_id = #{projectId} -->
+  </delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from project_step
+    where project_step_id = #{projectStepId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zefun.web.entity.ProjectStep" >
+    insert into project_step
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectStepId != null" >
+        project_step_id,
+      </if>
+      <if test="projectStepName != null" >
+        project_step_name,
+      </if>
+      <if test="stepPerformance != null" >
+        step_performance,
+      </if>
+      <if test="stepPerformanceType != null" >
+        step_performance_type,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="shiftMahjongId != null" >
+        shift_mahjong_id,
+      </if>
+      <if test="projectStepOrder != null" >
+        project_step_order,
+      </if>
+      <if test="projectStepDesc != null" >
+        project_step_desc,
+      </if>
+      <if test="isDisable != null" >
+        is_disable,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+      <if test="isPermissionsUpdate != null" >
+        is_permissions_update,
+      </if>
+      <if test="isHangUp != null" >
+        is_hang_up,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectStepId != null" >
+        #{projectStepId,jdbcType=INTEGER},
+      </if>
+      <if test="projectStepName != null" >
+        #{projectStepName,jdbcType=VARCHAR},
+      </if>
+      <if test="stepPerformance != null" >
+        #{stepPerformance,jdbcType=DECIMAL},
+      </if>
+      <if test="stepPerformanceType != null" >
+        #{stepPerformanceType,jdbcType=DECIMAL},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="shiftMahjongId != null" >
+        #{shiftMahjongId,jdbcType=INTEGER},
+      </if>
+      <if test="projectStepOrder != null" >
+        #{projectStepOrder,jdbcType=INTEGER},
+      </if>
+      <if test="projectStepDesc != null" >
+        #{projectStepDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDisable != null" >
+        #{isDisable,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="isPermissionsUpdate != null" >
+        #{isPermissionsUpdate,jdbcType=INTEGER},
+      </if>
+      <if test="isHangUp != null" >
+        #{isHangUp,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.ProjectStep" >
+    update project_step
+    <set >
+      <if test="projectStepName != null" >
+        project_step_name = #{projectStepName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="shiftMahjongId != null" >
+        shift_mahjong_id = #{shiftMahjongId,jdbcType=INTEGER},
+      </if>
+      <if test="projectStepOrder != null" >
+        project_step_order = #{projectStepOrder,jdbcType=INTEGER},
+      </if>
+      <if test="projectStepDesc != null" >
+        project_step_desc = #{projectStepDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDisable != null" >
+        is_disable = #{isDisable,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="isPermissionsUpdate != null" >
+        is_permissions_update = #{isPermissionsUpdate,jdbcType=INTEGER},
+      </if>
+      <if test="isHangUp != null" >
+        is_hang_up = #{isHangUp,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where project_step_id = #{projectStepId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <select id="queryProjectStepByPIdList" parameterType="com.zefun.web.entity.ProjectStep" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from project_step
+  	where project_id = #{projectId,jdbcType=INTEGER} and is_deleted = 0
+  </select>
+  
+  <select id="selectByShiftMahjongId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from project_step
+  	where shift_mahjong_id = #{shiftMahjongId,jdbcType=INTEGER} and is_deleted = 0
+  </select>
+  
+</mapper>

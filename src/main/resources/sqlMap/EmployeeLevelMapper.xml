@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.EmployeeLevelMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.EmployeeLevel" >
+    <id column="level_id" property="levelId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="position_id" property="positionId" jdbcType="INTEGER" />
+    <result column="level_name" property="levelName" jdbcType="VARCHAR" />
+    <result column="assign_type" property="assignType" jdbcType="INTEGER" />
+    <result column="assign_commission" property="assignCommission" jdbcType="INTEGER" />
+    <result column="non_assign_type" property="nonAssignType" jdbcType="INTEGER" />
+    <result column="non_assign_commission" property="nonAssignCommission" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+    <result column="is_upgrade" property="isUpgrade" jdbcType="INTEGER" />
+    <result column="non_customercost" property="nonCustomercost" jdbcType="INTEGER" />
+    <result column="customercost" property="customercost" jdbcType="INTEGER" />
+    <result column="performancecount" property="performancecount" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="EmployeelevelDtoMap" type="com.zefun.web.dto.EmployeeLevelDto" >
+    <id column="level_id" property="levelId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="position_id" property="positionId" jdbcType="INTEGER" />
+    <result column="level_name" property="levelName" jdbcType="VARCHAR" />
+    <result column="assign_commission" property="assignCommission" jdbcType="INTEGER" />
+    <result column="non_assign_commission" property="nonAssignCommission" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    <result column="update_time" property="updateTime" jdbcType="CHAR" />
+    <result column="last_operator_id" property="lastOperatorId" jdbcType="INTEGER" />
+    <result column="is_upgrade" property="isUpgrade" jdbcType="INTEGER" />
+    <result column="non_customercost" property="nonCustomercost" jdbcType="INTEGER" />
+    <result column="customercost" property="customercost" jdbcType="INTEGER" />
+    <result column="performancecount" property="performancecount" jdbcType="DECIMAL" />
+    <association property="employeeInfoList"  column="{level_id=level_id,store_id=store_id}" select="com.zefun.web.mapper.EmployeeInfoMapper.selectByLevelId"></association>
+  </resultMap>
+
+  
+
+  <select id="queryEmployeelevelinfo" parameterType="com.zefun.web.entity.Page" resultType="com.zefun.web.dto.EmployeeLevelDto">
+ select p.position_code positionCode,p.position_name positionName,l.position_id positionId,l.level_id levelId,l.position_id positionId,
+ l.level_name levelName,l.assign_commission assignCommission,l.non_assign_commission nonAssignCommission,non_customercost nonCustomercost,
+ customercost,performancecount from employee_level l
+left join position_info p on p.position_id=l.position_id where 1=1
+  </select>
+  <select id="leveldetail" parameterType="java.lang.Integer" resultType="com.zefun.web.dto.EmployeeLevelDto">
+  select p.position_code positionCode,p.position_name positionName,l.position_id positionId,l.level_id levelId,l.position_id positionId,
+ l.level_name levelName,l.is_upgrade isUpgrade,l.assign_commission assignCommission,l.non_assign_commission nonAssignCommission,l.non_customercost nonCustomercost,
+ l.customercost,l.performancecount,l.assign_type assignType,l.non_assign_type nonAssignType from employee_level l
+left join position_info p on p.position_id=l.position_id where l.level_id=#{levelId}
+  </select>
+  
+  <insert id="insert" parameterType="java.util.Map" >
+     insert into employee_level (level_id, store_id, position_id, 
+      level_name, assign_type, assign_commission, 
+      non_assign_type, non_assign_commission, create_time, 
+      update_time, last_operator_id, is_upgrade, 
+      non_customercost, customercost, performancecount
+      )
+    values (#{levelId,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER}, #{positionId,jdbcType=INTEGER}, 
+      #{levelName,jdbcType=VARCHAR}, #{assignType,jdbcType=INTEGER}, #{assignCommission,jdbcType=INTEGER}, 
+      #{nonAssignType,jdbcType=INTEGER}, #{nonAssignCommission,jdbcType=INTEGER}, #{createTime,jdbcType=CHAR}, 
+      #{updateTime,jdbcType=CHAR}, #{lastOperatorId,jdbcType=INTEGER}, #{isUpgrade,jdbcType=INTEGER}, 
+      #{nonCustomercost,jdbcType=DECIMAL}, #{customercost,jdbcType=INTEGER}, #{performancecount,jdbcType=DECIMAL}
+      )
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.EmployeeLevel" >
+     update employee_level
+    <set >
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="positionId != null" >
+        position_id = #{positionId,jdbcType=INTEGER},
+      </if>
+      <if test="levelName != null" >
+        level_name = #{levelName,jdbcType=VARCHAR},
+      </if>
+      <if test="assignType != null" >
+        assign_type = #{assignType,jdbcType=INTEGER},
+      </if>
+      <if test="assignCommission != null" >
+        assign_commission = #{assignCommission,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignType != null" >
+        non_assign_type = #{nonAssignType,jdbcType=INTEGER},
+      </if>
+      <if test="nonAssignCommission != null" >
+        non_assign_commission = #{nonAssignCommission,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="lastOperatorId != null" >
+        last_operator_id = #{lastOperatorId,jdbcType=INTEGER},
+      </if>
+      <if test="isUpgrade != null" >
+        is_upgrade = #{isUpgrade,jdbcType=INTEGER},
+      </if>
+      <if test="nonCustomercost != null" >
+        non_customercost = #{nonCustomercost,jdbcType=INTEGER},
+      </if>
+      <if test="customercost != null" >
+        customercost = #{customercost,jdbcType=INTEGER},
+      </if>
+      <if test="performancecount != null" >
+        performancecount = #{performancecount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where level_id = #{levelId,jdbcType=INTEGER}
+  </update>
+  <!-- 删除职位信息 -->
+  <update id="deleteEmployeelevel" parameterType="com.zefun.web.entity.EmployeeLevel">
+  update employee_level set is_deleted=1 where level_id=#{levelId}
+  </update>
+  <!-- 判断职位名称是否存在 -->
+  <select id="islevelName" parameterType="java.util.Map" resultType="com.zefun.web.entity.EmployeeLevel">
+  select level_id levelId from employee_level where store_id = #{storeId} and level_name = #{levelName} and is_deleted=0 and position_id=#{positionId}
+  </select>
+  <!-- 判断职位是否有被人员引用 -->
+  <select id="islevelIdcount" parameterType="com.zefun.web.entity.EmployeeLevel" resultType="java.lang.Integer">
+  select count(0)  from employee_info where store_id = #{storeId} and level_id = #{levelId} and is_deleted=0
+  </select>
+  <!-- 下拉框公共获取职位信息 -->
+  <select id="queryEmployeeLevel" parameterType="com.zefun.web.entity.EmployeeLevel" resultType="com.zefun.web.entity.EmployeeLevel">
+  select level_id levelId,level_name levelName from employee_level where store_id=#{storeId} and is_deleted=0
+  <if test="positionId != null and positionId != ''" >
+    and position_id = #{positionId}
+   </if>
+  </select>
+  
+  <select id="selectByKey" parameterType="com.zefun.web.entity.EmployeeLevel" resultMap="EmployeelevelDtoMap">
+    select * from employee_level where store_id = #{storeId,jdbcType=INTEGER} and level_id = #{levelId,jdbcType=INTEGER} and is_deleted=0
+  </select>
+  <!-- 获取职位底下员工 -->
+ <select id="getlevelemployee" parameterType="java.util.Map" resultType="com.zefun.web.dto.EmployeeDto">
+ SELECT t.employee_id employeeId,t.employee_code employeeCode,d.dept_name deptName,t.name,p.position_name positionName,
+ l.level_name levelName,t.sex,t.phone,t.entry_date entryDate,t.employee_status employeeStatus,
+ t.base_salaries baseSalaries,u.user_name userName
+ from employee_info t 
+	LEFT JOIN position_info p ON p.position_id=t.position_id
+	LEFT JOIN user_account u ON u.user_id=t.employee_id
+	LEFT JOIN employee_level l ON l.level_id=t.level_id 
+	LEFT JOIN dept_info d ON d.dept_id=t.dept_id where t.is_deleted=0 and t.store_id=#{storeId} and t.dept_id>0
+	and t.level_id=#{levelId}
+ </select>
+ 
+ <select id="selectByLevelIds" resultMap="BaseResultMap">
+  	select level_id,store_id,store_id,level_name,assign_type,assign_commission,non_assign_type,non_assign_commission,
+  			create_time,update_time,last_operator_id,is_upgrade,non_customercost,customercost,performancecount
+  	from employee_level where level_id in
+  	<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+    	#{item}
+    </foreach>
+  </select>
+ <select id="countlevel" parameterType="java.util.Map" resultType="com.zefun.web.entity.EmployeeLevel">
+  select level_id levelId from employee_level where level_name=#{levelName} and position_id=#{positionId} and is_deleted=0
+ </select>
+</mapper>

@@ -1,0 +1,47 @@
+.across-shop-modal {
+  width: 680px;
+}
+.across-shop-modal .list-table {
+  width: 400px;
+  border: 1px solid #ddd;
+  float: left;
+}
+.across-shop-modal .detail-table {
+  width: 200px;
+  border: 1px solid #ddd;
+  float: right;
+  margin-left: 30px;
+}
+.wufuxiaolv tfoot {
+  border-top: 1px solid #000;
+}
+.skill-analyze {
+  width: 735px;
+}
+.payroll-detail-modal {
+  width: 900px;
+}
+.report-title {
+  background-color: #d9e9e9 !important;
+  margin: 5px 0 15px 0;
+  border: 1px solid #e6e6e6;
+  padding: 10px 10px;
+  clear: both;
+  overflow: hidden;
+}
+.report-title ul {
+  display: flex;
+}
+.report-title li {
+  width: 19.5%;
+  text-align: center;
+  border-right: 1px solid #e6e6e6;
+  float: left;
+  color: #979797;
+  font-family: "微软雅黑";
+  font-size: 14px;
+}
+.contentinner p {
+  margin: 5px 0;
+}
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInJlcG9ydC5sZXNzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsWUFBQTs7QUFERixrQkFFRTtFQUNFLFlBQUE7RUFDQSxzQkFBQTtFQUNBLFdBQUE7O0FBTEosa0JBT0U7RUFDRSxZQUFBO0VBQ0Esc0JBQUE7RUFDQSxZQUFBO0VBQ0EsaUJBQUE7O0FBS0osV0FDRTtFQUNFLDBCQUFBOztBQUlKO0VBQ0UsWUFBQTs7QUFHRjtFQUNFLFlBQUE7O0FBR0Y7RUFDRSxvQ0FBQTtFQUNBLG9CQUFBO0VBQ0EseUJBQUE7RUFDQSxrQkFBQTtFQUNBLFdBQUE7RUFDQSxnQkFBQTs7QUFORixhQU9FO0VBQ0UsYUFBQTs7QUFSSixhQVVFO0VBQ0UsWUFBQTtFQUNBLGtCQUFBO0VBQ0EsK0JBQUE7RUFDQSxXQUFBO0VBQ0EsY0FBQTtFQUNBLGFBQWEsTUFBYjtFQUNBLGVBQUE7O0FBSUosYUFBYztFQUNaLGFBQUEiLCJmaWxlIjoidW5kZWZpbmVkIn0= */

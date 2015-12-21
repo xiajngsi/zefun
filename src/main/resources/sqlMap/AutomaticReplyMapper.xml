@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.AutomaticReplyMapper">
+	<resultMap id="BaseResultMap" type="com.zefun.web.entity.AutomaticReply">
+		<id column="reply_id" property="replyId" jdbcType="INTEGER" />
+		<result column="media_id" property="mediaId" jdbcType="VARCHAR" />
+		<result column="Title" property="title" jdbcType="VARCHAR" />
+		<result column="Url" property="url" jdbcType="VARCHAR" />
+		<result column="Description" property="description" jdbcType="VARCHAR" />
+		<result column="PicUrl" property="picUrl" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
+		<result column="store_id" property="storeId" jdbcType="INTEGER" />
+		
+		<result column="praise" property="praise" jdbcType="INTEGER" />
+		<result column="has_praise_store" property="hasPraiseStore" jdbcType="VARCHAR" />
+		<result column="media_count" property="mediaCount" jdbcType="INTEGER" />
+		<result column="has_send_store" property="hasSendStore" jdbcType="VARCHAR" />
+		<result column="downloads" property="downloads" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		reply_id, media_id, title, url, description, picUrl, create_time, store_id, praise, has_praise_store, media_count, has_send_store,downloads
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from automatic_reply
+		where reply_id = #{replyId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from automatic_reply
+		where reply_id = #{replyId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zefun.web.entity.AutomaticReply">
+		insert into automatic_reply (reply_id, media_id, Title,
+		Url, Description, PicUrl,
+		create_time, store_id)
+		values (#{replyId,jdbcType=INTEGER}, #{mediaId,jdbcType=VARCHAR},
+		#{title,jdbcType=VARCHAR},
+		#{url,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{picurl,jdbcType=VARCHAR},
+		#{createTime,jdbcType=VARCHAR}, #{storeId,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.zefun.web.entity.AutomaticReply">
+		insert into automatic_reply
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="replyId != null">
+				reply_id,
+			</if>
+			<if test="mediaId != null">
+				media_id,
+			</if>
+			<if test="title != null">
+				Title,
+			</if>
+			<if test="url != null">
+				Url,
+			</if>
+			<if test="description != null">
+				Description,
+			</if>
+			<if test="picurl != null">
+				PicUrl,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="storeId != null">
+				store_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="replyId != null">
+				#{replyId,jdbcType=INTEGER},
+			</if>
+			<if test="mediaId != null">
+				#{mediaId,jdbcType=VARCHAR},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="picurl != null">
+				#{picurl,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="storeId != null">
+				#{storeId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.AutomaticReply">
+		update automatic_reply
+		<set>
+			<if test="mediaId != null">
+				media_id = #{mediaId,jdbcType=VARCHAR},
+			</if>
+			<if test="title != null">
+				Title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				Url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				Description = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="picUrl != null">
+				picurl = #{picUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="storeId != null">
+				store_id = #{storeId,jdbcType=INTEGER},
+			</if>
+			<if test="praise != null">
+				praise = #{praise,jdbcType=INTEGER},
+			</if>
+			<if test="hasPraiseStore != null">
+				has_praise_store = #{hasPraiseStore,jdbcType=VARCHAR},
+			</if>
+			<if test="mediaCount != null">
+				media_count = #{mediaCount,jdbcType=INTEGER},
+			</if>
+			<if test="hasSendStore != null">
+				has_send_store = #{hasSendStore,jdbcType=VARCHAR},
+			</if>
+			<if test="downloads != null">
+				downloads = #{downloads,jdbcType=INTEGER},
+			</if>
+		</set>
+		where reply_id = #{replyId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.AutomaticReply">
+		update automatic_reply
+		set media_id = #{mediaId,jdbcType=VARCHAR},
+		Title = #{title,jdbcType=VARCHAR},
+		Url = #{url,jdbcType=VARCHAR},
+		Description = #{description,jdbcType=VARCHAR},
+		PicUrl = #{picurl,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=VARCHAR},
+		store_id = #{storeId,jdbcType=INTEGER}
+		where reply_id = #{replyId,jdbcType=INTEGER}
+	</update>
+	<!-- 自定义方法 -->
+	<insert id="insertByList" parameterType="java.util.List">
+		insert into automatic_reply (reply_id, media_id, title, author, url,
+		description, picUrl,qiniu_img,thumb_media_id, content,
+		content_source_url, create_time, store_id,father_media_id) values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.replyId,jdbcType=INTEGER}, #{item.mediaId,jdbcType=VARCHAR}, #{item.title,jdbcType=VARCHAR},
+			#{item.author,jdbcType=VARCHAR},
+			#{item.url,jdbcType=VARCHAR}, #{item.description,jdbcType=VARCHAR},
+			#{item.picUrl,jdbcType=VARCHAR},
+			#{item.qiniuImg,jdbcType=VARCHAR}, #{item.thumbMediaId,jdbcType=VARCHAR},
+			#{item.content,jdbcType=VARCHAR},
+			#{item.contentSourceUrl,jdbcType=VARCHAR},#{item.createTime,jdbcType=VARCHAR},#{item.storeId,jdbcType=INTEGER},
+			#{item.fatherMediaId,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	<select id="selectByMediaId" resultType="com.zefun.web.entity.AutomaticReply"
+		parameterType="java.lang.String">
+		select
+		reply_id as replyId, media_id mediaId, title as title,author as author, url as
+		url,
+		description as description, picUrl as picUrl, qiniu_img as qiniuImg,
+		thumb_media_id as thumbMediaId,
+		content as content ,create_time as createTime, store_id as storeId,
+		content_source_url as contentSourceUrl
+		from automatic_reply
+		where media_id = #{mediaId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByStoreId" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from automatic_reply
+		where store_id = #{storeId}
+	</select>
+	<select id="selectItemsByStoreId" parameterType="java.lang.Integer"
+		resultType="com.zefun.web.entity.AutomaticReply">
+		select
+		reply_id as replyId, media_id mediaId, title as title, author as author, url
+		as url, description as description,
+		picUrl as picUrl, qiniu_img as qiniuImg, content as content ,create_time as
+		createTime, store_id as storeId, father_media_id as fatherMediaId, praise, has_praise_store, media_count as mediaCount, downloads
+		from automatic_reply
+		where store_id = #{storeId} GROUP BY media_id ORDER BY reply_id
+	</select>
+	<select id="selectItemStatusByStoreId" parameterType="java.lang.Integer"
+		resultType="com.zefun.wechat.dto.ItemStatusDto">
+		SELECT t.media_id AS mediaId, t.title AS title, t.create_time AS createTime,
+		t.store_id AS storeId,
+		u.msg_status AS msgStatus,u.has_group AS hasAccess,u.sent_count AS
+		successCount,u.error_count AS errorCount,u.has_read AS hasRead,
+		u.content_source_url as contentSourceUrl
+		FROM automatic_reply t,item_census u
+		WHERE t.store_id = 1 GROUP BY t.media_id ORDER BY t.reply_id
+	</select>
+	<update id="updateById" parameterType="com.zefun.web.entity.AutomaticReply">
+		update automatic_reply
+		set
+		Title = #{title,jdbcType=VARCHAR},
+		author = #{author,jdbcType=VARCHAR},
+		Description = #{description,jdbcType=VARCHAR},
+		PicUrl = #{picUrl,jdbcType=VARCHAR},
+		content = #{content,jdbcType=VARCHAR},
+		thumb_media_id = #{thumbMediaId,jdbcType=VARCHAR},
+		qiniu_img = #{qiniuImg,jdbcType=VARCHAR}
+		where reply_id = #{replyId,jdbcType=INTEGER}
+	</update>
+	<delete id="deleteItemsByMedaidId" parameterType="java.lang.String">
+		delete from automatic_reply
+		where media_id = #{mediaId}
+	</delete>
+	<select id="selectItemsByStoreIdHasItems" parameterType="java.lang.Integer"
+		resultType="java.lang.String">
+		SELECT DISTINCT(father_media_id) FROM automatic_reply WHERE store_id =
+		#{storeId,jdbcType=INTEGER}
+	</select>
+	<select id="selectItemsByStoreIdNotSelf" parameterType="java.util.List"
+		resultType="java.lang.String">
+		SELECT DISTINCT(media_id) FROM automatic_reply WHERE store_id = 0 AND
+		media_id NOT IN
+		<foreach collection="list" open="(" separator="," close=")"
+			item="item">
+			#{item}
+		</foreach>
+	</select>
+	<select id="selectItmesByStoreIdIsZero" resultType="java.lang.String">
+		SELECT DISTINCT(media_id) FROM automatic_reply WHERE store_id = 0
+	</select>
+	<select id="selectMediaIdByContent" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		SELECT
+		reply_id as replyId, media_id mediaId, title as title,author as author, url as
+		url,
+		description as description, picUrl as picUrl, qiniu_img as qiniuImg,
+		thumb_media_id as thumbMediaId,
+		content as content ,create_time as createTime, store_id as storeId,
+		content_source_url as contentSourceUrl
+		FROM automatic_reply
+		WHERE store_id = #{storeId}
+		AND (
+		title LIKE CONCAT('%',#{content},'%')
+		OR author LIKE CONCAT('%',#{content},'%')
+		OR description LIKE CONCAT('%',#{content},'%')
+		)
+		GROUP BY media_id
+	</select>
+
+	<select id="selectItemsByStoreIdForDto" parameterType="java.lang.Integer"
+		resultType="com.zefun.wechat.dto.AutomaticReplyDto">
+		select
+		reply_id as replyId, media_id mediaId, title as title, author as author, url
+		as url, description as description,
+		picUrl as picUrl, qiniu_img as qiniuImg, content as content ,create_time as
+		createTime, store_id as storeId, father_media_id as fatherMediaId
+		from automatic_reply
+		where store_id = #{storeId} GROUP BY media_id ORDER BY reply_id
+	</select>
+	<select id="selectByOneItem" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from automatic_reply
+		where media_id = #{mediaId,jdbcType=VARCHAR} GROUP BY media_id ORDER BY reply_id
+	</select>
+</mapper>

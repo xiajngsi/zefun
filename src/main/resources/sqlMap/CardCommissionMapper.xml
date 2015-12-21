@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.CardCommissionMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.CardCommission" >
+    <id column="commission_id" property="commissionId" jdbcType="INTEGER" />
+    <result column="commission_type" property="commissionType" jdbcType="INTEGER" />
+    <result column="card_name" property="cardName" jdbcType="VARCHAR" />
+    <result column="charge_id" property="chargeId" jdbcType="INTEGER" />
+    <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+    <result column="charge_amount" property="chargeAmount" jdbcType="DECIMAL" />
+    <result column="commission_amount" property="commissionAmount" jdbcType="DECIMAL" />
+    <result column="charge_time" property="chargeTime" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    commission_id, commission_type, card_name, charge_id, employee_id, charge_amount, 
+    commission_amount, charge_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from card_commission
+    where commission_id = #{commissionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from card_commission
+    where commission_id = #{commissionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zefun.web.entity.CardCommission" >
+    insert into card_commission (commission_id, commission_type, card_name, 
+      charge_id, employee_id, charge_amount, 
+      commission_amount, charge_time)
+    values (#{commissionId,jdbcType=INTEGER}, #{commissionType,jdbcType=INTEGER}, #{cardName,jdbcType=VARCHAR}, 
+      #{chargeId,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER}, #{chargeAmount,jdbcType=DECIMAL}, 
+      #{commissionAmount,jdbcType=DECIMAL}, #{chargeTime,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.CardCommission" >
+    insert into card_commission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commissionId != null" >
+        commission_id,
+      </if>
+      <if test="commissionType != null" >
+        commission_type,
+      </if>
+      <if test="cardName != null" >
+        card_name,
+      </if>
+      <if test="chargeId != null" >
+        charge_id,
+      </if>
+      <if test="employeeId != null" >
+        employee_id,
+      </if>
+      <if test="chargeAmount != null" >
+        charge_amount,
+      </if>
+      <if test="commissionAmount != null" >
+        commission_amount,
+      </if>
+      <if test="chargeTime != null" >
+        charge_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commissionId != null" >
+        #{commissionId,jdbcType=INTEGER},
+      </if>
+      <if test="commissionType != null" >
+        #{commissionType,jdbcType=INTEGER},
+      </if>
+      <if test="cardName != null" >
+        #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeId != null" >
+        #{chargeId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="chargeAmount != null" >
+        #{chargeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="commissionAmount != null" >
+        #{commissionAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="chargeTime != null" >
+        #{chargeTime,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.CardCommission" >
+    update card_commission
+    <set >
+      <if test="commissionType != null" >
+        commission_type = #{commissionType,jdbcType=INTEGER},
+      </if>
+      <if test="cardName != null" >
+        card_name = #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeId != null" >
+        charge_id = #{chargeId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        employee_id = #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="chargeAmount != null" >
+        charge_amount = #{chargeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="commissionAmount != null" >
+        commission_amount = #{commissionAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="chargeTime != null" >
+        charge_time = #{chargeTime,jdbcType=CHAR},
+      </if>
+    </set>
+    where commission_id = #{commissionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.CardCommission" >
+    update card_commission
+    set commission_type = #{commissionType,jdbcType=INTEGER},
+      card_name = #{cardName,jdbcType=VARCHAR},
+      charge_id = #{chargeId,jdbcType=INTEGER},
+      employee_id = #{employeeId,jdbcType=INTEGER},
+      charge_amount = #{chargeAmount,jdbcType=DECIMAL},
+      commission_amount = #{commissionAmount,jdbcType=DECIMAL},
+      charge_time = #{chargeTime,jdbcType=CHAR}
+    where commission_id = #{commissionId,jdbcType=INTEGER}
+  </update>
+  
+  <insert id="insertCardCommissionList" parameterType="java.util.List">  
+  	insert into card_commission (commission_id, commission_type, card_name, 
+      charge_id, employee_id, charge_amount, 
+      commission_amount, charge_time)
+    values 
+    <foreach collection="list" item="item" index="index"  separator=",">  
+	     (#{item.commissionId,jdbcType=INTEGER}, #{item.commissionType,jdbcType=INTEGER}, #{item.cardName,jdbcType=VARCHAR}, 
+          #{item.chargeId,jdbcType=INTEGER}, #{item.employeeId,jdbcType=INTEGER}, #{item.chargeAmount,jdbcType=DECIMAL}, 
+          #{item.commissionAmount,jdbcType=DECIMAL}, #{item.chargeTime,jdbcType=CHAR})
+    </foreach>
+  </insert>
+</mapper>

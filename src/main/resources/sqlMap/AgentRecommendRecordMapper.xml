@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.AgentRecommendRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.AgentRecommendRecord" >
+    <id column="agent_id" property="agentId" jdbcType="INTEGER" />
+    <id column="recommended_id" property="recommendedId" jdbcType="INTEGER" />
+    <result column="recommend_id" property="recommendId" jdbcType="INTEGER" />
+    <result column="recommend_type" property="recommendType" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    agent_id, recommended_id, recommend_id, recommend_type
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.zefun.web.entity.AgentRecommendRecord" >
+    select
+    <include refid="Base_Column_List" />
+    from agent_recommend_record
+    where agent_id = #{agentId,jdbcType=INTEGER}
+      and recommended_id = #{recommendedId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="com.zefun.web.entity.AgentRecommendRecord" >
+    delete from agent_recommend_record
+    where agent_id = #{agentId,jdbcType=INTEGER}
+      and recommended_id = #{recommendedId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.zefun.web.entity.AgentRecommendRecord" >
+    insert into agent_recommend_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="agentId != null" >
+        agent_id,
+      </if>
+      <if test="recommendedId != null" >
+        recommended_id,
+      </if>
+      <if test="recommendId != null" >
+        recommend_id,
+      </if>
+      <if test="recommendType != null" >
+        recommend_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="agentId != null" >
+        #{agentId,jdbcType=INTEGER},
+      </if>
+      <if test="recommendedId != null" >
+        #{recommendedId,jdbcType=INTEGER},
+      </if>
+      <if test="recommendId != null" >
+        #{recommendId,jdbcType=INTEGER},
+      </if>
+      <if test="recommendType != null" >
+        #{recommendType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.AgentRecommendRecord" >
+    update agent_recommend_record
+    <set >
+      <if test="recommendId != null" >
+        recommend_id = #{recommendId,jdbcType=INTEGER},
+      </if>
+      <if test="recommendType != null" >
+        recommend_type = #{recommendType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where agent_id = #{agentId,jdbcType=INTEGER}
+      and recommended_id = #{recommendedId,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectByRecommendedIds" resultMap="BaseResultMap" parameterType="java.util.List">
+    select
+    <include refid="Base_Column_List" />
+    from agent_recommend_record
+    where recommended_id in
+    <foreach collection="list" item="item" index="index"
+        open="(" separator="," close=")">#{item}
+    </foreach>
+     and recommend_type = 1
+  </select>
+
+   <select id="selectSelfRecommendsByType" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+    from agent_recommend_record
+    where agent_id = #{agentId,jdbcType=INTEGER} and  (recommend_id is null or recommend_id = #{agentId,jdbcType=INTEGER}) and recommend_type = #{type,jdbcType=INTEGER}
+  </select>
+
+     <select id="selectOtherRecommendsByType" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+    from agent_recommend_record
+    where agent_id = #{agentId,jdbcType=INTEGER} and recommend_id is not null and recommend_id != agent_id and recommend_type = #{type,jdbcType=INTEGER}
+  </select>
+
+    <select id="selectRecommendsByType" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+    from agent_recommend_record
+    where agent_id = #{agentId,jdbcType=INTEGER} and recommend_type = #{type,jdbcType=INTEGER}
+  </select>
+
+   <select id="selectMyRecommendsByType" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+    from agent_recommend_record
+    where recommend_id = #{agentId,jdbcType=INTEGER} and agent_id != #{agentId,jdbcType=INTEGER} and recommend_type = #{type,jdbcType=INTEGER}
+  </select>
+
+     <select id="selectRecommendsToMeByType" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+    from agent_recommend_record
+    where agent_id = #{agentId,jdbcType=INTEGER} and (recommend_id is null or recommend_id != #{agentId,jdbcType=INTEGER}) and recommend_type = #{type,jdbcType=INTEGER}
+  </select>
+
+    <select id="selectMyRecommendAgents" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from agent_recommend_record
+    where recommend_id = #{agentId,jdbcType=INTEGER} and recommended_id != #{agentId,jdbcType=INTEGER} and recommend_type = 2
+  </select>
+
+</mapper>

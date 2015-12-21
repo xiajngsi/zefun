@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.FacesetStoreMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.FacesetStore" >
+    <id column="set_id" property="setId" jdbcType="VARCHAR" />
+    <id column="store_id" property="storeId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="selectSetIdByStoreId" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	select set_id from faceset_store where store_id = #{storeId}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="com.zefun.web.entity.FacesetStore" >
+    delete from faceset_store
+    where set_id = #{setId,jdbcType=VARCHAR}
+      and store_id = #{storeId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zefun.web.entity.FacesetStore" >
+    insert into faceset_store
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="setId != null" >
+        set_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="setId != null" >
+        #{setId,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+</mapper>

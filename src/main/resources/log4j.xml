@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<!-- all log for console -->  
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern"  value="[%-5p] %d{yyyy-MM-dd HH:mm:ss,SSS} %l %M - %m%n" />  
+        </layout>
+    </appender>
+    
+    <!-- access log -->  
+   	<appender name="access" class="org.apache.log4j.DailyRollingFileAppender">  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern"  value="[%-5p] %d{yyyy-MM-dd HH:mm:ss,SSS} - %m%n" />  
+        </layout>
+        <param name="Append" value="debug" />  
+        <param name="File" value="D:/lives/logs/access.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.'" /> 
+        <filter class="com.zefun.common.log.AccessLogFilter" />     
+    </appender>  
+  
+    <root>  
+        <priority value ="info"/>
+        <appender-ref ref="console" />  
+        <appender-ref ref="access" />  
+ 	</root>  
+  
+</log4j:configuration>

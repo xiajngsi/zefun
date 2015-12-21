@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.StoreWechatMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.StoreWechat" >
+    <id column="related_id" property="relatedId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="wechat_id" property="wechatId" jdbcType="VARCHAR" />
+    <result column="wechat_app_id" property="wechatAppId" jdbcType="VARCHAR" />
+    <result column="wechat_appsecret" property="wechatAppsecret" jdbcType="VARCHAR" />
+    <result column="coupons_tm" property="couponsTm" jdbcType="VARCHAR" />
+    <result column="remind_tm" property="remindTm" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    related_id, store_id, wechat_id, wechat_app_id, wechat_appsecret, coupons_tm, remind_tm
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from store_wechat
+    where related_id = #{relatedId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from store_wechat
+    where related_id = #{relatedId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zefun.web.entity.StoreWechat" >
+    insert into store_wechat (store_id, wechat_id, 
+      wechat_app_id, wechat_appsecret, coupons_tm, 
+      remind_tm)
+    values (#{storeId,jdbcType=INTEGER}, #{wechatId,jdbcType=VARCHAR}, 
+      #{wechatAppId,jdbcType=VARCHAR}, #{wechatAppsecret,jdbcType=VARCHAR}, #{couponsTm,jdbcType=VARCHAR}, 
+      #{remindTm,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.StoreWechat" >
+    insert into store_wechat
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="relatedId != null" >
+        related_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="wechatId != null" >
+        wechat_id,
+      </if>
+      <if test="wechatAppId != null" >
+        wechat_app_id,
+      </if>
+      <if test="wechatAppsecret != null" >
+        wechat_appsecret,
+      </if>
+      <if test="couponsTm != null" >
+        coupons_tm,
+      </if>
+      <if test="remindTm != null" >
+        remind_tm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="relatedId != null" >
+        #{relatedId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="wechatId != null" >
+        #{wechatId,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatAppId != null" >
+        #{wechatAppId,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatAppsecret != null" >
+        #{wechatAppsecret,jdbcType=VARCHAR},
+      </if>
+      <if test="couponsTm != null" >
+        #{couponsTm,jdbcType=VARCHAR},
+      </if>
+      <if test="remindTm != null" >
+        #{remindTm,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.StoreWechat" >
+    update store_wechat
+    <set >
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="wechatId != null" >
+        wechat_id = #{wechatId,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatAppId != null" >
+        wechat_app_id = #{wechatAppId,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatAppsecret != null" >
+        wechat_appsecret = #{wechatAppsecret,jdbcType=VARCHAR},
+      </if>
+      <if test="couponsTm != null" >
+        coupons_tm = #{couponsTm,jdbcType=VARCHAR},
+      </if>
+      <if test="remindTm != null" >
+        remind_tm = #{remindTm,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where related_id = #{relatedId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zefun.web.entity.StoreWechat" >
+    update store_wechat
+    set store_id = #{storeId,jdbcType=INTEGER},
+      wechat_id = #{wechatId,jdbcType=VARCHAR},
+      wechat_app_id = #{wechatAppId,jdbcType=VARCHAR},
+      wechat_appsecret = #{wechatAppsecret,jdbcType=VARCHAR},
+      coupons_tm = #{couponsTm,jdbcType=VARCHAR},
+      remind_tm = #{remindTm,jdbcType=VARCHAR}
+    where related_id = #{relatedId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByWechatId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from store_wechat
+    where wechat_id = #{toUserName}
+  </select>
+  <select id="selectByStoreId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from store_wechat
+    where store_id = #{storeId}
+  </select>
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.ObjectiveRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.ObjectiveRule" >
+    <id column="rule_id" property="ruleId" jdbcType="INTEGER" />
+    <result column="objective_project" property="objectiveProject" jdbcType="INTEGER" />
+    <result column="contrast_type" property="contrastType" jdbcType="INTEGER" />
+    <result column="section" property="section" jdbcType="DECIMAL" />
+    <result column="rewards" property="rewards" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from objective_rule
+    where rule_id = #{ruleId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="java.util.Map" >
+    insert into objective_rule (rule_id,store_id, objective_project,choice_type, contrast_type, 
+      section, rewards, type, 
+      money)
+    values (#{ruleId,jdbcType=INTEGER},#{storeId,jdbcType=INTEGER},#{objectiveProject,jdbcType=INTEGER}, #{choiceType},#{contrastType,jdbcType=INTEGER}, 
+      #{section,jdbcType=DECIMAL}, #{rewards,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{money,jdbcType=DECIMAL})
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.ObjectiveRule" >
+    update objective_rule
+    <set >
+      <if test="objectiveProject != null" >
+        objective_project = #{objectiveProject,jdbcType=INTEGER},
+      </if>
+      <if test="choiceType != null" >
+        choice_type =#{choiceType,jdbcType=INTEGER},
+      </if>
+      <if test="contrastType != null" >
+        contrast_type = #{contrastType,jdbcType=INTEGER},
+      </if>
+      <if test="section != null" >
+        section = #{section,jdbcType=DECIMAL},
+      </if>
+      <if test="rewards != null" >
+        rewards = #{rewards,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where rule_id = #{ruleId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getObjectiverule" parameterType="com.zefun.web.entity.Page" resultType="com.zefun.web.dto.ObjectiveRuleDto">
+	select rule_id ruleId,objective_project objectiveProject,
+	IF(objective_project=1,"劳动业绩目标",if(objective_project=2,"指定业绩目标",if(objective_project=3,"套餐销售目标",if(objective_project=4,"商品销售目标","开卡充值目标")))) projectName,
+	contrast_type contrastType,
+    choice_type choiceType,
+    IF(choice_type=1,"按金额","按比例")choiceTypeName,
+    IF(contrast_type=1,"大于",if(contrast_type=2,"小于","等于"))contrastTypeName,
+	section,
+	rewards,
+	IF(rewards=1,"奖励"," 扣款") rewardsName,
+	type,
+	if(type=1,"固定金额","工资比例") typeName,
+	money
+	from objective_rule
+	where store_id=#{params.storeId}
+	<if test="params.search != null and params.search !=''">
+	    and objective_project=#{params.search}
+	</if>
+  </select>
+  <select id="isSoleInfo" parameterType="java.util.Map" resultType="java.lang.Integer">
+   select count(0) from objective_rule where store_id=#{storeId} and objective_project=#{objectiveProject} and contrast_type=#{contrastType} 
+   <if test="ruleId != null and ruleId !=''">
+	    <![CDATA[and rule_id <>#{ruleId}]]>
+	</if>
+  </select>
+  <select id="getruledetail" resultType="com.zefun.web.dto.ObjectiveRuleDto" parameterType="java.lang.Integer">
+  select rule_id ruleId,objective_project objectiveProject,
+	contrast_type contrastType,choice_type choiceType,
+	section,
+	rewards,
+	type,
+	money
+	from objective_rule where rule_id=#{ruleId}
+  </select>
+</mapper>

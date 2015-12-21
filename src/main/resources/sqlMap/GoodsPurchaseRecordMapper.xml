@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zefun.web.mapper.GoodsPurchaseRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.zefun.web.entity.GoodsPurchaseRecord" >
+    <id column="purchase_id" property="purchaseId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="supplier_id" property="supplierId" jdbcType="INTEGER" />
+    <result column="purchase_price" property="purchasePrice" jdbcType="DECIMAL" />
+    <result column="purchase_count" property="purchaseCount" jdbcType="INTEGER" />
+    <result column="purchase_time" property="purchaseTime" jdbcType="CHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <resultMap id="GoodsPurchaseRecordDtoMap" type="com.zefun.web.dto.GoodsPurchaseRecordDto" >
+    <id column="purchase_id" property="purchaseId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="supplier_id" property="supplierId" jdbcType="INTEGER" />
+    <result column="purchase_price" property="purchasePrice" jdbcType="DECIMAL" />
+    <result column="purchase_count" property="purchaseCount" jdbcType="INTEGER" />
+    <result column="purchase_time" property="purchaseTime" jdbcType="CHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
+    <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="employee_name" property="employeeName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    purchase_id, store_id, goods_id, supplier_id, purchase_price, purchase_count, purchase_time, 
+    operator_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods_purchase_record
+    where purchase_id = #{purchaseId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from goods_purchase_record
+    where purchase_id = #{purchaseId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.zefun.web.entity.GoodsPurchaseRecord" >
+    insert into goods_purchase_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="purchaseId != null" >
+        purchase_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="supplierId != null" >
+        supplier_id,
+      </if>
+      <if test="purchasePrice != null" >
+        purchase_price,
+      </if>
+      <if test="purchaseCount != null" >
+        purchase_count,
+      </if>
+      <if test="purchaseTime != null" >
+        purchase_time,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="purchaseId != null" >
+        #{purchaseId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="purchasePrice != null" >
+        #{purchasePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="purchaseCount != null" >
+        #{purchaseCount,jdbcType=INTEGER},
+      </if>
+      <if test="purchaseTime != null" >
+        #{purchaseTime,jdbcType=CHAR},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zefun.web.entity.GoodsPurchaseRecord" >
+    update goods_purchase_record
+    <set >
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null" >
+        supplier_id = #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="purchasePrice != null" >
+        purchase_price = #{purchasePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="purchaseCount != null" >
+        purchase_count = #{purchaseCount,jdbcType=INTEGER},
+      </if>
+      <if test="purchaseTime != null" >
+        purchase_time = #{purchaseTime,jdbcType=CHAR},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where purchase_id = #{purchaseId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByStoreId" resultMap="GoodsPurchaseRecordDtoMap" parameterType="java.lang.Integer" >
+    select gpr.*,si.supplier_name,gi.goods_name from goods_purchase_record gpr 
+	left join supplier_info si on gpr.supplier_id = si.supplier_id
+	left join goods_info gi on gi.goods_id = gpr.goods_id
+	where store_id = #{storeId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByPropertyPage" parameterType="com.zefun.web.entity.Page" resultMap="GoodsPurchaseRecordDtoMap">
+  	select gpr.*,si.supplier_name,gi.goods_name, e.name employee_name
+  	from goods_purchase_record gpr
+  	left join supplier_info si on gpr.supplier_id = si.supplier_id
+	left join goods_info gi on gi.goods_id = gpr.goods_id
+	left join employee_info e on gpr.operator_id = e.employee_id
+  	where 1 = 1 
+  	  <if test="params.goodsPurchaseRecordDto.storeId != null" >
+        and gpr.store_id = #{params.goodsPurchaseRecordDto.storeId,jdbcType=INTEGER}
+      </if>
+      <if test="params.goodsPurchaseRecordDto.goodsName != null" >
+        and gi.goods_name like concat('%',#{params.goodsPurchaseRecordDto.goodsName,jdbcType=VARCHAR},'%')
+        or si.supplier_name like concat('%',#{params.goodsPurchaseRecordDto.goodsName,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="params.goodsPurchaseRecordDto.goodsId != null" >
+        and gpr.goods_id = #{params.goodsPurchaseRecordDto.goodsId,jdbcType=INTEGER}
+      </if>
+      <if test="params.goodsPurchaseRecordDto.supplierId != null" >
+        and gpr.supplier_id = #{params.goodsPurchaseRecordDto.params.GoodsPurchaseRecordDto.supplierId,jdbcType=INTEGER}
+      </if>
+      <if test="params.goodsPurchaseRecordDto.purchasePrice != null" >
+        and gpr.purchase_price = #{params.goodsPurchaseRecordDto.purchasePrice,jdbcType=DECIMAL}
+      </if>
+      <if test="params.goodsPurchaseRecordDto.purchaseCount != null" >
+        and gpr.purchase_count = #{params.goodsPurchaseRecordDto.purchaseCount,jdbcType=INTEGER}
+      </if>
+      <if test="params.goodsPurchaseRecordDto.purchaseTime != null" >
+        and gpr.purchase_time = #{params.goodsPurchaseRecordDto.purchaseTime,jdbcType=CHAR}
+      </if>
+      <if test="params.goodsPurchaseRecordDto.operatorId != null" >
+        and gpr.operator_id = #{params.goodsPurchaseRecordDto.operatorId,jdbcType=INTEGER}
+      </if>
+  </select>
+  
+</mapper>
