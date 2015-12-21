@@ -6,6 +6,12 @@
    String qiniu = "http://7xkv8r.com1.z0.glb.clouddn.com/";
 %>
 <body>
+<style>
+	.crop-container{
+		width: 1000px;
+		height: 640px;
+	}
+</style>
 
 <div class="mainwrapper">
     <!--loading start-->
@@ -495,7 +501,7 @@
             </div>
             <div class="modal-body nopadding">
               <div class="crop-container">
-                <img src="<%=picPath %>zefun/images/pic_none.gif" id="cropbox" />
+                <img src="<%=basePath %>images/test.jpg" id="cropbox" />
               </div>
 
               <div class="jietu-control">
@@ -666,27 +672,17 @@
 <script type="text/javascript">
 var  objDoc, $image, cropBoxData, canvasData;
 var options = {
-		  aspectRatio: 1 / 1,
-		  scaleX : 1,
-		  scaleY : 1,
-	      minContainerWidth: 1000,
-	      minContainerHeight: 580,
-	      minCanvasHeight:580,
+			aspectRatio: 1,
 	      minCropBoxWidth: 580,
 	      minCropBoxHeight: 580,
 	      width:580,
 	      height:580,
-	      strict: true,
-	      center: true,
-          checkImageOrigin:true,
-	      movable: true,
 	      responsive:false,
-	      dragCrop: true,
 	      cropBoxMovable: false,
 	      cropBoxResizable: false,
 	      viewMode: 1,
 	      dragMode: 'move'
-	};
+		};
 
 var $image = jQuery('.crop-container > img');
 $image.cropper(options);

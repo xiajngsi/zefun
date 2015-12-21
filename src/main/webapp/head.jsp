@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="<%=basePath %>css/star-font.min.css" type="text/css" />
     <link rel="stylesheet" href="<%=basePath %>css/star-rating.min.css" type="text/css" />
     <link rel="stylesheet" href="<%=basePath %>css/zhifang.css" type="text/css" />
-	<link rel="stylesheet" href="<%=basePath %>css/cropper.min.css" type="text/css" />
+    <link rel="stylesheet" href="<%=basePath %>css/cropper.css" type="text/css" />
     
     <link href="<%=basePath %>images/favicon.ico" type="image/x-icon" rel="shortcut icon"/>
 

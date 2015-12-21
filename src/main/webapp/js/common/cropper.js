@@ -1127,11 +1127,13 @@
       if (cropBox.height > cropBox.maxHeight || cropBox.height < cropBox.minHeight) {
         cropBox.top = cropBox.oldTop;
       }
+      
+      this.limitCropBox(false, true);
 
       cropBox.width = min(max(cropBox.width, cropBox.minWidth), cropBox.maxWidth);
       cropBox.height = min(max(cropBox.height, cropBox.minHeight), cropBox.maxHeight);
 
-      this.limitCropBox(false, true);
+     
 
       cropBox.oldLeft = cropBox.left = min(max(cropBox.left, cropBox.minLeft), cropBox.maxLeft);
       cropBox.oldTop = cropBox.top = min(max(cropBox.top, cropBox.minTop), cropBox.maxTop);
