@@ -737,6 +737,7 @@
 
     // Canvas (image wrapper)
     initCanvas: function () {
+    var options = this.options;
       var viewMode = this.options.viewMode;
       var container = this.container;
       var containerWidth = container.width;
@@ -748,9 +749,12 @@
       var naturalWidth = is90Degree ? imageNaturalHeight : imageNaturalWidth;
       var naturalHeight = is90Degree ? imageNaturalWidth : imageNaturalHeight;
       var aspectRatio = naturalWidth / naturalHeight;
+//      var canvasWidth = naturalWidth;
+//      var canvasHeight = naturalHeight;
       var canvasWidth = containerWidth;
       var canvasHeight = containerHeight;
       var canvas;
+      
 
       if (containerHeight * aspectRatio > containerWidth) {
         if (viewMode === 3) {
@@ -765,6 +769,11 @@
           canvasWidth = containerHeight * aspectRatio;
         }
       }
+      
+      if(aspectRatio < 1 ){
+    	  canvasWidth = options.width;
+    	  canvasHeight =  canvasWidth/aspectRatio;
+      }
 
       canvas = {
         naturalWidth: naturalWidth,
@@ -774,6 +783,7 @@
         height: canvasHeight
       };
 
+      //canvas.oldTop = 0
       canvas.oldLeft = canvas.left = (containerWidth - canvasWidth) / 2;
       canvas.oldTop = canvas.top = (containerHeight - canvasHeight) / 2;
 
@@ -947,6 +957,8 @@
       if (canvas.height > canvas.maxHeight || canvas.height < canvas.minHeight) {
         canvas.top = canvas.oldTop;
       }
+//      canvas.width = naturalWidth
+//      canvas.height = naturalHeight;
 
       canvas.width = min(max(canvas.width, canvas.minWidth), canvas.maxWidth);
       canvas.height = min(max(canvas.height, canvas.minHeight), canvas.maxHeight);
@@ -1035,8 +1047,10 @@
       this.limitCropBox(true, true);
 
       // Initialize auto crop area
-      cropBox.width = min(max(cropBox.width, cropBox.minWidth), cropBox.maxWidth);
-      cropBox.height = min(max(cropBox.height, cropBox.minHeight), cropBox.maxHeight);
+      cropBox.width = options.width;
+      cropBox.height = options.height;
+      //cropBox.width = min(max(cropBox.width, cropBox.minWidth), cropBox.maxWidth);
+      //cropBox.height = min(max(cropBox.height, cropBox.minHeight), cropBox.maxHeight);
 
       // The width of auto crop area must large than "minWidth", and the height too. (#164)
       cropBox.width = max(cropBox.minWidth, cropBox.width * autoCropArea);

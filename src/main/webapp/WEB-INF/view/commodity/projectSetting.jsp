@@ -7,10 +7,18 @@
 %>
 <body>
 <style>
+	.jietu{
+		height: auto;
+	}
 	.crop-container{
 		width: 1000px;
-		height: 640px;
+		height: 400px;
+	} 
+	.jietu .modal-body{
+		padding: 0px;
+		overflow: hidden;		
 	}
+
 </style>
 
 <div class="mainwrapper">
@@ -499,9 +507,9 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">截图</h4>
             </div>
-            <div class="modal-body nopadding">
+            <div class="modal-body " >
               <div class="crop-container">
-                <img src="<%=basePath %>images/test.jpg" id="cropbox" />
+                <img src="<%=picPath %>zefun/images/pic_none.gif" id="cropbox" />
               </div>
 
               <div class="jietu-control">
@@ -671,22 +679,29 @@
 </body>
 <script type="text/javascript">
 var  objDoc, $image, cropBoxData, canvasData;
+
 var options = {
-			aspectRatio: 1,
-	      minCropBoxWidth: 580,
-	      minCropBoxHeight: 580,
-	      width:580,
-	      height:580,
-	      responsive:false,
-	      cropBoxMovable: false,
-	      cropBoxResizable: false,
-	      viewMode: 1,
-	      dragMode: 'move'
+			viewMode: 1,
+			aspectRatio: 1/1,
+			autoCropArea: 1,
+			minContainerWidth: 1000,
+		    minContainerHeight: 400,
+		    minCropBoxWidth: 400,
+		    minCropBoxHeight: 400,
+		    width:400,
+		    height:400,
+		    responsive:false,
+		    cropBoxMovable: false,
+		    cropBoxResizable: false,
+		    dragMode: 'move'
 		};
 
 var $image = jQuery('.crop-container > img');
 $image.cropper(options);
-function cavsen(obj){
+
+
+function cavsen(obj){	
+	//var cropBoxData = {"left":0,"top":0,"width":580,"height":580};
   objDoc = jQuery(obj);	
   var otherUrl = jQuery(obj).children("img").attr("src");
   jQuery("#cropbox").attr("src", otherUrl);
@@ -713,14 +728,20 @@ function cavsen(obj){
 
         if (/^image\/\w+$/.test(file.type)) {
             blobURL = URL.createObjectURL(file);
-            $image.one('built.cropper', function () {
-              // Revoke when load complete
-              URL.revokeObjectURL(blobURL);
-            }).cropper('reset').cropper('replace', blobURL);
-            $inputImage.val('');
+/*             var cropBoxData = $image.cropper('getCropBoxData');
+            var  canvasData = $image.cropper('getCanvasData'); */
+            
+           	 $image.one('built.cropper', function () {
+                    // Revoke when load complete
+                    	URL.revokeObjectURL(blobURL);
+                     /*  $image.cropper('setCropBoxData', cropBoxData);
+                      $image.cropper('setCanvasData', canvasData); */
+                  }).cropper('reset').cropper('replace', blobURL);
+                  $inputImage.val('');
           } else {
             window.alert('请选择一张图片');
           }
+        //$image.cropper('destroy').cropper(options);
       }
     });
   } else {

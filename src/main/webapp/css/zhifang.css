@@ -3115,12 +3115,7 @@ body.loginbody {
   max-height: none;
 }
 /*截图的大小*/
-.cropper-crop-box {
- /*  width: 580px !important;
-  height: 580px !important;  */
-  /* top: 25px !important;
-  left: 210px !important; */
-}
+
 .jietu-control {
   position: absolute;
   right: 10px;
